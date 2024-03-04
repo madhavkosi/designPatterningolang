@@ -29,7 +29,7 @@ func (c *Cache) add(key, value string) {
 	c.storage[key] = value
 }
 
-func (c *Cache) get(key string) {
+func (c *Cache) Get(key string) {
 	delete(c.storage, key)
 }
 
