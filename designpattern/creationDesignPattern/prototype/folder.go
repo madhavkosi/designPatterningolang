@@ -5,9 +5,8 @@ type Folder struct {
 	Children []ClonePrototype
 }
 
-func (f *Folder) Clone() ClonePrototype {
-	folder := new(Folder)
-	folder.Name = f.Name + "_copy"
+func (f Folder) Clone() ClonePrototype {
+	folder := &Folder{Name: f.Name + "_copy"}
 	folder.Children = []ClonePrototype{}
 	for _, child := range f.Children {
 		folder.Children = append(folder.Children, child.Clone())

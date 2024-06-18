@@ -15,3 +15,9 @@ func TestFactory(t *testing.T) {
 	}
 	a.Print()
 }
+
+// }
+// The Factory Pattern defines an interface or abstract class for creating objects,
+
+//The Factory Method pattern is a design pattern used to create objects.
+//It allows a class to have a method that creates objects, but the specific type of object is determined by subclasses.

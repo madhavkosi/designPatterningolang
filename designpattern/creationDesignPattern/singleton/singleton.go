@@ -16,10 +16,16 @@ func NewSingleObject() *single {
 	if singleton == nil {
 		lock.Lock()
 		defer lock.Unlock()
-		singleton = &single{val: "abc"}
-		fmt.Printf("new created \n")
+		if singleton == nil {
+			singleton = &single{val: "abc"}
+			fmt.Printf("new created \n")
+		} else {
+			fmt.Printf("already created \n")
+		}
 	} else {
 		fmt.Printf("already created \n")
 	}
 	return singleton
 }
+
+// The Singleton pattern ensures a class has only one instance and provides a global point of access to it.

@@ -7,11 +7,12 @@ type Cache struct {
 	maxCapacity  int
 }
 
-func initCache(e EvictionAlgo) *Cache {
+func initCache() *Cache {
 	storage := make(map[string]string)
+	lfu := &Lfu{}
 	return &Cache{
 		storage:      storage,
-		evictionAlgo: e,
+		evictionAlgo: lfu,
 		capacity:     0,
 		maxCapacity:  2,
 	}
@@ -31,6 +32,7 @@ func (c *Cache) add(key, value string) {
 
 func (c *Cache) Get(key string) {
 	delete(c.storage, key)
+	c.capacity--
 }
 
 func (c *Cache) evict() {

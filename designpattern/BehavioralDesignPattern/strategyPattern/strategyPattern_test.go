@@ -3,8 +3,7 @@ package strategypattern
 import "testing"
 
 func TestStrategyPattern(t *testing.T) {
-	lfu := &Lfu{}
-	cache := initCache(lfu)
+	cache := initCache()
 
 	cache.add("a", "1")
 	cache.add("b", "2")
