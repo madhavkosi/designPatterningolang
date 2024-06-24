@@ -1,4 +1,4 @@
-package user
+package notification
 
 type User struct {
 	Name string

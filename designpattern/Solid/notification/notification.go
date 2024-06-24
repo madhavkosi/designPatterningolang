@@ -1,7 +1,5 @@
 package notification
 
-import User "test/user"
-
 type NotificationService struct {
 	Notification Notification
 }
@@ -9,7 +7,7 @@ type NotificationService struct {
 func NewNotificationService(n Notification) *NotificationService {
 	return &NotificationService{Notification: n}
 }
-func ProcessNotification(Notifications []Notification, u User.User) {
+func ProcessNotification(Notifications []Notification, u User) {
 	for _, n := range Notifications {
 		n.Send(u)
 	}
