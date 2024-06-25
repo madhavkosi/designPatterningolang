@@ -319,3 +319,120 @@ Combining SQL and NoSQL leverages their strengths, ensuring scalability and perf
    - Failover can be automatic or manual.
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/instagram3.gif)
+
+
+### Notes on Data Sharding for Metadata
+
+#### a. Partitioning based on UserID
+- **Sharding Method**: UserID % 10
+- **PhotoID Generation**: Each shard uses its own auto-increment sequence, appended with ShardID for uniqueness.
+- **Issues**:
+  - **Hot Users**: Popular users can create load imbalance.
+  - **Non-uniform Storage**: Some users have significantly more photos.
+  - **Single Shard Limitation**: If one shard can't store all photos of a user, distributing photos across shards may increase latency.
+  - **Shard Availability**: If a shard is down, all data for that user is unavailable, causing higher latency under high load.
+
+#### b. Partitioning based on PhotoID
+- **Sharding Method**: PhotoID % 10
+- **PhotoID Generation**: 
+  - **Single DB**: A dedicated instance generates auto-increment IDs, which may become a single point of failure.
+  - **Dual DB**: Two databases generate even and odd IDs to avoid single point of failure.
+  - **Load Balancer**: Round-robin between databases for key generation.
+- **Key Generation Scripts**:
+  - **Server1**:
+    - auto-increment-increment = 2
+    - auto-increment-offset = 1
+  - **Server2**:
+    - auto-increment-increment = 2
+    - auto-increment-offset = 2
+- **Scalability**: Implement a 'key' generation scheme similar to TinyURL.
+
+#### Planning for Future Growth
+- **Logical Partitions**: Create multiple logical partitions to accommodate data growth.
+- **Physical Database Servers**: Multiple logical partitions can reside on a single physical server initially.
+- **Migration**: Move logical partitions to different servers as needed.
+- **Config File**: Map logical partitions to database servers for easy migration and updates.
+
+
+### Notes on Ranking and News Feed Generation
+
+#### Fetching Top Photos
+- **Process**:
+  1. Get the list of people the user follows.
+  2. Fetch metadata of each user's latest 100 photos.
+  3. Submit photos to the ranking algorithm.
+  4. Return the top 100 photos based on recency, likeness, etc.
+- **Issue**: Higher latency due to multiple queries and sorting/merging/ranking operations.
+
+#### Pre-generating the News Feed
+- **Method**:
+  1. Dedicated servers continuously generate and store users' News Feeds in the 'UserNewsFeed' table.
+  2. Query this table to get the latest photos for the News Feed.
+  3. Generate new News Feed data from the last update time for each user.
+- **Benefits**: Reduces latency by pre-generating and storing the feed.
+
+#### Approaches for Sending News Feed Contents
+
+1. **Pull**:
+   - **Method**: Clients pull the News Feed from the server at regular intervals or manually.
+   - **Problems**:
+     - New data might not be shown until a pull request is made.
+     - Pull requests may often return no new data.
+
+2. **Push**:
+   - **Method**: Servers push new data to users as soon as it's available.
+   - **Requirement**: Users maintain a Long Poll request with the server.
+   - **Problems**: High push frequency for users following many people or celebrities.
+
+3. **Hybrid**:
+   - **Approach**: 
+     - High-follower users use a pull-based model.
+     - Few-follower users receive push updates.
+   - **Alternative**:
+     - Push updates to all users at a limited frequency.
+     - High-update users pull data regularly.
+
+
+
+### Notes on Cache and Load Balancing
+
+#### Massive-Scale Photo Delivery System
+- **Global Users**: Serve a large number of geographically distributed users.
+- **Content Delivery**: Push content closer to the user using geographically distributed photo cache servers and CDNs.
+
+#### Caching Strategy
+- **Metadata Caching**:
+  - **Cache Hot Rows**: Use Memcache to store frequently accessed database rows.
+  - **Application Servers**: Check Memcache before querying the database.
+  - **Eviction Policy**: Use Least Recently Used (LRU) to discard the least recently accessed rows first.
+
+#### Intelligent Caching
+- **Eighty-Twenty Rule**:
+  - **Traffic Distribution**: 20% of daily read volume generates 80% of the traffic.
+  - **Popular Photos**: Certain photos are significantly more popular.
+  - **Caching Strategy**: Cache 20% of the daily read volume of photos and metadata to maximize efficiency.
+
+#### Implementation Example
+1. **Photo Delivery**:
+   - Use CDNs to store and deliver photos closer to users.
+   - Geographically distributed cache servers reduce latency and improve load times.
+
+2. **Metadata Caching with Memcache**:
+   - **Cache Check**: Before hitting the database, application servers check Memcache.
+   - **Cache Hit**: If data is found in Memcache, serve it directly.
+   - **Cache Miss**: If data is not found, query the database and update Memcache.
+
+3. **LRU Eviction Policy**:
+   - Maintain a priority list of cached items based on access time.
+   - Discard the least recently accessed items when the cache is full.
+
+4. **Applying the Eighty-Twenty Rule**:
+   - Identify the 20% of photos that generate 80% of the traffic.
+   - Prioritize caching these popular photos and their metadata.
+
+#### Benefits
+- **Reduced Latency**: Serving data from cache or nearby CDN reduces response time.
+- **Load Balancing**: Distributes load across multiple cache servers, reducing the burden on the central database.
+- **Efficiency**: Intelligent caching maximizes the use of cache space, focusing on the most frequently accessed data.
+
+By implementing these strategies, the service can efficiently handle a large volume of global users, providing fast and reliable access to photos and metadata.
