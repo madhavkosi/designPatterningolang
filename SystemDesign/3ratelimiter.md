@@ -228,5 +228,63 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 **Summary**
 The high-level architecture for rate limiting involves using an in-memory cache like Redis to store request counters. The rate limiting middleware checks these counters before allowing requests to proceed to the API servers, ensuring efficient and effective rate limiting.
 
+### Step 3 - Design Deep Dive
 
+#### Key Questions
+1. **Rule Creation and Storage**: How are rate limiting rules created and where are they stored?
+2. **Handling Rate-Limited Requests**: How to manage requests that exceed the rate limit?
+
+#### Rate Limiting Rules
+- **Examples**:
+  - **Messaging Domain**:
+    ```yaml
+    domain: messaging
+    descriptors:
+      - key: message_type
+        value: marketing
+        rate_limit:
+          unit: day
+          requests_per_unit: 5
+    ```
+  - **Auth Domain**:
+    ```yaml
+    domain: auth
+    descriptors:
+      - key: auth_type
+        value: login
+        rate_limit:
+          unit: minute
+          requests_per_unit: 5
+    ```
+- **Storage**: Rules are written in configuration files and saved on disk.
+
+#### Handling Exceeding Requests
+- **Response**: Return HTTP 429 (Too Many Requests) status code.
+- **Queuing**: Optionally enqueue rate-limited requests for later processing.
+
+#### Rate Limiter Headers
+- **Informing Clients**: Use HTTP response headers to communicate rate limit status.
+  - `X-Ratelimit-Remaining`: Number of remaining allowed requests.
+  - `X-Ratelimit-Limit`: Maximum number of allowed requests per time window.
+  - `X-Ratelimit-Retry-After`: Seconds to wait before making a new request.
+
+#### Detailed Design (Figure 13)
+1. **Rule Storage and Loading**:
+   - Rules are stored on disk.
+   - Workers pull and cache rules from disk.
+2. **Request Processing**:
+   - Client sends a request to the server.
+   - Request is sent to the rate limiter middleware.
+   - Middleware loads rules from cache, checks counters and timestamps in Redis.
+   - **Decision**:
+     - **Not Rate Limited**: Request forwarded to API servers.
+     - **Rate Limited**: Return HTTP 429 error, optionally enqueue the request.
+
+### Summary
+- **Rules**: Defined in config files, stored on disk, cached by workers.
+- **Request Handling**: Middleware checks limits, returns HTTP 429 if exceeded, uses headers to inform clients.
+- **Design Flow**:
+  - Client -> Middleware -> Check Redis -> Decision -> API Server or 429 Error
+
+  
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/rateLimiter.png)
