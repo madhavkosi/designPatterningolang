@@ -23,22 +23,22 @@ Here are the corrected numbered sections based on your list:
 
 ### CAP Theorem 
 
-#### CAP Theorem Overview
+**CAP Theorem Overview**
 
 - **Consistency (C):** Every read receives the most recent write or an error.
 - **Availability (A):** Every request receives a non-error response, without guaranteeing it contains the most recent write.
 - **Partition Tolerance (P):** The system continues to operate despite network partitions.
 
-#### Examples in Practice
+**Examples in Practice**
 
-#### Consistency and Partition Tolerance (CP)
+**Consistency and Partition Tolerance (CP)**
 - **HBase:**
   - **Consistency:** Strong consistency for read/write.
   - **Partition Tolerance:** Handles network partitions.
   - **Availability:** May sacrifice availability during partitions.
   - **Use Case:** Financial systems, inventory management.
 
-#### Availability and Partition Tolerance (AP)
+ **Availability and Partition Tolerance (AP)**
 - **Cassandra:**
   - **Availability:** Highly available, handles read/write despite node failures.
   - **Partition Tolerance:** Operates despite network issues.
@@ -51,25 +51,27 @@ Here are the corrected numbered sections based on your list:
   - **Consistency:** Eventual consistency by default, strong consistency as an option.
   - **Use Case:** E-commerce platforms, gaming leaderboards.
 
-#### Consistency and Availability (CA)
+ **Consistency and Availability (CA)**
 - **Relational Database Management Systems (RDBMS) like MySQL/PostgreSQL:**
   - **Consistency:** Ensures strong consistency with ACID transactions.
   - **Availability:** Available as long as the network is reliable.
   - **Partition Tolerance:** Not designed for handling network partitions.
   - **Use Case:** Banking systems, e-commerce transactions.
 
-#### Conclusion
+ **Conclusion**
 
 - **CP Systems:** Prioritize consistency and integrity (e.g., financial systems).
 - **AP Systems:** Prioritize uptime and resilience (e.g., social media).
 - **CA Systems:** Used where network partitions are rare, ensuring both consistency and availability (e.g., traditional databases).
 
 Select the model based on application requirements and trade-offs.
-### Introduction to Bloom Filters
+
+### Bloom Filters
+#### Introduction to Bloom Filters
 
 A **Bloom filter** is a space-efficient probabilistic data structure used to test whether an element is a member of a set. It can provide a quick answer to membership queries with the possibility of false positives but no false negatives. This means it may incorrectly report that an element is in the set when it is not, but it will never incorrectly report that an element is not in the set when it is.
 
-#### Key Concepts
+**Key Concepts**
 
 - **Probabilistic Nature:** Bloom filters allow for false positives but no false negatives. This means they may mistakenly identify that an element is in the set when it isn't, but they will always correctly identify elements that are actually in the set.
   
@@ -91,34 +93,34 @@ A **Bloom filter** is a space-efficient probabilistic data structure used to tes
    - To check if an element \( y \) is in the set, pass it through the \( k \) hash functions to get \( k \) positions.
    - Check if all these positions are set to 1. If yes, the element is probably in the set. If not, the element is definitely not in the set.
 
-#### Applications
+ **Applications**
 
 - **Web Caching:** To quickly check if an element is in the cache.
 - **Database Queries:** To reduce disk lookups for non-existent records.
 - **Networking:** In packet routing and intrusion detection systems.
 - **Distributed Systems:** To efficiently synchronize data between nodes.
 
-#### Advantages
+ **Advantages**
 
 - **Space Efficient:** Requires significantly less memory compared to other data structures.
 - **Fast:** Very quick to add and check for elements, with operations typically being O(k), where k is the number of hash functions.
 
-#### Disadvantages
+ **Disadvantages**
 
 - **False Positives:** Can incorrectly indicate the presence of an element.
 - **No Removal:** Standard Bloom filters do not support the removal of elements. Once a bit is set to 1, it cannot be unset.
 
-#### Variations
+ **Variations**
 
 - **Counting Bloom Filters:** Allow for the removal of elements by maintaining a count of the number of elements hashed to each position in the bit array.
 - **Scalable Bloom Filters:** Dynamically adjust the size of the bit array and number of hash functions to maintain a desired false positive rate as more elements are added.
 
-#### Conclusion
+ **Conclusion**
 
 Bloom filters are an effective tool for membership testing when space is a constraint, and occasional false positives are acceptable. They are widely used in various applications requiring efficient and fast membership queries, balancing the trade-off between accuracy and resource usage.
 
 
-#### Applications of Bloom Filters: Short Notes
+#### Applications of Bloom Filters
 
 1. **Database Systems**
    - **Query Optimization:** Used as a pre-filter to avoid unnecessary disk reads for non-existent keys, enhancing query performance.
