@@ -258,3 +258,34 @@ Data center outages, due to various reasons like power outages, network failures
    - Data centers are connected via high-speed networks to facilitate quick and efficient data replication and access.
 
 By employing these strategies, key-value stores can achieve high availability, reliability, and consistency, ensuring robust performance even in the face of failures.
+
+
+## System Architecture Diagram
+
+### Main Features
+
+1. **Client Communication**:
+   - Clients interact with the key-value store using simple APIs: `get(key)` and `put(key, value)`.
+
+2. **Coordinator Node**:
+   - Acts as a proxy between the client and the key-value store.
+   - Manages client requests and directs them to the appropriate nodes.
+
+3. **Node Distribution**:
+   - Nodes are distributed on a ring using consistent hashing.
+   - Ensures even distribution of data and efficient scaling.
+
+4. **Decentralization**:
+   - The system is fully decentralized.
+   - Nodes can be added or moved automatically without manual intervention.
+
+5. **Data Replication**:
+   - Data is replicated across multiple nodes to ensure high availability and fault tolerance.
+
+6. **No Single Point of Failure**:
+   - Every node has the same set of responsibilities, eliminating single points of failure.
+   - Ensures robustness and reliability of the system.
+
+
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keyvalue1.svg)
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keyvalue2.svg)
