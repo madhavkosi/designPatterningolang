@@ -289,3 +289,48 @@ By employing these strategies, key-value stores can achieve high availability, r
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keyvalue1.svg)
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keyvalue2.svg)
+
+
+
+## Write Path
+
+### Steps (Figure 19)
+
+1. **Commit Log**:
+   - The write request is first persisted in a commit log file to ensure durability.
+   
+2. **Memory Cache**:
+   - Data is then saved in the memory cache (often referred to as a memtable).
+
+3. **Flushing to SSTable**:
+   - When the memory cache is full or reaches a predefined threshold, the data is flushed to an SSTable on disk.
+   - SSTable is a sorted list of <key, value> pairs.
+
+### Summary
+- Write operations involve persisting data to a commit log, caching in memory, and eventually flushing to disk as SSTables to maintain data durability and efficiency.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keyvalue3.svg)
+
+
+## Read Path
+
+### Steps (Figures 20 and 21)
+
+1. **Check Memory Cache**:
+   - After a read request is directed to a specific node, the system first checks if the data is in the memory cache.
+   - If the data is found in the memory cache, it is returned to the client.
+
+2. **Check Disk**:
+   - If the data is not in memory, the system proceeds to check the disk.
+
+3. **Bloom Filter**:
+   - The bloom filter helps determine which SSTables might contain the key.
+   
+4. **Retrieve from SSTables**:
+   - SSTables identified by the bloom filter are queried to retrieve the data.
+   
+5. **Return Data to Client**:
+   - The retrieved data is then returned to the client.
+
+### Summary
+- Read operations first check the memory cache for data. If not found, the system uses bloom filters to efficiently locate the data in SSTables on disk, ensuring quick and accurate data retrieval.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keyvalue4.svg)
