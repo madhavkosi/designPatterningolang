@@ -310,38 +310,48 @@ Certainly! Here's an integrated explanation that incorporates the concept of the
 - By designating a single leader for write operations and employing followers for replication and backup, the pattern ensures efficient data management and system reliability in complex distributed environments.
 
 
-### Consistent Hashing for Horizontal Scaling
+### Consistent Hashing
 
-#### The Rehashing Problem
+
+**The Rehashing Problem**
+
 In distributed systems, distributing requests and data evenly across servers is crucial for efficient load balancing. A common method to balance the load among \( n \) cache servers is:
 
 \[ \text{serverIndex} = \text{hash(key)} \% N \]
 
 Here, \( N \) is the total number of servers. For example, with 4 servers and 8 keys, applying the hash function and modulus operation assigns each key to a specific server. However, this method fails when servers are added or removed. Removing a server changes \( N \), causing a significant redistribution of keys, leading to many cache misses and inefficiencies.
 
-#### Consistent Hashing
+**Consistent Hashing**
+
 Consistent hashing solves the rehashing problem by minimizing the number of keys that need to be remapped when the number of servers changes. This technique ensures only a small fraction of keys are redistributed.
 
-#### Hash Space and Hash Ring
+**Hash Space and Hash Ring**
+
 Using a hash function like SHA-1, we map the output range (0 to \( 2^{160} - 1 \)) onto a circular hash ring. Servers and keys are then mapped onto this ring.
 
-#### Server and Key Mapping
+**Server and Key Mapping**
+
 Servers are assigned positions on the hash ring using their IP or name. Keys are also hashed and placed on the ring. To find the server for a key, we move clockwise from the key's position until we encounter a server.
 
-#### Adding and Removing Servers
+**Adding and Removing Servers**
+
 When a new server is added, only the keys between the new server and its predecessor need to be redistributed. Similarly, removing a server only affects the keys between the removed server and its predecessor.
 
-#### Issues with Basic Consistent Hashing
+**Issues with Basic Consistent Hashing**
+
 1. **Uneven Partition Sizes**: When servers are added or removed, partition sizes (the hash space between adjacent servers) can become uneven, leading to load imbalance.
 2. **Non-uniform Key Distribution**: Keys may cluster around certain servers, causing uneven load distribution.
 
-#### Virtual Nodes
+**Virtual Nodes**
+
 To address these issues, servers are represented by multiple virtual nodes on the hash ring. This results in a more balanced distribution of keys. Each server handles multiple partitions, which reduces the variance in partition sizes and distributes keys more evenly.
 
-#### Redistributing Keys
+**Redistributing Keys**
+
 When servers are added or removed, only keys in the affected range (between the new or removed server and its predecessor) need to be redistributed. This minimizes disruption and maintains efficient load balancing.
 
-#### Applications and Benefits
+**Applications and Benefits**
+
 Consistent hashing is widely used in systems like Amazon's Dynamo, Apache Cassandra, Discord, Akamai CDN, and Maglev load balancer. It allows for easy horizontal scaling, minimizes key redistribution, and mitigates the hotspot key problem by distributing data more evenly across servers.
 
 
