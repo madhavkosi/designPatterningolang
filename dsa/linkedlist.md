@@ -1,23 +1,22 @@
 # Linked List Problems
 
 ## Contents
-1. [Add Two Numbers](add_two_numbers.md)
-2. [Linked List Cycle](linked_list_cycle.md)
-3. [Merge Two Sorted Lists](merge_two_sorted_lists.md)
-4. [Copy List with Random Pointer](copy_list_with_random_pointer.md)
-5. [Reverse Linked List](reverse_linked_list.md)
-6. [Reverse Nodes in k-Group](reverse_nodes_in_k_group.md)
-7. [Reverse Linked List II](reverse_linked_list_ii.md)
-8. [Linked List Cycle II](linked_list_cycle_ii.md)
-9. [Remove Nth Node From End of List](remove_nth_node_from_end.md)
-10. [Remove Duplicates from Sorted List II](remove_duplicates_sorted_list_ii.md)
-11. [Rotate List](rotate_list.md)
-12. [LRU Cache](lru_cache.md)
-13. [Partition List](partition_list.md)
-14. [Intersection of Two Linked Lists](intersection_of_two_linked_lists.md)
-15. [Sort List](sort_list.md)
-16. [Merge k Sorted Lists](merge_k_sorted_lists.md)
-
+1. [Add Two Numbers](#add-two-numbers)
+2. [Linked List Cycle](#linked-list-cycle)
+3. [Merge Two Sorted Lists](#merge-two-sorted-lists)
+4. [Copy List with Random Pointer](#copy-list-with-random-pointer)
+5. [Reverse Linked List](#reverse-linked-list)
+6. [Reverse Nodes in k-Group](#reverse-nodes-in-k-group)
+7. [Reverse Linked List II](#reverse-linked-list-ii)
+8. [Linked List Cycle II](#linked-list-cycle-ii)
+9. [Remove Nth Node From End of List](#remove-nth-node-from-end-of-list)
+10. [Remove Duplicates from Sorted List II](#remove-duplicates-from-sorted-list-ii)
+11. [Rotate List](#rotate-list)
+12. [LRU Cache](#lru-cache)
+13. [Partition List](#partition-list)
+14. [Intersection of Two Linked Lists](#intersection-of-two-linked-lists)
+15. [Sort List](#sort-list)
+16. [Merge k Sorted Lists](#merge-k-sorted-lists)
 
 ---
 
