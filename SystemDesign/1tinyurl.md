@@ -245,6 +245,10 @@ To scale out a database for storing billions of URLs, an effective partitioning 
   - Fault Tolerance: Data loss risk is minimized through redundancy.
 
 
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/tinyurl1.gif" width="500" />
+</p>
+
 ## Cache
 
 Implementing caching for frequently accessed URLs can significantly enhance the performance and efficiency of a URL shortening service. Here's an overview:
@@ -348,3 +352,6 @@ Implementing caching for frequently accessed URLs can significantly enhance the 
 - **Analytics Tools**: Integrate with analytics tools (e.g., Google Analytics) to track and visualize usage patterns.
 - **Data Aggregation**: Periodically aggregate data to generate summary statistics, reducing the volume of data stored and processed.
 
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/tinyurl2.gif" width="500" />
+</p>
