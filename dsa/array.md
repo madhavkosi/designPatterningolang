@@ -74,7 +74,6 @@ func maxSubArray(nums []int) int {
 }
 ```
 
-For more problems and their solutions, navigate through the respective folders. Each folder contains a `README.md` file with the problem description, examples, and the Golang solution.
 
 ---
 
