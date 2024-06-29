@@ -1,4 +1,4 @@
-### 94. Binary Tree Inorder Traversal
+###  Binary Tree Inorder Traversal
 
 **Question:**
 
@@ -47,7 +47,7 @@ func inorderTraversal(root *TreeNode) []int {
 }
 ```
 
-### 144. Binary Tree Preorder Traversal
+###  Binary Tree Preorder Traversal
 
 **Question:**
 
@@ -99,7 +99,7 @@ func preorderTraversal(root *TreeNode) []int {
 }
 ```
 
-### 145. Binary Tree Postorder Traversal
+###  Binary Tree Postorder Traversal
 
 **Question:**
 
@@ -169,7 +169,7 @@ func postorderTraversal(root *TreeNode) []int {
 }
 ```
 
-### 102. Binary Tree Level Order Traversal
+###  Binary Tree Level Order Traversal
 
 **Question:**
 
