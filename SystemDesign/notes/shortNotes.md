@@ -39,7 +39,7 @@ The CAP theorem revolves around three key properties of distributed systems: Con
 
 **CAP Theorem Overview**
 
-- **Consistency (C):** Every read receives the most recent write or an error.All nodes see the same data at the same time.
+- **Consistency (C):** All nodes see the same data at the same time, Every read receives the most recent write or an error.
 - **Availability (A):** Every request receives a non-error response, without guaranteeing it contains the most recent write,The system responds to every request
 - **Partition Tolerance (P):** The system continues to operate despite network partitions.
 
@@ -81,7 +81,7 @@ The CAP theorem revolves around three key properties of distributed systems: Con
 Select the model based on application requirements and trade-offs.
 
 ### Bloom Filters
-#### Introduction to Bloom Filters
+**Introduction to Bloom Filters**
 
 A **Bloom filter** is a space-efficient probabilistic data structure used to test whether an element is a member of a set. It can provide a quick answer to membership queries with the possibility of false positives but no false negatives. This means it may incorrectly report that an element is in the set when it is not, but it will never incorrectly report that an element is not in the set when it is.
 
@@ -93,7 +93,7 @@ A **Bloom filter** is a space-efficient probabilistic data structure used to tes
 
 - **Hash Functions:** Multiple hash functions are used to map elements to several positions in a bit array.
 
-#### How Bloom Filters Work
+**How Bloom Filters Work**
 
 1. **Initialization:**
    - Start with a bit array of size \( m \), initialized to 0.
@@ -134,7 +134,7 @@ A **Bloom filter** is a space-efficient probabilistic data structure used to tes
 Bloom filters are an effective tool for membership testing when space is a constraint, and occasional false positives are acceptable. They are widely used in various applications requiring efficient and fast membership queries, balancing the trade-off between accuracy and resource usage.
 
 
-#### Applications of Bloom Filters
+**Applications of Bloom Filters**
 
 1. **Database Systems**
    - **Query Optimization:** Used as a pre-filter to avoid unnecessary disk reads for non-existent keys, enhancing query performance.
@@ -156,12 +156,12 @@ Bloom filters are an effective tool for membership testing when space is a const
    - **Efficient Synchronization:** Nodes exchange Bloom filters to quickly identify dataset differences and synchronize efficiently.
    - **Performance Improvement:** Reduces the amount of data exchanged, enhancing overall system performance and scalability.
 
-#### Summary
+**Summary**
 Bloom filters provide space-efficient solutions across various applications, including database query optimization, network routing, web caching, spam filtering, and distributed systems membership testing, improving performance and resource usage.
 
 
-
-### Difference Between Long-Polling, WebSockets, and Server-Sent Events
+### **Long-Polling, WebSockets, and Server-Sent Events**
+**Difference Between Long-Polling, WebSockets, and Server-Sent Events**
 
 **Long-Polling:**
 - **Description:** Client sends a request to the server and keeps the connection open until new data is available or a timeout occurs.
@@ -178,7 +178,7 @@ Bloom filters provide space-efficient solutions across various applications, inc
 - **Use Case:** Suitable for applications needing server-initiated updates, such as live feeds, stock tickers, and notifications.
 - **Protocol:** Uses HTTP to maintain a long-lived connection, with the server streaming events to the client.
 
-#### Summary
+**Summary**
 - **Long-Polling:** Efficient for scenarios with infrequent updates, reducing unnecessary network traffic.
 - **WebSockets:** Enables continuous, real-time communication between client and server, suitable for interactive and dynamic applications.
 - **Server-Sent Events:** Supports one-way communication from server to client for real-time updates, maintaining a persistent connection.
