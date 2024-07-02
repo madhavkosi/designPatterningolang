@@ -776,6 +776,9 @@ DNS load balancing and high availability techniques enhance the performance and 
 ### CDN
 
 **What is a CDN?**
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/cdn.svg" width="500" />
+</p>
 
 A Content Delivery Network (CDN) is a distributed network of servers strategically located across various geographical areas to deliver web content (e.g., images, videos, static assets) more efficiently to users. CDNs reduce latency and improve the overall performance, reliability, and security of web applications by serving content from the nearest server.
 
@@ -1127,7 +1130,7 @@ An API Gateway is a server-side architectural component that acts as an intermed
 - **API Gateway:** Acts as a middleware for routing, authentication, and rate limiting for microservices.
 - **Load Balancer:** Distributes network traffic evenly across multiple servers to enhance system performance and availability.
 
-#### Usage of API Gateway
+**Usage of API Gateway**
 
 1. **Routing:** Directs client requests to the correct microservice.
 2. **Rate Limiting:** Controls request rates to prevent abuse.
