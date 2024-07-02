@@ -200,7 +200,7 @@ Certainly! Here's an updated version of the notes on quorum in distributed syste
 - **Fault Tolerance:** Systems with quorum can tolerate node failures up to a certain threshold (e.g., in a 5-node cluster, can tolerate up to 2 node failures if quorum is 3).
 
 **Implementation:**
-- **Quorum Formula:** \( Q = \lceil \frac{N}{2} \rceil + 1 \)
+- **Quorum Formula:** \( Q =Ciel of N / 2  + 1 \)
   - Where \( Q \) is the quorum size,
   - \( N \) is the total number of nodes in the cluster.
 
@@ -223,7 +223,7 @@ These notes with the added quorum formula provide a comprehensive understanding 
 
 ### HeartBeat
 
-#### Managing Server Failures in Distributed Systems
+**Managing Server Failures in Distributed Systems**
 
 **Challenge:**
 - In distributed systems, work and data are spread across multiple servers.
@@ -255,14 +255,10 @@ These notes with the added quorum formula provide a comprehensive understanding 
 - Heartbeating is essential in distributed systems for proactive server monitoring and failure detection.
 - It enables systems to maintain operational stability by swiftly responding to failures and redistributing workload, ensuring continuous service availability.
 
-These notes provide a foundational understanding of how heartbeating mechanisms help manage server failures in distributed systems, emphasizing the importance of timely detection and corrective actions for maintaining system health and performance.
-
-
-Certainly! Here's an expanded version of the notes on ensuring data integrity in distributed systems using checksums:
 
 ### CheckSum
 
-#### Ensuring Data Integrity in Distributed Systems
+**Ensuring Data Integrity in Distributed Systems**
 
 **Challenge:**
 - In distributed systems, data corruption can occur during transmission due to faults in storage devices, networks, or software, leading to potential errors if corrupted data is delivered to clients.
