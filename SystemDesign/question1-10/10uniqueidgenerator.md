@@ -92,6 +92,7 @@ We will use the Twitter Snowflake approach, which divides the ID into sections:
 <p float="left">
   <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/datacenter.svg" width="800" />
 </p>
+
 #### Detailed Design
 
 1. **Initialization:**
