@@ -331,6 +331,7 @@ Block servers handle the heavy lifting work for uploading files. They process fi
   <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/gd5.webp" width="400" />
    <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/gd6.webp" width="400" />
 </p>
+
 ### Delta Sync
 
 Delta sync ensures that only modified blocks are transferred to cloud storage. For instance, if a file has several blocks and only "block 2" and "block 5" are changed, then only these two blocks are uploaded to the cloud storage, reducing the amount of data transmitted and saving network traffic.
