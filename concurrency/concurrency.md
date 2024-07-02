@@ -24,5 +24,3 @@
 #### Importance of Threads
 - **Concurrency**: Threads enable concurrent execution within a program, allowing tasks to be divided and executed simultaneously, increasing efficiency and speed.
 - **Resource Sharing**: Threads within a process share the same memory space, making communication and data sharing between threads efficient.
-
-Understanding the distinctions between programs, processes, and threads is crucial for grasping how concurrent execution is managed in computing. Threads, in particular, play a vital role in enhancing the performance and responsiveness of applications.
