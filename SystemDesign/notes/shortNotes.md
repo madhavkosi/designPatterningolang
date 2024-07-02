@@ -431,12 +431,18 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 **Cache Replacement Policies**
 
 1. **Least Recently Used (LRU):** Removes the least recently accessed item. Assumes recently accessed items are more likely to be used again.
+use case Web Browsers,Database Buffers,Operating Systems
 
 2. **Least Frequently Used (LFU):** Removes the least frequently accessed item. Assumes frequently accessed items are more likely to be used again.
+Use Cases:Application Caches,Recommendation Systems,Content Delivery Networks (CDNs)
 
 3. **First In, First Out (FIFO):** Removes the oldest item. Assumes older items are less likely to be accessed again.
 
-4. **Random Replacement:** Removes a random item. Useful for unpredictable access patterns.
+4. **Random Replacement:** Removes a random item. Useful for unpredictable access patterns
+
+ **Summary**
+- **LRU** is best for scenarios where recently accessed data is likely to be accessed again soon.
+- **LFU** suits applications with predictable access patterns where certain items are frequently accessed.
 
 **Comparison:**
 - **LRU & LFU:** More effective, account for access patterns, but more complex to implement.
@@ -662,54 +668,6 @@ Created at LinkedIn in 2010, Kafka was designed to track various events like pag
   - Integration: Easily integrates with platforms like Java EE and Spring.
 
 
-### API Gateway
-#### Introduction to API Gateway
-
-**What is an API Gateway?**
-An API Gateway is a server-side architectural component that acts as an intermediary between clients (e.g., web browsers, mobile apps) and backend services or microservices. It provides a single entry point for external consumers to access backend functionalities, handling tasks such as routing, authentication, and rate limiting. This allows microservices to focus on their specific tasks and improves system performance and scalability.
-
-**Key Responsibilities:**
-1. **Routing:** Directs client requests to the appropriate microservice.
-2. **Authentication:** Ensures that only authorized users can access certain services.
-3. **Rate Limiting:** Controls the number of requests a client can make in a given time period.
-
-
-**Difference Between an API Gateway and a Load Balancer:**
-
-1. **API Gateway:**
-   - **Purpose:** Routes requests from clients to the appropriate microservice and returns the response.
-   - **Tasks:** Performs additional tasks such as authorization, rate limiting, and caching.
-   - **Request Handling:** Typically handles API requests, which have specific URLs to access particular services.
-   - **Example:** Routing an API request to the correct microservice based on the URL path.
-
-2. **Load Balancer:**
-   - **Purpose:** Distributes incoming requests evenly across a group of backend servers to improve performance and availability.
-   - **Tasks:** Routes requests based on server performance and availability.
-   - **Request Handling:** Handles requests sent to a single, well-known IP address, distributing them to multiple backend servers.
-   - **Example:** Balancing web traffic to multiple servers hosting the same application to prevent any one server from becoming overloaded.
-
-**Summary:**
-- **API Gateway:** Acts as a middleware for routing, authentication, and rate limiting for microservices.
-- **Load Balancer:** Distributes network traffic evenly across multiple servers to enhance system performance and availability.
-
-#### Usage of API Gateway
-
-1. **Routing:** Directs client requests to the correct microservice.
-2. **Rate Limiting:** Controls request rates to prevent abuse.
-3. **Caching:** Stores responses to reduce load and improve performance.
-4. **Authentication:** Secures services by verifying client identities.
-5. **Load Balancing:** Distributes requests across multiple service instances.
-6. **Monitoring:** Tracks performance and request metrics.
-7. **Transformation:** Converts data formats and aggregates responses.
-8. **Validation:** Ensures requests and responses meet required formats.
-9. **Circuit Breaker:** Prevents system failure by isolating faults.
-10. **Service Discovery:** Finds and connects to available microservices.
-11. **API Versioning:** Manages multiple API versions.
-12. **Error Handling:** Provides consistent error responses.
-13. **Service Aggregation:** Combines multiple service responses.
-14. **Web Application Firewall (WAF):** Protects against web threats.
-15. **API Documentation:** Generates and serves API docs.
-
 ### DNS
 #### Introduction to DNS
 
@@ -817,7 +775,7 @@ DNS load balancing and high availability techniques enhance the performance and 
 
 ### CDN
 
-#### What is a CDN?
+**What is a CDN?**
 
 A Content Delivery Network (CDN) is a distributed network of servers strategically located across various geographical areas to deliver web content (e.g., images, videos, static assets) more efficiently to users. CDNs reduce latency and improve the overall performance, reliability, and security of web applications by serving content from the nearest server.
 
@@ -850,7 +808,7 @@ When a user requests content:
 5. **Security:** Provides additional security features like DDoS protection, Web Application Firewalls (WAF), and SSL/TLS termination at the edge, protecting web applications from various threats.
 
 
-#### CDN Architecture
+**CDN Architecture**
 
 **Points of Presence (PoPs) and Edge Servers:**
 - **PoP:** A physical location with multiple edge servers, strategically located to minimize user latency.
@@ -873,7 +831,7 @@ When a user requests content:
 - **Hybrid Topology:** Combines elements of various topologies to optimize content delivery for specific needs.
 
 
-#### Push CDN vs. Pull CDN
+**Push CDN vs. Pull CDN**
 
 **Pull CDN:**
 - **How it Works:** Content is fetched from the origin server when first requested by a user and then cached on the CDN's edge server.
@@ -909,7 +867,7 @@ When a user requests content:
 - **Push CDNs:** Offers more control, suited for large or infrequently accessed files, but involves higher complexity and costs.
 
 ### Load Balancing
-#### Introduction to Load Balancing
+**Introduction to Load Balancing**
 
 **Definition**: Load balancing is the process of distributing incoming network traffic evenly across multiple servers to ensure no single server is overwhelmed, thus maintaining high availability, reliability, and performance.
 
@@ -921,25 +879,8 @@ When a user requests content:
 3. **Between application layer and database**: Ensures database queries are spread across multiple database servers.
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/loadbalancer.webp)
 
-**Key Terminology and Concepts**
 
-- **Load Balancer**: Hardware or software that distributes network traffic across multiple servers.
-- **Backend Servers**: Servers that handle requests forwarded by the load balancer.
-- **Load Balancing Algorithm**: Rules that determine how to distribute traffic (e.g., round-robin, least connections).
-- **Health Checks**: Regular tests to ensure backend servers are functioning properly.
-- **Session Persistence**: Directing subsequent requests from the same client to the same server.
-- **SSL/TLS Termination**: Decrypting encrypted traffic at the load balancer, offloading this task from backend servers.
-
-**How Load Balancers Work**
-
-1. **Receive Request**: A client sends a request to the load balancer.
-2. **Evaluate Request**: The load balancer uses an algorithm to choose the optimal server based on capacity, response time, connections, etc.
-3. **Forward Request**: The load balancer forwards the request to the chosen server.
-4. **Process Request**: The server processes the request and returns the response to the load balancer.
-5. **Return Response**: The load balancer sends the server's response back to the client.
-
-
-#### Load Balancing Algorithms
+**Load Balancing Algorithms**
 
 **Definition**: A method used by a load balancer to distribute incoming traffic among multiple servers to ensure efficient resource utilization, high performance, availability, and reliability.
 
@@ -988,49 +929,7 @@ When a user requests content:
 - **Pros**: Highly customizable.
 - **Cons**: Time-consuming development and maintenance.
 
-#### Uses of Load Balancing
-
-1. **Improving Website Performance**
-   - Distributes web traffic among servers for faster response times.
-   - *Example*: E-commerce site during a holiday sale.
-
-2. **Ensuring High Availability and Reliability**
-   - Prevents single points of failure by redirecting traffic from failed servers.
-   - *Example*: Banking application maintains uptime.
-
-3. **Scalability**
-   - Easily adds servers to handle increased demand.
-   - *Example*: Video streaming platform scales with popularity.
-
-4. **Redundancy**
-   - Maintains multiple copies of data to prevent loss.
-   - *Example*: Online file storage service with redundant data.
-
-5. **Network Optimization**
-   - Distributes network traffic to reduce congestion.
-   - *Example*: Organization with multiple internet connections.
-
-6. **Geographic Distribution**
-   - Directs traffic to the nearest data center for lower latency.
-   - *Example*: Multinational company’s data centers worldwide.
-
-7. **Application Performance**
-   - Allocates resources to specific applications for optimal performance.
-   - *Example*: Enterprise applications like email and file storage.
-
-8. **Security**
-   - Protects against DDoS attacks by spreading traffic.
-   - *Example*: News website mitigates DDoS impact.
-
-9. **Cost Savings**
-   - Optimizes resource use to lower hardware and energy costs.
-   - *Example*: Small business using cloud infrastructure.
-
-10. **Content Caching**
-    - Serves cached content directly to reduce server load.
-    - *Example*: Streaming service caches popular content.
-
-#### Load Balancer Types
+**Load Balancer Types**
 
 **Definition**: Methods or approaches used to distribute incoming network traffic across multiple servers to ensure efficient utilization, high performance, availability, and reliability.
 
@@ -1082,7 +981,7 @@ When a user requests content:
 - **Cons**: Slower, resource-intensive, complex setup.
 - **Example**: Web application using Layer 7 load balancing for microservices based on URL paths.
 
-#### Stateless vs. Stateful Load Balancing
+**Stateless vs. Stateful Load Balancing**
 
 **Stateless Load Balancing**
 - **Description**: Operates without maintaining client session or connection state.
@@ -1122,7 +1021,7 @@ When a user requests content:
   - **Session Affinity**: Uses session identifiers, reliable for consistent server routing.
 
 
-#### High Availability and Fault Tolerance
+**High Availability and Fault Tolerance**
 
 **Redundancy and Failover Strategies**
 
@@ -1151,7 +1050,7 @@ When a user requests content:
 **Alerting and Incident Response**: Procedures to notify appropriate personnel of issues and resolve them quickly.
 - **Purpose**: Ensures timely resolution of problems to maintain service reliability.
 
-#### Scalability and Performance
+**Scalability and Performance**
 
 **Horizontal and Vertical Scaling of Load Balancers**
 
@@ -1175,7 +1074,7 @@ When a user requests content:
 - **Criteria**: Limits based on IP addresses, client domains, URL patterns.
 - **Benefits**: Mitigates DoS attacks, prevents resource monopolization by individual clients.
 
-#### Caching and Content Optimization
+**Caching and Content Optimization**
 
 **Caching**:
 - **Function**: Load balancers cache static content (images, CSS, JavaScript) to reduce backend load and improve response times.
@@ -1185,7 +1084,7 @@ When a user requests content:
 - **Features**: Compression, minification.
 - **Benefits**: Improved performance, reduced bandwidth consumption.
 
-#### Impact of Load Balancers on Latency
+**Impact of Load Balancers on Latency**
 
 **Considerations**:
 - **Additional Network Hop**: Load balancers add an extra hop, potentially increasing latency.
@@ -1193,6 +1092,58 @@ When a user requests content:
   - **Geographical Distribution**: Deploy load balancers and servers in multiple locations to serve requests locally.
   - **Connection Reuse**: Use keep-alive connections to reduce connection overhead.
   - **Protocol Optimizations**: Implement HTTP/2 or QUIC for reduced latency and increased throughput.
+
+### API Gateway
+**Introduction to API Gateway**
+
+**What is an API Gateway?**
+An API Gateway is a server-side architectural component that acts as an intermediary between clients (e.g., web browsers, mobile apps) and backend services or microservices. It provides a single entry point for external consumers to access backend functionalities, handling tasks such as routing, authentication, and rate limiting. This allows microservices to focus on their specific tasks and improves system performance and scalability.
+
+**Key Responsibilities:**
+1. **Routing:** Directs client requests to the appropriate microservice.
+2. **Authentication:** Ensures that only authorized users can access certain services.
+3. **Rate Limiting:** Controls the number of requests a client can make in a given time period.
+
+
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/apigatewayvsloadbalacer.webp" width="500" />
+</p>
+
+**Difference Between an API Gateway and a Load Balancer:**
+
+1. **API Gateway:**
+   - **Purpose:** Routes requests from clients to the appropriate microservice and returns the response.
+   - **Tasks:** Performs additional tasks such as authorization, rate limiting, and caching.
+   - **Request Handling:** Typically handles API requests, which have specific URLs to access particular services.
+   - **Example:** Routing an API request to the correct microservice based on the URL path.
+
+2. **Load Balancer:**
+   - **Purpose:** Distributes incoming requests evenly across a group of backend servers to improve performance and availability.
+   - **Tasks:** Routes requests based on server performance and availability.
+   - **Request Handling:** Handles requests sent to a single, well-known IP address, distributing them to multiple backend servers.
+   - **Example:** Balancing web traffic to multiple servers hosting the same application to prevent any one server from becoming overloaded.
+
+**Summary:**
+- **API Gateway:** Acts as a middleware for routing, authentication, and rate limiting for microservices.
+- **Load Balancer:** Distributes network traffic evenly across multiple servers to enhance system performance and availability.
+
+#### Usage of API Gateway
+
+1. **Routing:** Directs client requests to the correct microservice.
+2. **Rate Limiting:** Controls request rates to prevent abuse.
+3. **Caching:** Stores responses to reduce load and improve performance.
+4. **Authentication:** Secures services by verifying client identities.
+5. **Load Balancing:** Distributes requests across multiple service instances.
+6. **Monitoring:** Tracks performance and request metrics.
+7. **Transformation:** Converts data formats and aggregates responses.
+8. **Validation:** Ensures requests and responses meet required formats.
+9. **Circuit Breaker:** Prevents system failure by isolating faults.
+10. **Service Discovery:** Finds and connects to available microservices.
+11. **API Versioning:** Manages multiple API versions.
+12. **Error Handling:** Provides consistent error responses.
+13. **Service Aggregation:** Combines multiple service responses.
+14. **Web Application Firewall (WAF):** Protects against web threats.
+15. **API Documentation:** Generates and serves API docs.
 
 ### Database (SQL vs NoSQL)
 
