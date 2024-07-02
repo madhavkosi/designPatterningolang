@@ -22,11 +22,25 @@ Here are the corrected numbered sections based on your list:
 15. [Load Balancing](#load-balancing)
 
 ### CAP Theorem 
+**Components of CAP Theorem**
+
+The CAP theorem revolves around three key properties of distributed systems: Consistency, Availability, and Partition Tolerance.
+
+**a. Consistency**
+- **Strong Consistency**: All nodes see the same data at the same time. Any read returns the most recent write. Essential for applications needing accurate, up-to-date data (e.g., financial transactions).
+- **Eventual Consistency**: Nodes may have different data temporarily but will converge to the same state. Suitable for applications tolerating short-term inconsistencies (e.g., social media updates).
+
+**b. Availability**
+- **High Availability**: The system responds to every request without significant delays, even during failures. Achieved by replicating data across nodes, ensuring continued operation despite individual node failures.
+
+**c. Partition Tolerance**
+- **Network Partitioning**: Occurs when communication between nodes is interrupted. Caused by hardware failures, network congestion, etc.
+- **Handling Partition Failures**: Systems remain operational despite partitions, using data replication, fallback mechanisms, and recovery processes. Trade-offs are necessary as the system cannot guarantee all three CAP properties simultaneously.
 
 **CAP Theorem Overview**
 
-- **Consistency (C):** Every read receives the most recent write or an error.
-- **Availability (A):** Every request receives a non-error response, without guaranteeing it contains the most recent write.
+- **Consistency (C):** Every read receives the most recent write or an error.All nodes see the same data at the same time.
+- **Availability (A):** Every request receives a non-error response, without guaranteeing it contains the most recent write,The system responds to every request
 - **Partition Tolerance (P):** The system continues to operate despite network partitions.
 
 **Examples in Practice**
