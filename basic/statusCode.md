@@ -11,6 +11,7 @@ HTTP status codes are essential communication tools between a web server and a c
      - POST: The resource describing the result of the action is transmitted in the message body.
    - **201 Created:** The request has been fulfilled, resulting in the creation of a new resource.
    - **204 No Content:** The server successfully processed the request and is not returning any content.
+   - **202 Request Accepted:** The server has accepted the request but has not yet processed it.
 
 3. **3xx Redirection:**
    - **301 Moved Permanently:** The resource requested has been permanently moved to a new URL.
