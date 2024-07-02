@@ -31,3 +31,4 @@ HTTP status codes are essential communication tools between a web server and a c
    - **503 Service Unavailable:** The server is currently unavailable (overloaded or down).
 
 These status codes help developers and users understand what happened with a request, aiding in troubleshooting and improving the web experience.
+

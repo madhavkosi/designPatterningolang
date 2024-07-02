@@ -396,14 +396,14 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 **Reverse Proxy:** URL/Content Rewriting, Caching, Server Anonymity, Load Balancing, Canary Experimentation, DDoS Protection.
 
 ### Caching
-#### Introduction to Caching
+**Introduction to Caching**
 
 **What is Caching?**
 - **Definition:** High-speed storage layer between an application and its data source. (e.g., database, file system, remote web service).
 - **Function:** Checks cache first for data; if not found, fetches from the original source and stores it in the cache.
 - **Goal:** Reduce the frequency of fetching data from the original source, leading to faster processing and reduced latency.
 
-#### Why is Caching Important?
+**Why is Caching Important?**
 
 1. **Reduced Latency:** Faster data retrieval from cache compared to the original source.
 2. **Improved Performance:** Less frequent data fetching from the original source speeds up processing.
@@ -411,7 +411,7 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 4. **Increased Scalability:** Lowers the load on the original source, preventing it from being overwhelmed.
 5. **Better User Experience:** Faster response times enhance user satisfaction.
 
-#### Types of Caching
+**Types of Caching**
 
 1. **In-Memory Caching:** Fastest, stores data in RAM. Ideal for frequently accessed data like API responses. Tools: Memcached, Redis.
 
@@ -428,7 +428,7 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 7. **DNS Caching:** Temporarily stores DNS query results to improve resolution speed and reduce repeated queries.
 
 
-#### Cache Replacement Policies
+**Cache Replacement Policies**
 
 1. **Least Recently Used (LRU):** Removes the least recently accessed item. Assumes recently accessed items are more likely to be used again.
 
@@ -442,7 +442,7 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 - **LRU & LFU:** More effective, account for access patterns, but more complex to implement.
 - **FIFO & Random:** Simpler to implement, but less effective in optimizing performance. 
 
-#### Cache Invalidation
+**Cache Invalidation**
 
 **Importance:** Ensures cache coherence with the data source to avoid inconsistent application behavior.
 
@@ -469,7 +469,7 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 5. **Stale-While-Revalidate:** Serves stale content while fetching updates in the background. Ensures quick responses with eventual consistency.
 
 
-#### Cache Read Strategies
+**Cache Read Strategies**
 
 **Read-Through Cache:**
 - **Mechanism:** Cache handles data retrieval from the data store on a cache miss.
@@ -482,7 +482,7 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 - **Benefits:** Provides better control over caching, allows optimization based on data access patterns. Suitable when cache misses are infrequent. Adds complexity to application code.
 
 
-#### Caching Challenges
+**Caching Challenges**
 
 1. **Thundering Herd:** 
    - **Problem:** Sudden surge of requests to the origin server when popular data expires.

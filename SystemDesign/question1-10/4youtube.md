@@ -49,6 +49,48 @@ These estimates ignore video compression and replication, which would adjust rea
 - Video uploads per second: 2
 
 
+# System APIs - 
+
+## API Definitions
+
+### uploadVideo
+- **Endpoint**: `POST /api/uploadVideo`
+- **Parameters**:
+  - `api_dev_key (string)`: API developer key.
+  - `video_title (string)`: Title of the video.
+  - `video_description (string)`: Optional description.
+  - `tags (string[])`: Optional tags.
+  - `category_id (string)`: Video category.
+  - `default_language (string)`: Language of the video.
+  - `recording_details (string)`: Recording location.
+  - `video_contents (stream)`: Video file.
+- **Returns**: 
+  - `HTTP 202` on successful upload.
+  - Notification email with video link after encoding.
+  - Queryable API for upload status.
+
+### searchVideo
+- **Endpoint**: `GET /api/searchVideo`
+- **Parameters**:
+  - `api_dev_key (string)`: API developer key.
+  - `search_query (string)`: Search terms.
+  - `user_location (string)`: Optional user location.
+  - `maximum_videos_to_return (number)`: Max results per request.
+  - `page_token (string)`: Page token for results.
+- **Returns**:
+  - `JSON` with video list including title, thumbnail, creation date, and view count.
+
+### streamVideo
+- **Endpoint**: `GET /api/streamVideo`
+- **Parameters**:
+  - `api_dev_key (string)`: API developer key.
+  - `video_id (string)`: Video identifier.
+  - `offset (number)`: Time in seconds from start.
+  - `codec (string)`: Video codec info.
+  - `resolution (string)`: Video resolution.
+- **Returns**:
+  - `STREAM`: Video chunk from given offset.
+  
 # Step 2 - Propose High-Level Design and Get Buy-In
 
 ## Leveraging Cloud Services
@@ -135,3 +177,5 @@ These estimates ignore video compression and replication, which would adjust rea
 <p float="left">
   <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube2.webp" width="500" />
 </p>
+
+
