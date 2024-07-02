@@ -47,3 +47,91 @@ YouTube is one of the most popular video-sharing platforms globally. It allows u
 These estimates ignore video compression and replication, which would adjust real numbers.
 - Upload:view ratio: 1:200
 - Video uploads per second: 2
+
+
+# Step 2 - Propose High-Level Design and Get Buy-In
+
+## Leveraging Cloud Services
+
+- **Recommendation**: Use existing cloud services like CDN and blob storage instead of building from scratch.
+- **Rationale**:
+  - **Time Efficiency**: System design interviews focus on choosing the right technology, not on building everything from scratch.
+  - **Complexity and Cost**: Building scalable blob storage or CDN is complex and costly. Large companies like Netflix and Facebook use cloud services (e.g., Amazon’s cloud services, Akamai’s CDN).
+
+## System Components Overview
+
+- **Components** (Refer to Figure 3):
+  - **Client**: Access YouTube on computer, mobile phone, or smartTV.
+  - **CDN**: Stores and streams videos.
+  - **API Servers**: Handle all requests except video streaming (e.g., feed recommendation, video upload URL generation, metadata updates, user signup).
+
+## Key Flows of Interest
+
+- **Video Uploading Flow**
+- **Video Streaming Flow**
+
+## Video Uploading Flow
+
+### Components (Refer to Figure 4)
+
+1. **User**: Watches YouTube on various devices.
+2. **Load Balancer**: Distributes requests among API servers.
+3. **API Servers**: Process all user requests except video streaming.
+4. **Metadata DB**: Stores video metadata, sharded and replicated for performance and availability.
+5. **Metadata Cache**: Caches video metadata and user objects for better performance.
+6. **Original Storage**: Blob storage for original videos.
+7. **Transcoding Servers**: Convert video formats to support different devices and bandwidths.
+8. **Transcoded Storage**: Blob storage for transcoded video files.
+9. **CDN**: Caches and streams videos.
+10. **Completion Queue**: Stores video transcoding completion events.
+11. **Completion Handler**: Workers that update metadata cache and database upon transcoding completion.
+
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube1.webp" width="500" />
+</p>
+
+### Video Uploading Flow Breakdown
+
+#### Flow A: Upload the Actual Video (Refer to Figure 5)
+
+1. **Upload**: Videos uploaded to original storage.
+2. **Transcoding**: Servers fetch and transcode videos.
+3. **Post-Transcoding**:
+   - **Parallel Steps**:
+     - **Transcoded Storage**: Store transcoded videos.
+     - **Completion Queue**: Queue transcoding completion events.
+   - **Distribution**:
+     - **CDN**: Distribute transcoded videos.
+     - **Completion Handler**: Update metadata DB and cache from queue events.
+4. **Notification**: API servers inform client of successful upload and readiness for streaming.
+
+#### Flow B: Update the Metadata (Refer to Figure 6)
+
+- **Parallel Process**: While uploading, client sends metadata update request to API servers.
+- **Update**: API servers update metadata cache and database.
+
+## Video Streaming Flow
+
+- **Concept**: Streaming allows immediate and continuous playback without waiting for the entire video to download.
+- **Streaming Protocols**:
+  - **MPEG–DASH**: Dynamic Adaptive Streaming over HTTP.
+  - **Apple HLS**: HTTP Live Streaming.
+  - **Microsoft Smooth Streaming**
+  - **Adobe HTTP Dynamic Streaming (HDS)**
+  - **Importance**: Different protocols support various encodings and playback players.
+- **CDN Streaming**: Videos streamed from the nearest edge server to minimize latency (Refer to Figure 7).
+
+## Summary
+
+- **Cloud Services**: Use CDN and blob storage for scalability and cost-effectiveness.
+- **System Design**: Focus on high-level components and their interactions.
+- **Key Flows**:
+  - **Video Uploading**: Involves original storage, transcoding, metadata updates, and CDN distribution.
+  - **Video Streaming**: Utilizes appropriate streaming protocols and CDN for efficient delivery.
+- **Next Steps**: Explore detailed designs for video uploading and streaming flows based on high-level architecture.
+
+---
+
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube2.webp" width="500" />
+</p>
