@@ -345,3 +345,44 @@ The architecture leverages cloud services and consists of six main components: p
    - **Output**: The final result of the encoding pipeline.
    - **Example**: Encoded file such as funny_720p.mp4 (Figure 21).
 
+
+
+### System Optimizations
+
+#### Speed Optimization
+
+1. **Parallelize Video Uploading**:
+   - **Chunk Uploads**: Split videos into smaller chunks by GOP alignment for faster, resumable uploads.
+   - **Implementation**: Clients handle splitting to improve upload speed (Figure 22, Figure 23).
+
+2. **Global Upload Centers**:
+   - **CDN as Upload Centers**: Set up multiple upload centers globally to reduce upload time.
+   - **Example**: North America and Asia upload centers for users in respective regions (Figure 24).
+
+3. **Parallelism Everywhere**:
+   - **Loosely Coupled System**: Use message queues to decouple system components.
+   - **Benefit**: Enables encoding to proceed without waiting for download completion, enhancing parallelism (Figure 25, Figure 26).
+
+#### Safety Optimization
+
+1. **Pre-signed Upload URLs**:
+   - **Purpose**: Ensure only authorized users upload videos to correct locations.
+   - **Flow**:
+     1. Client requests a pre-signed URL from API servers.
+     2. API servers respond with the URL.
+     3. Client uses the URL to upload the video (Figure 27).
+
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube7.webp" width="300" />
+    <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube8.svg" width="300" />
+
+</p>
+
+
+### Video Deduplication
+- **Purpose**: Reduce storage space, improve caching, decrease network usage, and save energy.
+- **Method**: Inline deduplication during upload using video matching algorithms (e.g., Block Matching, Phase Correlation).
+- **Process**:
+  - Stop upload if duplicate found and use existing copy.
+  - Continue upload if new video is higher quality.
+  - Upload only missing parts if video is a subpart of an existing video.
