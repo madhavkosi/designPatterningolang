@@ -53,11 +53,11 @@ YouTube is one of the most popular video-sharing platforms globally. It allows u
 - Bandwidth for views (upload:view ratio of 1:200): 13.8 TB/s (300 MB * 230 * 200)
 
 
-# System APIs - 
+### System APIs - 
 
-## API Definitions
+**API Definitions**
 
-### uploadVideo
+**uploadVideo**
 - **Endpoint**: `POST /api/uploadVideo`
 - **Parameters**:
   - `api_dev_key (string)`: API developer key.
@@ -73,7 +73,7 @@ YouTube is one of the most popular video-sharing platforms globally. It allows u
   - Notification email with video link after encoding.
   - Queryable API for upload status.
 
-### searchVideo
+**searchVideo**
 - **Endpoint**: `GET /api/searchVideo`
 - **Parameters**:
   - `api_dev_key (string)`: API developer key.
@@ -84,7 +84,7 @@ YouTube is one of the most popular video-sharing platforms globally. It allows u
 - **Returns**:
   - `JSON` with video list including title, thumbnail, creation date, and view count.
 
-### streamVideo
+**streamVideo**
 - **Endpoint**: `GET /api/streamVideo`
 - **Parameters**:
   - `api_dev_key (string)`: API developer key.
@@ -94,22 +94,83 @@ YouTube is one of the most popular video-sharing platforms globally. It allows u
   - `resolution (string)`: Video resolution.
 - **Returns**:
   - `STREAM`: Video chunk from given offset.
-  
-# Step 2 - Propose High-Level Design and Get Buy-In
 
-## Leveraging Cloud Services
+### Database Design
+To design a scalable database schema for a video-sharing platform, we'll need to consider partitioning, indexing, and optimizing data access patterns to ensure the system can handle large volumes of data and high traffic. Here’s an updated schema that includes these considerations:
 
-- **Recommendation**: Use existing cloud services like CDN and blob storage instead of building from scratch.
-- **Rationale**:
-  - **Time Efficiency**: System design interviews focus on choosing the right technology, not on building everything from scratch.
-  - **Complexity and Cost**: Building scalable blob storage or CDN is complex and costly. Large companies like Netflix and Facebook use cloud services (e.g., Amazon’s cloud services, Akamai’s CDN).
+**Scalable Database Schema Design**
 
-## System Components Overview
+**Tables**:
 
+1. **Users**
+   - `user_id`: `BIGINT` (Primary Key, AUTO_INCREMENT)
+   - `username`: `VARCHAR(255)`
+   - `email`: `VARCHAR(255)`
+   - `password_hash`: `VARCHAR(255)`
+   - `created_at`: `TIMESTAMP`
+   - `updated_at`: `TIMESTAMP`
+
+2. **Videos**
+   - `video_id`: `BIGINT` (Primary Key, AUTO_INCREMENT)
+   - `user_id`: `BIGINT` (Foreign Key references Users(user_id))
+   - `title`: `VARCHAR(255)`
+   - `description`: `TEXT`
+   - `tags`: `VARCHAR(255)`
+   - `category_id`: `BIGINT`
+   - `default_language`: `VARCHAR(50)`
+   - `recording_details`: `TEXT`
+   - `file_path`: `VARCHAR(255)`
+   - `thumbnail_path`: `VARCHAR(255)`
+   - `created_at`: `TIMESTAMP`
+   - `updated_at`: `TIMESTAMP`
+   - `views_count`: `BIGINT`
+   - `likes_count`: `BIGINT`
+   - `dislikes_count`: `BIGINT`
+   - `comments_count`: `BIGINT`
+
+3. **Categories**
+   - `category_id`: `BIGINT` (Primary Key, AUTO_INCREMENT)
+   - `name`: `VARCHAR(255)`
+   - `description`: `TEXT`
+   - `created_at`: `TIMESTAMP`
+   - `updated_at`: `TIMESTAMP`
+
+4. **Comments**
+   - `comment_id`: `BIGINT` (Primary Key, AUTO_INCREMENT)
+   - `video_id`: `BIGINT` (Foreign Key references Videos(video_id))
+   - `user_id`: `BIGINT` (Foreign Key references Users(user_id))
+   - `comment_text`: `TEXT`
+   - `likes_count`: `BIGINT`
+   - `dislikes_count`: `BIGINT`
+   - `created_at`: `TIMESTAMP`
+   - `updated_at`: `TIMESTAMP`
+
+5. **Likes**
+   - `like_id`: `BIGINT` (Primary Key, AUTO_INCREMENT)
+   - `user_id`: `BIGINT` (Foreign Key references Users(user_id))
+   - `video_id`: `BIGINT` (Foreign Key references Videos(video_id), nullable if comment_id is present)
+   - `comment_id`: `BIGINT` (Foreign Key references Comments(comment_id), nullable if video_id is present)
+   - `is_like`: `BOOLEAN`
+   - `created_at`: `TIMESTAMP`
+   - `updated_at`: `TIMESTAMP`
+
+6. **VideoViews**
+   - `view_id`: `BIGINT` (Primary Key, AUTO_INCREMENT)
+   - `video_id`: `BIGINT` (Foreign Key references Videos(video_id))
+   - `user_id`: `BIGINT` (Foreign Key references Users(user_id))
+   - `viewed_at`: `TIMESTAMP`
+
+
+### Very  High-Level Design
+**System Components Overview**
 - **Components** (Refer to Figure 3):
   - **Client**: Access YouTube on computer, mobile phone, or smartTV.
   - **CDN**: Stores and streams videos.
   - **API Servers**: Handle all requests except video streaming (e.g., feed recommendation, video upload URL generation, metadata updates, user signup).
+
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube1.webp" width="500" />
+</p>
 
 ## Key Flows of Interest
 
@@ -132,9 +193,7 @@ YouTube is one of the most popular video-sharing platforms globally. It allows u
 10. **Completion Queue**: Stores video transcoding completion events.
 11. **Completion Handler**: Workers that update metadata cache and database upon transcoding completion.
 
-<p float="left">
-  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube1.webp" width="500" />
-</p>
+
 
 ### Video Uploading Flow Breakdown
 
