@@ -1150,7 +1150,7 @@ An API Gateway is a server-side architectural component that acts as an intermed
 
 ### Database (SQL vs NoSQL)
 
-#### Introduction to Databases
+**Introduction to Databases**
 
 **Definition**: A database is an organized collection of structured data stored and managed electronically. It is crucial for efficiently managing, storing, and retrieving data, playing a vital role in modern applications.
 
@@ -1208,7 +1208,7 @@ An API Gateway is a server-side architectural component that acts as an intermed
 - **NoSQL Databases**: Ideal for applications needing high scalability, handling diverse data types, and requiring flexible schemas.
 
 
-#### SQL Databases
+**SQL Databases**
 
 **Definition**: SQL (Structured Query Language) databases, also known as relational databases, store data in tables consisting of rows and columns. They follow the ACID properties (Atomicity, Consistency, Isolation, Durability) to ensure reliable data transactions.
 
@@ -1266,7 +1266,7 @@ An API Gateway is a server-side architectural component that acts as an intermed
    - **Explanation**: Horizontal scaling (distributing data across servers) is challenging due to relational data constraints and ACID properties.
    - **Impact**: Can lead to performance bottlenecks and scaling difficulties for large-scale applications with high write loads or massive data.
 
-#### NoSQL Databases
+**NoSQL Databases**
 
 **Definition**: NoSQL databases, or "Not Only SQL" databases, are non-relational databases designed to overcome the limitations of traditional SQL databases in terms of scalability, flexibility, and performance under specific workloads. They do not adhere to the relational model and typically use various data models and query languages.
 
@@ -1346,7 +1346,7 @@ An API Gateway is a server-side architectural component that acts as an intermed
 NoSQL databases provide flexibility, scalability, and performance for specific workloads, making them suitable for applications requiring high write loads, large-scale data storage, or complex relationships. However, they involve trade-offs in terms of consistency and query expressiveness, which need to be carefully considered based on application requirements.
 
 
-#### ACID vs. BASE Properties
+**ACID vs. BASE Properties**
 
 **ACID Properties**
 
@@ -1395,7 +1395,7 @@ NoSQL databases provide flexibility, scalability, and performance for specific w
 - **BASE**: Suitable for environments prioritizing high availability and scalability, accepting some data inconsistency.
 
 
-#### Real-World Examples and Case Studies
+**Real-World Examples and Case Studies**
 
 Understanding the practical applications of SQL and NoSQL databases helps illustrate their strengths and how they can be used to address specific requirements in system design. Here are examples and case studies showcasing the effective use of these databases:
 
@@ -1460,7 +1460,7 @@ Understanding the practical applications of SQL and NoSQL databases helps illust
 - **Hybrid Solutions**: Combining SQL and NoSQL databases leverages the strengths of both, creating robust and versatile systems tailored to diverse application requirements.
 
 
-#### In-Memory Database (IMDB) vs. On-Disk Database
+**In-Memory Database (IMDB) vs. On-Disk Database**
 
 **In-Memory Database (IMDB)**
 
@@ -1547,7 +1547,7 @@ In-memory databases are ideal for scenarios needing rapid data access and proces
 
 
 
-#### Data Replication vs. Data Mirroring
+**Data Replication vs. Data Mirroring**
 
 **Data Replication**
 
