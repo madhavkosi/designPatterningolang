@@ -192,6 +192,10 @@ To design a scalable database schema for a video-sharing platform, we'll need to
 9. **CDN**: Caches and streams videos.
 10. **Completion Queue**: Stores video transcoding completion events.
 11. **Completion Handler**: Workers that update metadata cache and database upon transcoding completion.
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube2.webp" width="500" />
+</p>
+
 
 
 
@@ -236,9 +240,5 @@ To design a scalable database schema for a video-sharing platform, we'll need to
 - **Next Steps**: Explore detailed designs for video uploading and streaming flows based on high-level architecture.
 
 ---
-
-<p float="left">
-  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube2.webp" width="500" />
-</p>
 
 
