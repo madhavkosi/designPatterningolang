@@ -1,4 +1,3 @@
-## Designing a Video Sharing Service (Similar to YouTube)
 
 ### Why YouTube?
 YouTube is one of the most popular video-sharing platforms globally. It allows users to upload, view, share, rate, and report videos, as well as add comments. This makes it an ideal model for designing a similar service.
