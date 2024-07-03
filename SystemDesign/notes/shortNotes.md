@@ -427,6 +427,9 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 
 7. **DNS Caching:** Temporarily stores DNS query results to improve resolution speed and reduce repeated queries.
 
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/cacheimage.svg" width="500" />
+</p>
 
 **Cache Replacement Policies**
 
@@ -1547,7 +1550,7 @@ In-memory databases are ideal for scenarios needing rapid data access and proces
 
 
 
-**Data Replication vs. Data Mirroring**
+### Data Replication vs. Data Mirroring
 
 **Data Replication**
 
@@ -1590,3 +1593,49 @@ In-memory databases are ideal for scenarios needing rapid data access and proces
 **Summary**
 - **Replication**: For scalability and data accessibility.
 - **Mirroring**: For immediate failover and data integrity.
+
+
+### Batch Processing vs. Stream Processing
+
+**Batch Processing:**
+- **Definition:** Processes large volumes of data in finite batches collected over time.
+- **Characteristics:**
+  - Delayed processing
+  - High throughput
+  - Suitable for complex computations
+- **Use Cases:**
+  - End-of-day reports
+  - Data warehousing and ETL processes
+  - Monthly billing processes
+
+**Stream Processing:**
+- **Definition:** Processes data in real-time as it is generated.
+- **Characteristics:**
+  - Real-time processing
+  - Continuous processing
+  - Low latency
+- **Use Cases:**
+  - Real-time monitoring and analytics
+  - Live data feeds
+  - IoT sensor data processing
+
+**Key Differences:**
+- **Data Processing Time:**
+  - Batch: Processes large chunks with delay
+  - Stream: Processes data immediately and continuously
+- **Latency:**
+  - Batch: Higher latency
+  - Stream: Lower latency
+- **Complexity of Computations:**
+  - Batch: Suitable for complex processing
+  - Stream: Quick processing of less complex data
+- **Data Volume:**
+  - Batch: High volumes of data
+  - Stream: Lower volumes continuously
+- **Resource Intensity:**
+  - Batch: Resource-intensive, often off-peak
+  - Stream: Constant resources, less per unit data
+
+**Conclusion:**
+- **Batch Processing:** Ideal for large-scale analysis and reporting.
+- **Stream Processing:** Essential for immediate data processing and real-time analytics.
