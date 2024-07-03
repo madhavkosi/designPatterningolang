@@ -243,42 +243,25 @@ To design a scalable database schema for a video-sharing platform, we'll need to
 ---
 ### Design deep dive
 
-### Video Transcoding
-#### Importance
+**Video Transcoding**
+**Importance**
 - **Storage Efficiency**: Raw videos consume substantial storage; transcoding reduces the file size significantly.
 - **Device Compatibility**: Ensures videos play smoothly across different devices and browsers by converting them into universally supported formats.
 - **Adaptive Streaming**: Adjusts video quality dynamically based on user’s network conditions, providing a smooth viewing experience regardless of bandwidth.
 
-#### Transcoding Process
-- **Video Formats**:
-  - Raw video formats are converted into more efficient formats like H.264, VP9, and HEVC.
-  - Multiple formats ensure compatibility with various devices and resolutions.
 
-- **Bitrates**:
-  - Different bitrates are generated to cater to different network conditions.
-  - Higher bitrate ensures better quality but requires more bandwidth.
+**Directed Acyclic Graph (DAG) Model for Video Transcoding**
 
-- **Resolution Variants**:
-  - Videos are encoded in multiple resolutions (e.g., 480p, 720p, 1080p).
-  - Users with higher bandwidth get higher resolution streams.
-
-- **Quality Adjustment**:
-  - Continuous monitoring of network conditions allows for automatic switching between different quality levels.
-  - Manual quality adjustment options may also be provided.
-
-
-### Directed Acyclic Graph (DAG) Model for Video Transcoding
-
-#### Purpose
+**Purpose**
 - **Efficiency**: Handles computationally expensive and time-consuming video transcoding tasks.
 - **Flexibility**: Supports varied video processing requirements from different content creators.
 - **Parallelism**: Enables high parallelism in processing tasks to optimize performance.
 
-#### Key Concepts
+**Key Concepts**
 - **Task Abstraction**: Allows client programmers to define tasks for specific video processing needs.
 - **Sequential and Parallel Execution**: Tasks are defined in stages, enabling them to be executed either sequentially or in parallel.
 
-#### DAG Components
+**DAG Components**
 - **Video Splitting**: The original video is divided into three primary components:
   - **Video**: The visual content.
   - **Audio**: The sound component.
@@ -289,7 +272,7 @@ To design a scalable database schema for a video-sharing platform, we'll need to
     <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube2.svg" width="300" />
 </p>
 
-#### Tasks in the DAG Model
+**Tasks in the DAG Model**
 1. **Inspection**:
    - Ensures video quality is high and the video files are not malformed.
    
@@ -306,16 +289,16 @@ To design a scalable database schema for a video-sharing platform, we'll need to
 By adopting a DAG model, video transcoding systems achieve the necessary flexibility and efficiency to handle a wide range of video processing tasks, ensuring high performance and quality in video delivery.
 
 
-### Video Transcoding Architecture
+**Video Transcoding Architecture**
 
-#### Overview
+**Overview**
 The architecture leverages cloud services and consists of six main components: preprocessor, DAG scheduler, resource manager, task workers, temporary storage, and encoded video output.
 
 <p float="left">
   <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube3.svg" width="500" />
 </p>
 
-#### Components
+**Components**
 
 **Preprocessor**
 
