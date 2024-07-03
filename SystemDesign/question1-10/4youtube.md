@@ -5,14 +5,14 @@ YouTube is one of the most popular video-sharing platforms globally. It allows u
 
 ### Requirements and Goals of the System
 
-#### **Functional Requirements:**
+**Functional Requirements:**
 1. Users can upload videos.
 2. Users can share and view videos.
 3. Users can search for videos by title.
 4. System records video stats (likes/dislikes, total views).
 5. Users can add and view comments on videos.
 
-#### **Non-Functional Requirements:**
+**Non-Functional Requirements:**
 1. Highly reliable: No uploaded video should be lost.
 2. Highly available: Prioritize availability over consistency; temporary video unavailability is acceptable.
 3. Real-time experience: Ensure smooth, lag-free video playback.
@@ -22,31 +22,36 @@ YouTube is one of the most popular video-sharing platforms globally. It allows u
 
 
 ### Capacity Estimation and Constraints
+**Load Estimate**
 
-**User and Activity Estimates:**
-- Total users: 1.5 billion
-- Daily active users: 800 million
-- Average video views per user per day: 5
-- Total video views per second: 46,000 (800M * 5 / 86,400)
+  **User and Activity Estimates:**
+  - Total users: 1.5 billion
+  - Daily active users: 800 million
+  - Average video views per user per day: 5
+  - Total video views per second: 46,000 (800M * 5 / 86,400)
 
-**Upload Activity:**
-- Upload:view ratio: 1:200
-- Video uploads per second: 230 (46,000 / 200)
+  **Upload Activity:**
+  - Upload:view ratio: 1:200
+  - Video uploads per second: 230 (46,000 / 200)
+
+  **Likes/Dislikes Estimates:**
+  - **Interaction ratio (likes/dislikes)**: Assuming 10% of views
+  - **Likes/Dislikes per second**: 4,600 (46,000 * 0.10)
+
+  **comment Estimates:**
+  - **Interaction ratio (comment ration)**: Assuming 5% of views
+  - **Likes/Dislikes per second**: 23,00 (46,000 * 0.50)
 
 **Storage Estimates:**
-- Video upload rate: 500 hours of video per minute
-- Storage needed per minute of video: 50MB
-- Total storage needed per minute: 1,500 GB (500 * 60 * 50)
-- Storage needed per second: 25 GB (1,500 / 60)
+  - Assume Average video size is 300 MB
+  - Storage Needed (300MB * 230)*86400 =5 PB/day for video
+  - For Like 4600/second * 1 Kb *86400 =49GB Per/Day
+  - For Comment 2300/second * 2 Kb *86400 =49GB Per/Day
 
 **Bandwidth Estimates:**
-- Bandwidth for uploads per minute: 300GB (500 * 60 * 10MB) (assumung 10MB of upload)
-- Bandwidth for uploads per second: 5GB (300 / 60)
-- Bandwidth for views (upload:view ratio of 1:200): 1TB/s
-
-These estimates ignore video compression and replication, which would adjust real numbers.
-- Upload:view ratio: 1:200
-- Video uploads per second: 2
+ 
+- Bandwidth for uploads per second: 69GB/s (300 MB *230)
+- Bandwidth for views (upload:view ratio of 1:200): 13.8 TB/s (300 MB * 230 * 200)
 
 
 # System APIs - 
