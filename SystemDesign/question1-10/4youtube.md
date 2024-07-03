@@ -172,14 +172,14 @@ To design a scalable database schema for a video-sharing platform, we'll need to
   <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube1.webp" width="500" />
 </p>
 
-## Key Flows of Interest
+**Key Flows of Interest**
 
 - **Video Uploading Flow**
 - **Video Streaming Flow**
 
-## Video Uploading Flow
+**Video Uploading Flow**
 
-### Components (Refer to Figure 4)
+**Components**
 
 1. **User**: Watches YouTube on various devices.
 2. **Load Balancer**: Distributes requests among API servers.
@@ -200,9 +200,9 @@ To design a scalable database schema for a video-sharing platform, we'll need to
 
 
 
-### Video Uploading Flow Breakdown
+**Video Uploading Flow Breakdown**
 
-#### Flow A: Upload the Actual Video (Refer to Figure 5)
+**Flow A: Upload the Actual Video (Refer to Figure 5)**
 
 1. **Upload**: Videos uploaded to original storage.
 2. **Transcoding**: Servers fetch and transcode videos.
@@ -215,12 +215,12 @@ To design a scalable database schema for a video-sharing platform, we'll need to
      - **Completion Handler**: Update metadata DB and cache from queue events.
 4. **Notification**: API servers inform client of successful upload and readiness for streaming.
 
-#### Flow B: Update the Metadata (Refer to Figure 6)
+**Flow B: Update the Metadata (Refer to Figure 6)**
 
 - **Parallel Process**: While uploading, client sends metadata update request to API servers.
 - **Update**: API servers update metadata cache and database.
 
-## Video Streaming Flow
+**Video Streaming Flow**
 
 - **Concept**: Streaming allows immediate and continuous playback without waiting for the entire video to download.
 - **Streaming Protocols**:
@@ -231,7 +231,7 @@ To design a scalable database schema for a video-sharing platform, we'll need to
   - **Importance**: Different protocols support various encodings and playback players.
 - **CDN Streaming**: Videos streamed from the nearest edge server to minimize latency (Refer to Figure 7).
 
-## Summary
+ **Summary**
 
 - **Cloud Services**: Use CDN and blob storage for scalability and cost-effectiveness.
 - **System Design**: Focus on high-level components and their interactions.
@@ -304,3 +304,61 @@ To design a scalable database schema for a video-sharing platform, we'll need to
    - Adds an image overlay on top of the video to include identifying information.
 
 By adopting a DAG model, video transcoding systems achieve the necessary flexibility and efficiency to handle a wide range of video processing tasks, ensuring high performance and quality in video delivery.
+
+
+### Video Transcoding Architecture
+
+#### Overview
+The architecture leverages cloud services and consists of six main components: preprocessor, DAG scheduler, resource manager, task workers, temporary storage, and encoded video output.
+
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube3.svg" width="500" />
+</p>
+
+#### Components
+
+**Preprocessor**
+
+1. **Video Splitting**: Splits video into smaller GOP units.
+2. **Legacy Support**: Ensures compatibility with older devices/browsers.
+3. **DAG Generation**: Creates DAG from client configurations.
+4. **Cache Data**: Caches segmented videos and metadata for reliability and retries.
+
+**DAG Scheduler**
+   - **Function**: Splits a DAG into stages of tasks.
+   - **Process**:
+     - Places tasks in the task queue of the resource manager.
+     - Example: Original video split into three stages (video, audio, metadata), further divided into tasks like video encoding and thumbnail generation (Figure 15).
+
+**Resource Manager**
+   - **Responsibilities**: Manages resource allocation efficiency.
+   - **Components**:
+     - **Task Queue**: Contains tasks to be executed.
+     - **Worker Queue**: Contains worker utilization info.
+     - **Running Queue**: Tracks currently running tasks and workers.
+     - **Task Scheduler**: Picks optimal task/worker, instructs task worker, and manages task execution flow.
+   - **Process** (Figure 17):
+     - Selects the highest priority task from the task queue.
+     - Selects the optimal task worker from the worker queue.
+     - Instructs the task worker to execute the job.
+     - Updates the running queue with task/worker info.
+     - Removes the job from the running queue once completed.
+
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube5.svg" width="500" />
+</p>
+
+4. **Task Workers**
+   - **Function**: Execute tasks defined in the DAG.
+   - **Variety**: Different workers may run different tasks (Figure 19).
+
+5. **Temporary Storage**
+   - **Usage**: Stores data based on type, size, access frequency, and lifespan.
+   - **Metadata**: Cached in memory due to small size and frequent access.
+   - **Video/Audio Data**: Stored in blob storage.
+   - **Data Lifecycle**: Data in temporary storage is freed up post-processing.
+
+6. **Encoded Video**
+   - **Output**: The final result of the encoding pipeline.
+   - **Example**: Encoded file such as funny_720p.mp4 (Figure 21).
+
