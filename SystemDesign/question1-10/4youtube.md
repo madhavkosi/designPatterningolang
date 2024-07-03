@@ -286,6 +286,7 @@ To design a scalable database schema for a video-sharing platform, we'll need to
 
 <p float="left">
   <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube1.svg" width="500" />
+    <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube2.svg" width="500" />
 </p>
 
 #### Tasks in the DAG Model
@@ -303,8 +304,3 @@ To design a scalable database schema for a video-sharing platform, we'll need to
    - Adds an image overlay on top of the video to include identifying information.
 
 By adopting a DAG model, video transcoding systems achieve the necessary flexibility and efficiency to handle a wide range of video processing tasks, ensuring high performance and quality in video delivery.
-
-
-<p float="left">
-  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/youtube2.svg" width="500" />
-</p>
