@@ -1683,7 +1683,7 @@ In-memory databases are ideal for scenarios needing rapid data access and proces
 
 ---
 
-### Key Points
+**Key Points**
 - **Horizontal Scaling** is preferred for distributed systems due to its dynamic scalability and cost-effectiveness.
 - **Vertical Scaling** can improve performance but is limited by physical constraints and potential downtime.
 
