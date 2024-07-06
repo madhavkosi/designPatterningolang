@@ -1,14 +1,14 @@
 ### Rate Limiter
 
-#### Definition
+**Definition**
 A rate limiter controls the rate of traffic sent by a client or a service, limiting the number of requests allowed over a specified period. Excess requests are blocked once the threshold is exceeded.
 
-#### Examples
+ **Examples**
 - Users can write no more than 2 posts per second.
 - Create a maximum of 10 accounts per day from the same IP address.
 - Claim rewards no more than 5 times per week from the same device.
 
-#### Benefits of Using an API Rate Limiter
+ **Benefits of Using an API Rate Limiter**
 
 1. **Prevent Resource Starvation**
    - Stops Denial of Service (DoS) attacks by blocking excessive requests.
@@ -22,13 +22,13 @@ A rate limiter controls the rate of traffic sent by a client or a service, limit
    - Filters out excess requests from bots or misbehaving users.
    - Ensures servers are not overwhelmed by high traffic volumes.
 
-#### Summary
+ **Summary**
 A rate limiter is crucial for maintaining system stability, preventing abuse, and managing costs effectively. It ensures that API usage remains within safe limits, protecting the system from excessive load and potential attacks.
 
 
 ### Step 1 - Understand the Problem and Establish Design Scope
 
-#### Questions and Answers
+**Questions and Answers**
 - **Rate Limiter Type**:
   - **Focus**: Server-side API rate limiter.
 - **Throttle Rules**:
@@ -42,7 +42,7 @@ A rate limiter is crucial for maintaining system stability, preventing abuse, an
 - **User Notification**:
   - **Requirement**: Inform users when throttled.
 
-#### Requirements Summary
+**Requirements Summary**
 - **Accurate** request limiting.
 - **Low latency** to avoid slowing down HTTP response.
 - **Memory efficient** usage.
@@ -54,15 +54,15 @@ A rate limiter is crucial for maintaining system stability, preventing abuse, an
 
 ### Step 2 - Propose High-Level Design and Get Buy-In
 
-#### Implementation Location
+**Implementation Location**
 - **Client-side**: Unreliable due to potential forgery and lack of control.
 - **Server-side**: More secure and controllable.
 
-#### Middleware Approach
+**Middleware Approach**
 - **Rate Limiter Middleware**: Throttles requests before reaching API servers.
 - **Example**: API allows 2 requests per second; a third request gets a 429 status code (too many requests).
 
-#### API Gateway
+**API Gateway**
 - **Function**: A middleware component supporting rate limiting, SSL termination, authentication, etc.
 - **Recommendation**: Use API gateway for rate limiting in microservice architecture.
 
@@ -78,8 +78,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - **Sliding Window Counter**
 
 
-#### Token Bucket Algorithm - Short Notes
-
+**Token Bucket Algorithm - Short Notes**
 **Overview**
 - **Widely Used**: Commonly implemented by companies like Amazon and Stripe.
 - **Simple and Well-Understood**: Known for its straightforward implementation.
@@ -111,8 +110,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - **Parameter Tuning**: Requires careful adjustment of bucket size and refill rate to meet needs accurately.
 
 
-#### Leaking Bucket Algorithm - Short Notes
-
+**Leaking Bucket Algorithm - Short Notes**
 **Overview**
 - **Mechanism**: Similar to the token bucket but processes requests at a fixed rate using a FIFO queue.
 - **Function**: Adds requests to the queue if not full; otherwise, drops them. Processes requests at regular intervals.
@@ -130,8 +128,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - Tuning the parameters (bucket size and outflow rate) can be challenging.
 
 
-#### Fixed Window Counter Algorithm - Short Notes
-
+**Fixed Window Counter Algorithm - Short Notes**
 **Overview**
 - **Mechanism**: Divides the timeline into fixed-sized windows, assigning a counter for each window.
 - **Function**: Increments the counter with each request. Drops new requests once the counter reaches the threshold until the next window starts.
@@ -149,8 +146,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - Traffic spikes at window edges can exceed the allowed request quota.
 
 
-#### Sliding Window Log Algorithm - Short Notes
-
+**Sliding Window Log Algorithm - Short Notes**
 **Overview**
 - **Mechanism**: Keeps track of request timestamps, usually in a cache like Redis.
 - **Function**:
@@ -174,8 +170,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - High memory usage as timestamps are stored even for rejected requests.
 
 
-#### Sliding Window Counter Algorithm - Notes
-
+**Sliding Window Counter Algorithm - Notes**
 **Overview**
 - **Hybrid Approach**: Combines the fixed window counter and sliding window log to provide a more accurate rate limiting mechanism.
 
@@ -230,11 +225,11 @@ The high-level architecture for rate limiting involves using an in-memory cache 
 
 ### Step 3 - Design Deep Dive
 
-#### Key Questions
+**Key Questions**
 1. **Rule Creation and Storage**: How are rate limiting rules created and where are they stored?
 2. **Handling Rate-Limited Requests**: How to manage requests that exceed the rate limit?
 
-#### Rate Limiting Rules
+**Rate Limiting Rules**
 - **Examples**:
   - **Messaging Domain**:
     ```yaml
@@ -258,17 +253,17 @@ The high-level architecture for rate limiting involves using an in-memory cache 
     ```
 - **Storage**: Rules are written in configuration files and saved on disk.
 
-#### Handling Exceeding Requests
+**Handling Exceeding Requests**
 - **Response**: Return HTTP 429 (Too Many Requests) status code.
 - **Queuing**: Optionally enqueue rate-limited requests for later processing.
 
-#### Rate Limiter Headers
+**Rate Limiter Headers**
 - **Informing Clients**: Use HTTP response headers to communicate rate limit status.
   - `X-Ratelimit-Remaining`: Number of remaining allowed requests.
   - `X-Ratelimit-Limit`: Maximum number of allowed requests per time window.
   - `X-Ratelimit-Retry-After`: Seconds to wait before making a new request.
 
-#### Detailed Design (Figure 13)
+**Detailed Design (Figure 13)**
 1. **Rule Storage and Loading**:
    - Rules are stored on disk.
    - Workers pull and cache rules from disk.
@@ -280,7 +275,7 @@ The high-level architecture for rate limiting involves using an in-memory cache 
      - **Not Rate Limited**: Request forwarded to API servers.
      - **Rate Limited**: Return HTTP 429 error, optionally enqueue the request.
 
-### Summary
+**Summary**
 - **Rules**: Defined in config files, stored on disk, cached by workers.
 - **Request Handling**: Middleware checks limits, returns HTTP 429 if exceeded, uses headers to inform clients.
 - **Design Flow**:
