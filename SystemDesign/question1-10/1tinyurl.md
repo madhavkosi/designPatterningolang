@@ -1,19 +1,4 @@
 
----
-
-# Table of Contents
-
-
-   - [Overview](#overview)
-   - [Requirements](#requirements)
-   - [Capacity Estimation and Constraints](#capacity-estimation-and-constraints)
-   - [API Definition](#api-definition)
-   - [Database Schema](#database-schema)
-   - [Basic System Design and Algorithm for URL Shortening Service](#basic-system-design-and-algorithm-for-url-shortening-service)
-
-
----
-
 # URL Shortening System
 
 ## Overview
@@ -66,32 +51,32 @@
 
 ## Capacity Estimation and Constraints
 
-### Traffic Estimates
+Traffic Estimates
 
 Our system anticipates the following traffic patterns:
 
 - **URL Shortenings**: Approximately 500 million new URLs per month, translating to about 16.7 million new URLs per day on average.
 - **Redirections**: Given a 100:1 read-to-write ratio, expect around 50 billion redirections monthly, or approximately 1.67 billion redirections daily.
 
-### Queries Per Second (QPS)
+ Queries Per Second (QPS)
 
 Based on the corrected traffic estimates:
 
 - **New URLs per Second**: Approximately 200 URLs/s on average (500 million URLs per month / (30 days * 24 hours * 3600 seconds)).
 - **Redirections per Second**: Around 20k URLs/s on average (50 billion redirections per month / (30 days * 24 hours * 3600 seconds)).
 
-### Storage Estimates
+Storage Estimates
  
 To accommodate our data retention policy of storing each URL shortening request and associated link for 5 years:
 
 - **Total Storage Needed**: Estimated at 15 TB for 30 billion objects, assuming each object averages 500 bytes.
 
-### Bandwidth Estimates
+Bandwidth Estimates
 
 - **Incoming Data**: About 100 KB/s for new URL requests.
 - **Outgoing Data**: Roughly 10 MB/s for redirection responses.
 
-### Memory Estimates
+Memory Estimates
 
 - **Memory for Cache**: Approximately 170 GB, based on caching 20% of the 1.67 billion daily redirections.
 
