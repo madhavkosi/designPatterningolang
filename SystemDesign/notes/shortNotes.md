@@ -672,8 +672,8 @@ Created at LinkedIn in 2010, Kafka was designed to track various events like pag
 
 
 ### DNS
-#### Introduction to DNS
-
+**Introduction to DNS**
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/1.png)
 **What is DNS (Domain Name System)?**
 DNS translates human-readable domain names (e.g., www.example.com) into IP addresses (e.g., 198.47.25.1) that computers use to identify each other on the internet. It functions like an internet phonebook, enabling users to access websites using easy-to-remember names instead of numeric IP addresses.
 
@@ -701,7 +701,7 @@ DNS translates human-readable domain names (e.g., www.example.com) into IP addre
    - **Forwarding Resolvers:** Forward queries to another resolver, usually a caching resolver, for better control and performance.
 
 
-#### DNS Resolution Process
+**DNS Resolution Process**
 
 **Overview:**
 DNS resolution translates human-readable domain names into machine-readable IP addresses. This process involves recursive and iterative queries using a distributed and hierarchical infrastructure of DNS servers, resolvers, and caching mechanisms.
