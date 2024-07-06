@@ -7,7 +7,7 @@
 
 ### Requirements and Goals of the System
 
-#### Functional Requirements:
+**Functional Requirements:**
 1. **Text Uploading**: Users can upload or paste text and receive a unique URL for access.
 2. **Text Retrieval**: The system allows retrieving the text using the generated URL.
 3. **Expiration**: 
@@ -15,7 +15,7 @@
    - Users can specify a custom expiration time.
 4. **Custom Alias**: Users can optionally choose a custom alias for their paste URLs.
 
-#### Non-Functional Requirements:
+**Non-Functional Requirements:**
 1. **Reliability**: 
    - Ensure no data loss; data persistence is critical.
 2. **Availability**: 
@@ -25,26 +25,25 @@
 4. **Security**: 
    - URLs should be unique and non-predictable to prevent unauthorized access.
 
-#### Extended Requirements:
+**Extended Requirements:**
 1. **Analytics**: 
    - Track how many times a paste has been accessed.
 2. **REST APIs**: 
    - Offer APIs for external services to interact with the Pastebin service.
 
 
-#### Design Considerations for Pastebin Service
-
-##### Text Size Limit
+**Design Considerations for Pastebin Service**
+**Text Size Limit**
 - **Limit on Text Size**: Set a maximum of 10MB per paste to prevent abuse.
 
-##### Custom URL Size Limit
+**Custom URL Size Limit**
 - **Size Limit on Custom URLs**: Limit custom URLs to 30-50 characters for consistency.
 
 
 
 ### Capacity Estimation and Constraints for Pastebin Service
 
-#### Traffic Estimates
+**Traffic Estimates**
 - **New Pastes per Day**: 1 million
 - **Read Requests per Day**: 5 million
 - **Write Requests per Second**: 
@@ -52,7 +51,7 @@
 - **Read Requests per Second**: 
   - \( \frac{5M}{24 \times 3600} \approx 58 \) reads/sec
 
-#### Storage Estimates
+**Storage Estimates**
 - **Average Paste Size**: 10KB
 - **Daily Storage Requirement**: 
   - \( 1M \times 10KB = 10GB \)/day
@@ -66,20 +65,20 @@
 - **Total Storage with 70% Capacity Model**: 
   - \( 36TB / 0.7 \approx 51.4TB \)
 
-#### Bandwidth Estimates
+**Bandwidth Estimates**
 - **Ingress (Write Requests)**:
   - \( 12 \times 10KB = 120KB/s \)
 - **Egress (Read Requests)**:
   - \( 58 \times 10KB = 0.6MB/s \)
 
-#### Memory Estimates for Caching
+**Memory Estimates for Caching**
 - **Read Requests per Day**: 5 million
 - **Hot Pastes (20%)**:
   - \( 0.2 \times 5M = 1M \) requests/day
 - **Memory for Caching 20% of Requests**: 
   - \( 1M \times 10KB = 10GB \)
 
-#### Summary
+**Summary**
 - **Write Requests**: 12 pastes/sec
 - **Read Requests**: 58 reads/sec
 - **Daily Storage**: 10GB
@@ -91,7 +90,7 @@
 
 ### System APIs for Pastebin Service
 
-#### 1. Create Paste API
+**1. Create Paste API**
 - **Endpoint**: `POST /api/paste`
 - **Parameters**:
   - `api_dev_key` (string): API key for authentication.
@@ -102,14 +101,14 @@
   - `expire_date` (string, optional): Expiration date for the paste.
 - **Returns**: URL for accessing the paste or error code.
 
-#### 2. Retrieve Paste API
+**2. Retrieve Paste API**
 - **Endpoint**: `GET /api/paste/{api_paste_key}`
 - **Parameters**:
   - `api_dev_key` (string): API key for authentication.
   - `api_paste_key` (string): Key of the paste to retrieve.
 - **Returns**: Text content of the paste or error code.
 
-#### 3. Delete Paste API
+**3. Delete Paste API**
 - **Endpoint**: `DELETE /api/paste/{api_paste_key}`
 - **Parameters**:
   - `api_dev_key` (string): API key for authentication.
@@ -120,8 +119,7 @@
 
 ### Database Schema for Pastebin Service
 
-#### Tables
-
+**Tables**
 1. **Users**
 
 | Column           | Type         | Description                                 |
@@ -164,8 +162,7 @@
 - **created_at**: Timestamp indicating when the paste was created.
 - **access_count**: Counter tracking the number of accesses.
 
-#### Example SQL Schema
-
+**Example SQL Schema**
 ```sql
 CREATE TABLE Users (
     id UUID PRIMARY KEY,
@@ -220,7 +217,7 @@ This schema design provides a structured way to manage users and their pastes, w
 
 ### Component Design
 
-#### a. Application Layer
+**a. Application Layer**
 - **Handles Requests**: Processes all incoming and outgoing requests by communicating with the backend data store components.
 - **Write Requests**:
   - Generates a six-letter random string as the key (unless a custom key is provided).
@@ -237,7 +234,7 @@ This schema design provides a structured way to manage users and their pastes, w
   - Contacts the datastore to retrieve paste content using the key.
   - Returns the paste content if the key is found, otherwise returns an error code.
 
-#### b. Datastore Layer
+**b. Datastore Layer**
 - **Metadata Database**:
   - Stores metadata related to pastes and users.
   - Can use a relational database (e.g., MySQL) or a distributed key-value store (e.g., DynamoDB, Cassandra).

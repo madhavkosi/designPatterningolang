@@ -23,7 +23,7 @@ HTTP status codes are essential communication tools between a web server and a c
    - **401 Unauthorized:** Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.
    - **403 Forbidden:** The client does not have permission to access the resource.
    - **404 Not Found:** The server cannot find the requested resource.
-   - **409 Too many Request:**  too many requests .
+   - **429 Too many Request:**  too many requests .
 
 5. **5xx Server Error:**
    - **500 Internal Server Error:** A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.

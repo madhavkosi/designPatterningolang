@@ -78,7 +78,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - **Sliding Window Counter**
 
 
-**Token Bucket Algorithm - Short Notes**
+**Token Bucket Algorithm**
 **Overview**
 - **Widely Used**: Commonly implemented by companies like Amazon and Stripe.
 - **Simple and Well-Understood**: Known for its straightforward implementation.
@@ -110,7 +110,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - **Parameter Tuning**: Requires careful adjustment of bucket size and refill rate to meet needs accurately.
 
 
-**Leaking Bucket Algorithm - Short Notes**
+**Leaking Bucket Algorithm**
 **Overview**
 - **Mechanism**: Similar to the token bucket but processes requests at a fixed rate using a FIFO queue.
 - **Function**: Adds requests to the queue if not full; otherwise, drops them. Processes requests at regular intervals.
@@ -128,7 +128,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - Tuning the parameters (bucket size and outflow rate) can be challenging.
 
 
-**Fixed Window Counter Algorithm - Short Notes**
+**Fixed Window Counter Algorithm**
 **Overview**
 - **Mechanism**: Divides the timeline into fixed-sized windows, assigning a counter for each window.
 - **Function**: Increments the counter with each request. Drops new requests once the counter reaches the threshold until the next window starts.
@@ -146,7 +146,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - Traffic spikes at window edges can exceed the allowed request quota.
 
 
-**Sliding Window Log Algorithm - Short Notes**
+**Sliding Window Log Algorithm**
 **Overview**
 - **Mechanism**: Keeps track of request timestamps, usually in a cache like Redis.
 - **Function**:
@@ -170,7 +170,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 - High memory usage as timestamps are stored even for rejected requests.
 
 
-**Sliding Window Counter Algorithm - Notes**
+**Sliding Window Counter Algorithm**
 **Overview**
 - **Hybrid Approach**: Combines the fixed window counter and sliding window log to provide a more accurate rate limiting mechanism.
 
