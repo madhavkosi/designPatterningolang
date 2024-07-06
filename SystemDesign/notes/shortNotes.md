@@ -741,7 +741,7 @@ DNS resolution translates human-readable domain names into machine-readable IP a
 **Summary:**
 The DNS resolution process involves converting domain names into IP addresses using recursive and iterative queries. DNS caching speeds up this process by storing previous query results, with TTL values determining the cache duration. Negative caching helps improve performance by storing the non-existence of DNS records.
 
-#### DNS Load Balancing and High Availability
+**DNS Load Balancing and High Availability**
 
 Ensuring the performance, reliability, and availability of DNS is crucial as internet usage grows. Techniques like round-robin DNS, geographically distributed servers, anycast routing, and Content Delivery Networks (CDNs) help distribute the load, reduce latency, and maintain uninterrupted service.
 
