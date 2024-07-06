@@ -1881,3 +1881,47 @@ Resilience and error handling are essential for minimizing the impact of failure
 ---
 
 These components collectively enhance the resilience and robustness of distributed systems, ensuring they can handle and recover from various types of failures effectively.
+
+
+### Fault Tolerance vs. High Availability
+
+**Fault Tolerance**
+- **Definition**: System's ability to operate without interruption despite component failures.
+- **Characteristics**:
+  - **Redundancy**: Incorporates redundant components.
+  - **Automatic Failover**: Seamless switch to standby systems.
+  - **No Data Loss**: Ensures data integrity during failures.
+  - **Cost**: Generally more expensive.
+- **Use Cases**: Critical sectors (finance, healthcare, aviation).
+
+**High Availability**
+- **Definition**: System's ability to remain operational and accessible, minimizing downtime.
+- **Characteristics**:
+  - **Uptime Guarantee**: High level of operational performance (e.g., 99.999%).
+  - **Load Balancing & Redundancy**: Utilizes clustering and redundant resources.
+  - **Rapid Recovery**: Quick restoration post-failure, brief disruptions acceptable.
+  - **Cost-Effectiveness**: Balances cost with availability needs.
+- **Use Cases**: Online services, e-commerce, enterprise applications.
+
+**Key Differences**
+- **Objective**:
+  - **Fault Tolerance**: Continuous operation without user-noticeable failures.
+  - **High Availability**: Minimized downtime, maintaining overall system uptime.
+- **Approach**:
+  - **Fault Tolerance**: Redundancy and automatic failover.
+  - **High Availability**: Preventing downtime with rapid recovery strategies.
+- **Downtime**:
+  - **Fault Tolerance**: No downtime during failures.
+  - **High Availability**: Minimal, acceptable brief interruptions.
+- **Cost and Complexity**:
+  - **Fault Tolerance**: Higher cost and complexity.
+  - **High Availability**: More cost-effective.
+- **Data Integrity**:
+  - **Fault Tolerance**: Maintains data integrity.
+  - **High Availability**: Prioritizes uptime, potential for minimal data loss.
+
+**Conclusion**
+- **Fault Tolerance**: Uninterrupted operation during failures.
+- **High Availability**: Maximum operational time with minimal downtime. 
+
+Choice depends on specific business requirements and budget.
