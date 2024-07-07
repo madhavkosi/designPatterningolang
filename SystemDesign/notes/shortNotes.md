@@ -452,41 +452,21 @@ Use Cases:Application Caches,Recommendation Systems,Content Delivery Networks (C
 - **FIFO & Random:** Simpler to implement, but less effective in optimizing performance. 
 
 **Cache Invalidation**
+Here is the information organized in a table:
 
-**Importance:** Ensures cache coherence with the data source to avoid inconsistent application behavior.
+| **Importance**              | **Ensures cache coherence with the data source to avoid inconsistent application behavior.** |
+|-----------------------------|------------------------------------------------------------------------------------------------|
 
-**Strategies:**
+| **Strategy**                | **Description**                                                                                                                                     | **Summary**                                                                                                                      |
+|-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| **Write-Through Cache**     | Writes data to both cache and database simultaneously. Ensures data consistency but has higher latency due to double writes.                         | Ideal for applications needing immediate data consistency and reliability.                                                      |
+| **Write-Around Cache**      | Writes data directly to the database, bypassing the cache. Reduces cache flooding but may cause cache misses for recent data.                        | Suitable for systems with infrequent write operations and a focus on read performance.                                           |
+| **Write-Back Cache**        | Writes data only to the cache initially and later to the database under certain conditions. Offers low latency but risks data loss if the cache fails. | Best for applications demanding low latency and high performance, with manageable risk of data loss.                             |
+| **Write-Behind Cache**      | Similar to write-back, but writes to the database at specified intervals. Balances performance with reduced risk of data loss.                       | Balances performance and data durability, fitting well with high-traffic, mixed read/write applications.                        |
 
-1. **Write-Through Cache:** Writes data to both cache and database simultaneously. Ensures data consistency but has higher latency due to double writes.
-
-2. **Write-Around Cache:** Writes data directly to the database, bypassing the cache. Reduces cache flooding but may cause cache misses for recent data.
-
-3. **Write-Back Cache:** Writes data only to the cache initially and later to the database under certain conditions. Offers low latency but risks data loss if the cache fails.
-
-4. **Write-Behind Cache:** Similar to write-back, but writes to the database at specified intervals. Balances performance with reduced risk of data loss.
-
-### Summary
-
-Each caching strategy offers unique benefits tailored to specific application requirements:
-
-- **Write-Through Cache:** Ideal for applications needing immediate data consistency and reliability.
-- **Write-Around Cache:** Suitable for systems with infrequent write operations and a focus on read performance.
-- **Write-Back Cache:** Best for applications demanding low latency and high performance, with manageable risk of data loss.
-- **Write-Behind Cache:** Balances performance and data durability, fitting well with high-traffic, mixed read/write applications.
 
 **Cache Invalidation Methods:**
 
-1. **Purge:** Removes specific cached content immediately. Used when content updates make the cached version invalid.
-
-2. **Refresh:** Fetches the latest content from the origin server, updating the cache without removing the old content.
-
-3. **Ban:** Invalidates cached content based on criteria like URL patterns. Removes matching content immediately.
-
-4. **TTL Expiration:** Sets a time-to-live for cached content, after which it must be refreshed. Ensures regular updates.
-
-5. **Stale-While-Revalidate:** Serves stale content while fetching updates in the background. Ensures quick responses with eventual consistency.
-
-Sure! Here’s the data organized in a table:
 
 | **Cache Invalidation Method** | **Description**                                                   | **Application**              | **Reason**                                                                                       |
 |-------------------------------|-------------------------------------------------------------------|------------------------------|--------------------------------------------------------------------------------------------------|
