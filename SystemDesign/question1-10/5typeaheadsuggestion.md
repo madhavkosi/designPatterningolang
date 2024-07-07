@@ -42,7 +42,7 @@ Typeahead suggestions help users search for known and frequently searched terms 
   - 10,000,000 users * 10 queries/day * 20 bytes/query * 20%
   - 0.4 GB/day
 
-### Basic System Design and Algorithm
+### Algorithm discussion
 
 **Problem Definition:**
 - Store a large number of strings allowing users to search by prefix.

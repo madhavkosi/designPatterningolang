@@ -43,7 +43,26 @@ The OSI model helps standardize networking protocols and ensures interoperabilit
 
 
 
-### Short Notes on Main Protocols Used in Networking
+Here’s a summarized table that captures the essential information about each protocol:
+
+| **Protocol** | **Purpose**                                    | **Port(s)**                          | **Type**                   | **Usage**                              | **Characteristics**                                 |
+|--------------|-------------------------------------------------|--------------------------------------|----------------------------|----------------------------------------|-----------------------------------------------------|
+| **HTTP**     | Transfers web pages on the internet             | 80                                   | Application Layer          | Browsing websites, web services        | Stateless protocol; request-response model          |
+| **HTTPS**    | Secure version of HTTP, encrypts data           | 443                                  | Application Layer          | Secure web browsing, online transactions | Uses SSL/TLS for encryption                        |
+| **FTP**      | Transfers files between client and server       | 21 (command), 20 (data transfer)     | Application Layer          | Uploading and downloading files        | Supports anonymous/authenticated access; active/passive modes |
+| **SMTP**     | Sends email messages                            | 25                                   | Application Layer          | Email servers sending emails           | Simple, text-based; used with IMAP or POP3          |
+| **IMAP**     | Retrieves email messages                        | 143 (unencrypted), 993 (encrypted)   | Application Layer          | Accessing email from multiple devices  | Supports email synchronization; keeps emails on server |
+| **POP3**     | Retrieves email messages, removes from server   | 110 (unencrypted), 995 (encrypted)   | Application Layer          | Downloading emails to a single device  | Simpler and less resource-intensive than IMAP       |
+| **DNS**      | Translates domain names to IP addresses         | 53                                   | Application Layer          | Accessing websites using domain names  | Hierarchical, decentralized; uses UDP and TCP       |
+| **DHCP**     | Assigns IP addresses to devices on a network    | 67 (server), 68 (client)             | Application Layer          | Automatic IP address allocation        | Dynamic and automatic; simplifies network management |
+| **TCP**      | Ensures reliable data transmission              | N/A                                  | Transport Layer            | Email, web browsing, file transfer     | Connection-oriented; error-checking and flow control |
+| **UDP**      | Enables fast, connectionless data transmission  | N/A                                  | Transport Layer            | Streaming, online gaming, VoIP         | Connectionless; minimal overhead; no guaranteed delivery |
+| **IP**       | Routes packets across networks                  | N/A                                  | Network Layer              | Addressing and routing data            | Connectionless; IPv4 and IPv6                       |
+| **ICMP**     | Sends error messages and operational information| N/A                                  | Network Layer              | Network diagnostics (ping, traceroute) | Used for error communication between network devices|
+| **RIP**      | Shares routing information within a network     | N/A                                  | Network Layer              | Small networks, dynamic routing        | Distance-vector routing; max 15 hops                |
+| **OSPF**     | Determines the best path for data               | N/A                                  | Network Layer              | Large, complex networks, dynamic routing | Link-state routing; hierarchical; fast convergence  |
+
+This table provides a concise and clear summary of the key details for each protocol.
 
 #### 1. **HTTP (HyperText Transfer Protocol)**
 - **Purpose:** Transfers web pages on the internet.
