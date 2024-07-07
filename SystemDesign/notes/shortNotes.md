@@ -489,33 +489,17 @@ Here is the information organized in a table:
 
 **Caching Challenges**
 
-1. **Thundering Herd:** 
-   - **Problem:** Sudden surge of requests to the origin server when popular data expires.
-   - **Solutions:** Staggered expiration times, cache locking, background updates.
+| **Caching Challenge**        | **Problem**                                                                          | **Solutions**                                                                                                 |
+|------------------------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| **Thundering Herd**          | Sudden surge of requests to the origin server when popular data expires.              | Staggered expiration times, cache locking, background updates.                                                |
+| **Cache Penetration**        | Requests bypass cache and directly access the origin server.                         | Negative caching, bloom filters.                                                                              |
+| **Big Key**                  | Large data consuming significant cache capacity, leading to evictions.                | Data compression, breaking data into smaller chunks, separate caching strategy for large objects.             |
+| **Hot Key**                  | Frequently accessed data causing contention and performance issues.                   | Consistent hashing, key replication, load balancing.                                                          |
+| **Cache Stampede (Dogpile)** | Multiple simultaneous requests for the same data, overloading cache and origin server. | Request coalescing, read-through cache.                                                                       |
+| **Cache Pollution**          | Less frequently accessed data displaces frequently accessed data.                     | Eviction policies like LRU (Least Recently Used) or LFU (Least Frequently Used).                              |
+| **Cache Drift**              | Inconsistency between cached data and the origin server data due to updates.          | Proper cache invalidation strategies.                                                                         |
 
-2. **Cache Penetration:** 
-   - **Problem:** Requests bypass cache and directly access the origin server.
-   - **Solutions:** Negative caching, bloom filters.
-
-3. **Big Key:** 
-   - **Problem:** Large data consuming significant cache capacity, leading to evictions.
-   - **Solutions:** Data compression, breaking data into smaller chunks, separate caching strategy for large objects.
-
-4. **Hot Key:** 
-   - **Problem:** Frequently accessed data causing contention and performance issues.
-   - **Solutions:** Consistent hashing, key replication, load balancing.
-
-5. **Cache Stampede (or Dogpile):** 
-   - **Problem:** Multiple simultaneous requests for the same data, overloading cache and origin server.
-   - **Solutions:** Request coalescing, read-through cache.
-
-6. **Cache Pollution:** 
-   - **Problem:** Less frequently accessed data displaces frequently accessed data.
-   - **Solutions:** Eviction policies like LRU (Least Recently Used) or LFU (Least Frequently Used).
-
-7. **Cache Drift:** 
-   - **Problem:** Inconsistency between cached data and the origin server data due to updates.
-   - **Solutions:** Proper cache invalidation strategies.
+This table format presents the information in a structured manner, making it easy to read and understand the different caching challenges along with their problems and solutions.
 
 By addressing these challenges, the efficiency, performance, and reliability of caching systems can be significantly improved, enhancing overall application performance and user experience.
 
