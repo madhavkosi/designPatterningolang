@@ -1,9 +1,10 @@
 ### Designing Typeahead Suggestion
 
-#### 1. What is Typeahead Suggestion?
+**1. What is Typeahead Suggestion?**
+
 Typeahead suggestions help users search for known and frequently searched terms by predicting the query based on the characters entered in real-time. This feature aids users in constructing their search queries more effectively, guiding them rather than just speeding up the search process.
 
-#### 2. Requirements and Goals of the System
+**2. Requirements and Goals of the System**
 
 **Functional Requirements:**
 - **Real-time Suggestions:** As the user types their query, the service should suggest the top 10 terms starting with the entered characters.
@@ -41,7 +42,7 @@ Typeahead suggestions help users search for known and frequently searched terms 
   - 10,000,000 users * 10 queries/day * 20 bytes/query * 20%
   - 0.4 GB/day
 
-### Notes on Basic System Design and Algorithm
+### Basic System Design and Algorithm
 
 **Problem Definition:**
 - Store a large number of strings allowing users to search by prefix.
@@ -159,7 +160,7 @@ Typeahead suggestions help users search for known and frequently searched terms 
 
 In the previous design, real-time updates to the trie were inefficient and impractical due to the high volume of user queries. To address this, a scalable data gathering service is designed, focusing on aggregating data efficiently and updating the trie periodically.
 
-#### Components of the Data Gathering Service:
+**Components of the Data Gathering Service:**
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/datagatheringservice.svg)
 1. **Analytics Logs:**
@@ -212,12 +213,12 @@ In the previous design, real-time updates to the trie were inefficient and impra
        "to"                 <"to", {"toy": 14000}>
        ```
 
-#### Optimized Algorithm for Top K Queries:
+**Optimized Algorithm for Top K Queries:**
 
 1. **Find the Prefix Node:** Time complexity \(O(1)\) due to limited prefix length.
 2. **Return Top K Queries:** Time complexity \(O(1)\) with cached results.
 
-#### Design Considerations:
+**Design Considerations:**
 
 - **Data Freshness vs. System Performance:** Real-time updates are avoided to prevent slowing down the query service.
 - **Use Case Variability:** Adjust the aggregation interval based on the application's real-time requirements.
@@ -235,7 +236,7 @@ By leveraging these components and optimizations, the data gathering service can
 
 In the improved design of the query service, several optimizations ensure efficient and fast retrieval of autocomplete suggestions. Here is an overview of the optimized query service architecture and its components:
 
-#### Architecture Overview
+**Architecture Overview**
 
 1. **Search Query Handling:**
    - **Step 1:** A search query is sent to the **load balancer**.
@@ -246,7 +247,8 @@ In the improved design of the query service, several optimizations ensure effici
 2. **Cache Management:**
    - **Trie Cache:** Stores the trie structure in memory for quick access. Cache replenishment ensures that cache misses are minimized and that the trie is always up-to-date.
 
-#### Optimizations for Lightning-Fast Query Service
+**Optimizations for Lightning-Fast Query Service**
+
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/ajax.svg)
 
 1. **AJAX Requests:**
@@ -260,7 +262,7 @@ In the improved design of the query service, several optimizations ensure effici
    - **Purpose:** To reduce the processing power and storage required for logging every search query, data sampling can be implemented.
    - **Implementation:** Only 1 out of every N requests is logged by the system, significantly reducing the load on logging infrastructure.
 
-#### Detailed Example and Figures
+**Detailed Example and Figures**
 
 - **Figure 11: Improved Query Service Design:**
   - **Load Balancer:** Distributes incoming queries evenly across API servers.
@@ -278,7 +280,7 @@ By implementing these optimizations, the query service can achieve high-speed pe
 
 Trie is an essential component of the autocomplete system, enabling efficient string retrieval. Here, we detail the create, update, and delete operations for maintaining the trie structure.
 
-#### Create Operation
+**Create Operation**
 
 **Purpose:** To build the trie using aggregated data from the Analytics Log/DB.
 
@@ -287,7 +289,7 @@ Trie is an essential component of the autocomplete system, enabling efficient st
 2. **Trie Construction:** Using the aggregated data, workers construct the trie by inserting each query and its frequency into the trie structure.
 3. **Storage:** The newly constructed trie is stored in the Trie Cache and Trie DB for fast access and persistence.
 
-#### Update Operation
+**Update Operation**
 
 There are two primary methods for updating the trie:
 
@@ -307,7 +309,7 @@ There are two primary methods for updating the trie:
   2. **Ancestor Update:** Update all ancestor nodes up to the root to reflect changes in the top queries of the updated node.
   3. **Example:** If the query "beer" is updated from a frequency of 10 to 30, the node and all its ancestors are updated to reflect this change (as shown in Figure 13).
 
-#### Delete Operation
+**Delete Operation**
 
 **Purpose:** To remove unwanted autocomplete suggestions (e.g., hateful, violent, sexually explicit, or dangerous content).
 
@@ -324,7 +326,7 @@ There are two primary methods for updating the trie:
 
 When the trie grows too large for a single server, sharding is necessary to distribute the load.
 
-#### Sharding Strategy
+**Sharding Strategy**
 
 **First-Level Sharding:**
 - **Method:** Based on the first character of the query.
@@ -339,7 +341,7 @@ When the trie grows too large for a single server, sharding is necessary to dist
 - **Smarter Sharding:** Analyze historical data for balanced distribution.
   - **Example:** Separate shards for 's' and 'u' to 'z'.
 
-#### Implementation
+**Implementation**
 
 1. **Shard Map Manager:** 
    - Manages lookup database for shard assignment based on historical data.
@@ -349,19 +351,19 @@ When the trie grows too large for a single server, sharding is necessary to dist
    - **Trie Cache:** Distributed in-memory storage.
    - **Trie DB:** Persistent storage, distributed by sharding logic.
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/shard-map-manager.svg)
-#### Query Handling Flow
+**Query Handling Flow**
 
 1. Query sent to load balancer.
 2. Load balancer routes to appropriate API server.
 3. API server checks Shard Map Manager for correct shard.
 4. Query directed to correct server, fetching data from Trie Cache or Trie DB.
 
-### Conclusion
+**Conclusion**
 
 Advanced sharding and a Shard Map Manager ensure even data distribution and scalable storage for trie-based autocomplete systems, maintaining high performance as the system grows.
 
 
-### Extending Trie-based Autocomplete to Multiple Languages and Real-Time Queries
+**Extending Trie-based Autocomplete to Multiple Languages and Real-Time Queries**
 
 **Supporting Multiple Languages:**
 - **Unicode Characters:** Use Unicode characters in trie nodes to support all global writing systems.
