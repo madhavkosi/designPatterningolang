@@ -454,8 +454,6 @@ Use Cases:Application Caches,Recommendation Systems,Content Delivery Networks (C
 **Cache Invalidation**
 Here is the information organized in a table:
 
-| **Importance**              | **Ensures cache coherence with the data source to avoid inconsistent application behavior.** |
-|-----------------------------|------------------------------------------------------------------------------------------------|
 
 | **Strategy**                | **Description**                                                                                                                                     | **Summary**                                                                                                                      |
 |-----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
