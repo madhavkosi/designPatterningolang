@@ -486,6 +486,15 @@ Each caching strategy offers unique benefits tailored to specific application re
 
 5. **Stale-While-Revalidate:** Serves stale content while fetching updates in the background. Ensures quick responses with eventual consistency.
 
+Sure! Here’s the data organized in a table:
+
+| **Cache Invalidation Method** | **Description**                                                   | **Application**              | **Reason**                                                                                       |
+|-------------------------------|-------------------------------------------------------------------|------------------------------|--------------------------------------------------------------------------------------------------|
+| **Purge**                     | Removes specific cached content immediately.                     | News Websites                | Ensures readers see the latest updates or corrections without delay.                             |
+| **Refresh**                   | Fetches the latest content from the origin server, updating the cache without removing the old content. | Weather Forecast Applications | Keeps weather data updated regularly while ensuring continuous availability of information.      |
+| **Ban**                       | Invalidates cached content based on criteria like URL patterns, removing matching content immediately. | E-commerce Platforms         | Efficiently updates large sets of products, such as during a sale, by invalidating based on URL patterns. |
+| **TTL Expiration**            | Sets a time-to-live for cached content, after which it must be refreshed. | Content Management Systems (CMS) | Ensures content is regularly refreshed, balancing performance and freshness without manual intervention. |
+| **Stale-While-Revalidate**    | Serves stale content while fetching updates in the background.    | Social Media Platforms       | Provides quick responses with slightly outdated content while ensuring eventual consistency with background updates. |
 
 **Cache Read Strategies**
 
