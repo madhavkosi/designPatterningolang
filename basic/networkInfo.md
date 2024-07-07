@@ -1,37 +1,31 @@
-Here's a structured table summarizing the information on HTTP vs. HTTPS, TCP vs. UDP, and URL vs. URI vs. URN:
+Here’s a table that incorporates all the details for comparing HTTP and HTTPS, including key differences and use cases:
 
-## Network Essentials
+## HTTP vs. HTTPS
 
-### HTTP vs. HTTPS
-
-| **Protocol** | **Characteristics**                                                                                                               | **Use Cases**                                                                 |
-|--------------|-----------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| **HTTP**     | - **No Encryption**: Data is transmitted in plain text, can be intercepted and read.                                              | - Browsing simple websites with non-sensitive data, like informational blogs. |
-|              | - **Default Port**: Operates over port 80.                                                                                        | - Historically standard for all web communications, but declining due to security concerns. |
-|              | - **Vulnerabilities**: Susceptible to man-in-the-middle attacks and eavesdropping.                                                |                                                                               |
-| **HTTPS**    | - **Encryption**: Data is encrypted using SSL (Secure Sockets Layer) or TLS (Transport Layer Security), preventing easy interception and reading by attackers. | - Ideal for transactions involving personal, financial, or sensitive data.    |
-|              | - **Default Port**: Operates over port 443.                                                                                       | - Recommended for all types of websites to ensure secure communication.       |
-|              | - **Security**: Provides authentication of the accessed website and ensures the privacy and integrity of the data exchanged.      |                                                                               |
-|              | - **Trustworthiness**: More trusted by users; browsers often mark HTTP sites as 'Not Secure'.                                     |                                                                               |
+| **Protocol** | **Characteristics**                                                                                                                                                                                                                         | **Use Cases**                                                                                             |
+|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| **HTTP**     | - No Encryption: Data is transmitted in plain text, can be intercepted and read.                                                                                                                                                           | - Browsing simple websites with non-sensitive data, like informational blogs.                             |
+|              | - Default Port: Operates over port 80.                                                                                                                                                                                                     | - Historically standard for all web communications, but declining due to security concerns.               |
+|              | - Vulnerabilities: Susceptible to man-in-the-middle attacks and eavesdropping.                                                                                                                                                             |                                                                                                           |
+| **HTTPS**    | - Encryption: Data is encrypted using SSL (Secure Sockets Layer) or TLS (Transport Layer Security), preventing easy interception and reading by attackers.                                                                                  | - Ideal for transactions involving personal, financial, or sensitive data.                                |
+|              | - Default Port: Operates over port 443.                                                                                                                                                                                                    | - Recommended for all types of websites to ensure secure communication.                                   |
+|              | - Security: Provides authentication of the accessed website and ensures the privacy and integrity of the data exchanged.                                                                                                                   |                                                                                                           |
+|              | - Trustworthiness: More trusted by users; browsers often mark HTTP sites as 'Not Secure'.                                                                                                                                                   |                                                                                                           |
 
 ### Key Differences
-- **Security**: 
-  - **HTTP**: No encryption, not secure.
-  - **HTTPS**: Encrypted, secure.
-- **Performance**: 
-  - **HTTP**: No encryption overhead.
-  - **HTTPS**: Slightly more server load due to encryption/decryption, minimized by modern hardware/software.
-- **SEO Ranking**: 
-  - **HTTP**: Less preferred by search engines.
-  - **HTTPS**: Preferred by search engines, improves ranking.
-- **Certificate Requirement**: 
-  - **HTTP**: No certificate needed.
-  - **HTTPS**: Requires an SSL/TLS certificate from a Certificate Authority (CA).
+
+| **Criteria**          | **HTTP**                                                | **HTTPS**                                                                                                      |
+|-----------------------|---------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| **Security**          | No encryption, not secure.                              | Encrypted, secure.                                                                                            |
+| **Performance**       | No encryption overhead.                                 | Slightly more server load due to encryption/decryption, minimized by modern hardware/software.                |
+| **SEO Ranking**       | Less preferred by search engines.                       | Preferred by search engines, improves ranking.                                                                |
+| **Certificate Requirement** | No certificate needed.                                | Requires an SSL/TLS certificate from a Certificate Authority (CA).                                             |
 
 ### Summary
 - **HTTP**: Suitable for non-sensitive, informational content.
 - **HTTPS**: Essential for secure, private communication and trusted interactions, recommended for all websites.
 
+This table format clearly compares the characteristics, use cases, and key differences between HTTP and HTTPS, making it easy to understand the strengths and appropriate usage contexts for each protocol.
 ### TCP vs. UDP
 
 | **Protocol** | **Characteristics**                                                                                                               | **Use Cases**                                                                 |
