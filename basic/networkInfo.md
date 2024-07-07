@@ -46,26 +46,23 @@ Here's a structured table summarizing the information on HTTP vs. HTTPS, TCP vs.
 |              | - **Speed**: Faster than TCP due to its simplicity and lack of retransmission mechanisms.                                         |                                                                               |
 |              | - **No Congestion Control**: Does not reduce transmission rates under network congestion.                                         |                                                                               |
 
-### Key Differences
-- **Reliability**:
-  - **TCP**: Reliable, ordered, and error-checked delivery.
-  - **UDP**: Unreliable, unordered delivery without error checking.
-- **Connection**:
-  - **TCP**: Connection-oriented, requiring a connection before data transfer.
-  - **UDP**: Connectionless, sending data without a prior connection.
-- **Speed and Overhead**:
-  - **TCP**: Slower with higher overhead due to handshaking, acknowledgements, and congestion control.
-  - **UDP**: Faster with minimal overhead, suitable for real-time applications.
-- **Data Integrity**:
-  - **TCP**: High data integrity, essential for applications like file transfers and web browsing.
-  - **UDP**: Lower data integrity, acceptable for applications like streaming where perfect accuracy is less critical.
-- **Use Case Suitability**:
-  - **TCP**: Used when data accuracy and reliability are more critical than speed.
-  - **UDP**: Used when speed is more critical than reliability, and some data loss is acceptable.
+
+## TCP vs. UDP
+
+| **Criteria**             | **TCP**                                                                                  | **UDP**                                                                 |
+|--------------------------|------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| **Reliability**          | Reliable, ordered, and error-checked delivery                                             | Unreliable, unordered delivery without error checking                   |
+| **Connection**           | Connection-oriented, requiring a connection before data transfer                         | Connectionless, sending data without a prior connection                 |
+| **Speed and Overhead**   | Slower with higher overhead due to handshaking, acknowledgements, and congestion control  | Faster with minimal overhead, suitable for real-time applications        |
+| **Data Integrity**       | High data integrity, essential for applications like file transfers and web browsing      | Lower data integrity, acceptable for applications like streaming         |
+| **Use Case Suitability** | Used when data accuracy and reliability are more critical than speed                     | Used when speed is more critical than reliability, and some data loss is acceptable |
 
 ### Summary
+
 - **TCP**: Best for applications needing reliable and accurate data transmission (e.g., web browsing, email, file transfers).
 - **UDP**: Ideal for applications needing speed where some data loss is tolerable (e.g., streaming, online gaming, VoIP).
+
+This table clearly differentiates TCP and UDP based on their reliability, connection type, speed, data integrity, and use case suitability, making it easy to understand the appropriate context for using each protocol.
 
 ### URL vs. URI vs. URN
 
