@@ -3,7 +3,7 @@
 **Overview**
 Instagram is a social networking service that allows users to upload, share, and view photos and videos. Users can share content publicly or privately and follow other users. A user's News Feed consists of top photos from the people they follow.
 
-#### Requirements and Goals
+### Requirements and Goals
 
 **Functional Requirements:**
 - Upload, download, and view photos.
@@ -64,45 +64,7 @@ Instagram is a social networking service that allows users to upload, share, and
   - **Total:** 73.73 PB
 - **Monthly Bandwidth:** 12 PB
 
-This summary provides a concise view of the storage and bandwidth requirements for an Instagram-like service.
 
-To estimate the capacity required for an Instagram-like service, we need to consider several factors including the number of users, the amount of data uploaded, storage requirements, and bandwidth needs.
-
-**Assumptions**
-- **Total Users:** 500 million
-- **Active Users:** 100 million daily active users (DAUs)
-- **Average Photos Uploaded per User per Day:** 2
-- **Average Photo Size:** 200 KB
-- **Retention Period:** Indefinite (all photos are stored permanently)
-
-**Estimations**
-1. **Photos Uploaded per Day:**
-   - 100 million DAUs * 2 photos/user/day = 200 million photos/day
-
-2. **Storage Requirement per Day:**
-   - 200 million photos/day * 200 KB/photo = 40 TB/day
-
-3. **Storage Requirement per Year:**
-   - 40 TB/day * 365 days/year = 14,600 TB/year ≈ 14.6 PB/year
-
-4. **Total Storage for 5 Years:**
-   - 14.6 PB/year * 5 years = 73 PB
-
-5. **Bandwidth Requirement:**
-   - Assume each photo is downloaded 10 times on average.
-   - Total downloads per day: 200 million photos/day * 10 = 2 billion downloads/day
-   - Bandwidth required for downloads per day: 2 billion photos/day * 200 KB/photo = 400 TB/day
-
-6. **Monthly Bandwidth Requirement:**
-   - 400 TB/day * 30 days = 12 PB/month
-
-**Summary**
-- **Daily Uploads:** 200 million photos
-- **Daily Storage:** 40 TB
-- **Annual Storage:** 14.6 PB
-- **5-Year Storage:** 73 PB
-- **Daily Bandwidth for Downloads:** 400 TB
-- **Monthly Bandwidth:** 12 PB
 
 
 
