@@ -304,37 +304,6 @@ Would you like for me to generate a downloadable Word document of these notes?
 
 
 
-**Summary: Dynamo**
-**Overview**:
-- **Purpose**: Highly available key-value store developed by Amazon.
-- **Design Philosophy**: Sacrifices strong consistency for high availability.
-
-**Key Features**:
-- **Peer-to-Peer System**: No leader or follower nodes; all nodes are equal.
-- **Consistent Hashing**: Distributes data across nodes automatically.
-- **Data Replication**: Uses sloppy quorum for fault tolerance and redundancy.
-- **Conflict Resolution**: Employs Merkle trees for anti-entropy and vector clocks for reconciliation.
-- **Inter-Node Communication**: Utilizes the gossip protocol.
-- **Always Writeable**: Uses hinted handoff to handle writes during node failures.
-
-**Techniques and Advantages**:
-
-| Problem | Technique | Advantage |
-|---------|-----------|-----------|
-| Partitioning | Consistent Hashing | Incremental Scalability |
-| High availability for writes | Vector clocks with reconciliation during reads | Decoupled version size from update rates |
-| Handling temporary failures | Sloppy Quorum and Hinted Handoff | High availability and durability when replicas are unavailable |
-| Recovering from permanent failures | Anti-entropy using Merkle trees | Synchronizes divergent replicas in the background |
-| Membership and failure detection | Gossip protocol | Symmetry and avoidance of centralized monitoring |
-
-**System Design Patterns**:
-- **Consistent Hashing**: Distributes data efficiently.
-- **Quorum**: Ensures data consistency with configurable write success criteria.
-- **Gossip Protocol**: Maintains cluster state information.
-- **Hinted Handoff**: Handles writes for failing nodes.
-- **Read Repair**: Updates nodes with the latest data version.
-- **Vector Clocks**: Reconciles concurrent updates.
-- **Merkle Trees**: Resolves conflicts and ensures data consistency in the background.
 
 Would you like for me to generate a downloadable Word document of these notes?
 
@@ -370,3 +339,37 @@ Would you like for me to generate a downloadable Word document of these notes?
    - Node D becomes aware of Nodes A, B, and C, avoiding logical partition.
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/something.svg)
+
+
+**Summary: Dynamo**
+
+**Overview**:
+- **Purpose**: Highly available key-value store developed by Amazon.
+- **Design Philosophy**: Sacrifices strong consistency for high availability.
+
+**Key Features**:
+- **Peer-to-Peer System**: No leader or follower nodes; all nodes are equal.
+- **Consistent Hashing**: Distributes data across nodes automatically.
+- **Data Replication**: Uses sloppy quorum for fault tolerance and redundancy.
+- **Conflict Resolution**: Employs Merkle trees for anti-entropy and vector clocks for reconciliation.
+- **Inter-Node Communication**: Utilizes the gossip protocol.
+- **Always Writeable**: Uses hinted handoff to handle writes during node failures.
+
+**Techniques and Advantages**:
+
+| Problem | Technique | Advantage |
+|---------|-----------|-----------|
+| Partitioning | Consistent Hashing | Incremental Scalability |
+| High availability for writes | Vector clocks with reconciliation during reads | Decoupled version size from update rates |
+| Handling temporary failures | Sloppy Quorum and Hinted Handoff | High availability and durability when replicas are unavailable |
+| Recovering from permanent failures | Anti-entropy using Merkle trees | Synchronizes divergent replicas in the background |
+| Membership and failure detection | Gossip protocol | Symmetry and avoidance of centralized monitoring |
+
+**System Design Patterns**:
+- **Consistent Hashing**: Distributes data efficiently.
+- **Quorum**: Ensures data consistency with configurable write success criteria.
+- **Gossip Protocol**: Maintains cluster state information.
+- **Hinted Handoff**: Handles writes for failing nodes.
+- **Read Repair**: Updates nodes with the latest data version.
+- **Vector Clocks**: Reconciles concurrent updates.
+- **Merkle Trees**: Resolves conflicts and ensures data consistency in the background.
