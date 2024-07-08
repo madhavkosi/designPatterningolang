@@ -316,3 +316,73 @@ Would you like for me to generate a downloadable Word document of these notes?
 Would you like for me to generate a downloadable Word document of these notes?
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/merkeltree.svg)
+
+
+
+### Summary: Dynamo
+
+**Overview**:
+- **Purpose**: Highly available key-value store developed by Amazon.
+- **Design Philosophy**: Sacrifices strong consistency for high availability.
+
+**Key Features**:
+- **Peer-to-Peer System**: No leader or follower nodes; all nodes are equal.
+- **Consistent Hashing**: Distributes data across nodes automatically.
+- **Data Replication**: Uses sloppy quorum for fault tolerance and redundancy.
+- **Conflict Resolution**: Employs Merkle trees for anti-entropy and vector clocks for reconciliation.
+- **Inter-Node Communication**: Utilizes the gossip protocol.
+- **Always Writeable**: Uses hinted handoff to handle writes during node failures.
+
+**Techniques and Advantages**:
+
+| Problem | Technique | Advantage |
+|---------|-----------|-----------|
+| Partitioning | Consistent Hashing | Incremental Scalability |
+| High availability for writes | Vector clocks with reconciliation during reads | Decoupled version size from update rates |
+| Handling temporary failures | Sloppy Quorum and Hinted Handoff | High availability and durability when replicas are unavailable |
+| Recovering from permanent failures | Anti-entropy using Merkle trees | Synchronizes divergent replicas in the background |
+| Membership and failure detection | Gossip protocol | Symmetry and avoidance of centralized monitoring |
+
+**System Design Patterns**:
+- **Consistent Hashing**: Distributes data efficiently.
+- **Quorum**: Ensures data consistency with configurable write success criteria.
+- **Gossip Protocol**: Maintains cluster state information.
+- **Hinted Handoff**: Handles writes for failing nodes.
+- **Read Repair**: Updates nodes with the latest data version.
+- **Vector Clocks**: Reconciles concurrent updates.
+- **Merkle Trees**: Resolves conflicts and ensures data consistency in the background.
+
+Would you like for me to generate a downloadable Word document of these notes?
+
+
+### Very Short Notes on Gossip Protocol in Dynamo with Example
+
+**Gossip Protocol:**
+- **Purpose**: Keeps track of the state of all nodes in a Dynamo cluster.
+- **Mechanism**: Nodes periodically exchange state information with random peers.
+- **Frequency**: Each node initiates a gossip round every second.
+- **Benefits**: Ensures all nodes quickly learn about each other's state, minimizing data transfer and enhancing cluster coherence.
+
+**Example:**
+1. **Initial State**: Nodes A, B, and C are part of the Dynamo cluster.
+2. **Gossip Round**: 
+   - Node A gossips with Node B, sharing its state and the states it knows.
+   - Node C gossips with Node A, learning the states of Nodes A and B.
+3. **Propagation**: 
+   - Node B then gossips with Node C, completing the state exchange cycle.
+   - Within a few rounds, all nodes are aware of each other's states.
+
+**Seed Nodes:**
+- **Function**: Prevent logical partitions by serving as known points of contact for new nodes.
+- **Configuration**: Obtained from static configuration or configuration service.
+- **Role**: Ensure all nodes are aware of each other and reconcile membership changes.
+
+**Example:**
+1. **New Node Joins**:
+   - Administrator adds Node D to the cluster.
+   - Node D contacts a seed node (e.g., Node A) to join the ring.
+2. **Seed Node Interaction**:
+   - Node A gossips with Node D, updating Node D with the current cluster state.
+   - Node D becomes aware of Nodes A, B, and C, avoiding logical partition.
+
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/something.svg)
