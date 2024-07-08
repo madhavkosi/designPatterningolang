@@ -62,8 +62,7 @@ Dynamo is a Distributed Hash Table (DHT) replicated across a cluster for high av
 
 A naive approach involves using a hash function to map data keys to nodes using modulo operation. However, this approach remaps all keys when nodes change, causing significant data movement.
 
-### Consistent Hashing
-
+**Consistent Hashing**
 **Consistent Hashing** solves this by mapping data to a ring structure where each node is assigned a range of data. This allows only a small set of keys to move when nodes are added or removed. In this system:
 
 - Each node in the ring is assigned a token that defines its range.
@@ -71,8 +70,7 @@ A naive approach involves using a hash function to map data keys to nodes using 
 
 For example, with nodes having tokens 1, 26, 51, and 76, data is distributed accordingly. When nodes change, only the next node in the ring is affected.
 
-### Virtual Nodes (Vnodes)
-
+**Virtual Nodes (Vnodes)**
 **Virtual Nodes** further optimize data distribution. Instead of assigning a single range to each node, the range is divided into smaller subranges (Vnodes). Each physical node manages multiple Vnodes, which:
 
 - **Balance Load**: Evenly distribute data and load across nodes, making the system more resilient to node changes.
@@ -121,7 +119,7 @@ Due to the nature of sloppy quorum:
 - **Conflicts**: Multiple conflicting values for the same key can exist, leading to potential stale or conflicting reads.
 - **Vector Clocks**: Dynamo uses vector clocks to resolve these conflicts, allowing the system to manage and reconcile divergent data effectively.
 
-### Summary
+**Summary**
 Dynamo's replication strategy ensures high availability and durability through:
 - Optimistic replication with asynchronous updates.
 - Consistent hashing to distribute data and handle node failures.
@@ -133,7 +131,7 @@ Dynamo's replication strategy ensures high availability and durability through:
 
 ---
 
-### Conflict Resolution in Dynamo: A Detailed Exploration
+### Conflict Resolution in Dynamo
 
 **Clock Skew**
 **Clock skew** is the variance in the time kept by different clocks in a distributed system. Here’s how it can cause inconsistencies:
@@ -141,16 +139,14 @@ Dynamo's replication strategy ensures high availability and durability through:
 - **Single Machine**: Assumes a linear progression of time (t1 < t2), enabling straightforward versioning.
 - **Distributed System**: Different machines have unsynchronized clocks, so time t on one machine doesn’t necessarily happen before time t+1 on another. This makes relying on wall clock timestamps unreliable for versioning.
 
-### Vector Clocks
-
+**Vector Clocks**
 Instead of wall clock timestamps, Dynamo uses **vector clocks** to track the causality between different versions of a data item. Here’s how they work:
 
 1. **Structure**: A vector clock is a list of (node, counter) pairs.
 2. **Versioning**: Each version of a data item is associated with a vector clock.
 3. **Causality**: By comparing vector clocks, the system can determine if one version is an ancestor of another or if they are concurrent and conflicting.
 
-### How Vector Clocks Handle Conflicts
-
+**How Vector Clocks Handle Conflicts**
 **Example Scenario**
 1. **Initial Write**:
    - **Server A** writes key `k1` with value `foo`, version `[A:1]`. This is replicated to **Server B**.
@@ -183,8 +179,7 @@ Instead of wall clock timestamps, Dynamo uses **vector clocks** to track the cau
 3. **Truncation**:
    - Dynamo truncates vector clocks when they grow too large. This is a potential issue for maintaining eventual consistency if older vector clocks necessary for reconciliation are deleted.
 
-### Conflict-Free Replicated Data Types (CRDTs)
-
+**Conflict-Free Replicated Data Types (CRDTs)**
 **CRDTs** are designed to resolve conflicts automatically, ensuring strong eventual consistency. Here’s how they work:
 
 1. **Modeling Data**: Data is modeled such that concurrent changes can be applied in any order, yielding the same result.
@@ -192,8 +187,7 @@ Instead of wall clock timestamps, Dynamo uses **vector clocks** to track the cau
    - Adding items A and B can be done in any order. Both additions result in a cart containing A and B.
    - Removing items is modeled as a negative add operation.
 
-### Last-Write-Wins (LWW)
-
+**Last-Write-Wins (LWW)**
 Dynamo and systems like Apache Cassandra often use a simpler, though less reliable, conflict resolution strategy: **last-write-wins** (LWW):
 
 1. **Wall Clock Timestamp**: Conflicts are resolved by choosing the version with the most recent timestamp.
@@ -310,8 +304,7 @@ Would you like for me to generate a downloadable Word document of these notes?
 
 
 
-### Summary: Dynamo
-
+**Summary: Dynamo**
 **Overview**:
 - **Purpose**: Highly available key-value store developed by Amazon.
 - **Design Philosophy**: Sacrifices strong consistency for high availability.
@@ -346,7 +339,7 @@ Would you like for me to generate a downloadable Word document of these notes?
 Would you like for me to generate a downloadable Word document of these notes?
 
 
-### Very Short Notes on Gossip Protocol in Dynamo with Example
+### Gossip Protocol in Dynamo with Example
 
 **Gossip Protocol:**
 - **Purpose**: Keeps track of the state of all nodes in a Dynamo cluster.
