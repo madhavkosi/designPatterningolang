@@ -18,6 +18,13 @@ Dynamo, not to be confused with DynamoDB, is a distributed key-value storage sys
 #### Dynamo's Use Cases
 Dynamo is ideal for applications where strong consistency is not critical. It supports strong consistency but at a performance cost. Amazon uses Dynamo for services requiring high reliability and flexible trade-offs between availability, consistency, cost-effectiveness, and performance. It provides a simple primary-key interface, making it suitable for services that would otherwise be inefficient with relational databases.
 
+#### System APIs
+Dynamo clients use `put()` and `get()` operations to write and read data:
+
+- **get(key)**: Retrieves the object associated with the given key, potentially returning conflicting versions and metadata context.
+- **put(key, context, object)**: Writes the object associated with the given key to storage nodes, using context to verify object validity.
+
+Both objects and keys are treated as byte arrays, with keys hashed using MD5 to generate a 128-bit identifier for storage node allocation.
 
 ### Dynamo: High-Level Architecture
 
@@ -42,13 +49,6 @@ Dynamo is a Distributed Hash Table (DHT) replicated across a cluster for high av
 #### 6. Conflict Resolution and Handling Permanent Failures
 - **Vector Clocks**: Tracks value history to reconcile conflicts during reads.
 - **Merkle Trees**: Used as an anti-entropy mechanism to handle permanent failures and ensure data consistency in the background.
-#### System APIs
-Dynamo clients use `put()` and `get()` operations to write and read data:
-
-- **get(key)**: Retrieves the object associated with the given key, potentially returning conflicting versions and metadata context.
-- **put(key, context, object)**: Writes the object associated with the given key to storage nodes, using context to verify object validity.
-
-Both objects and keys are treated as byte arrays, with keys hashed using MD5 to generate a 128-bit identifier for storage node allocation.
 
 ## Design Scope for Key-Value Store
 
