@@ -81,6 +81,8 @@ For example, with nodes having tokens 1, 26, 51, and 76, data is distributed acc
 
 Vnodes enhance the consistent hashing scheme by ensuring smoother rebalancing and reducing the impact on replica nodes during node rebuilds. This approach maintains efficient data management in dynamic and large-scale distributed systems.
 
+--- 
+
 ### Dynamo Replication and Handling Failures: A Comprehensive Overview
 
 #### Optimistic Replication
@@ -127,6 +129,8 @@ Dynamo's replication strategy ensures high availability and durability through:
 - Hinted handoff to accept writes even when nodes are unreachable, ensuring eventual consistency.
 - Conflict resolution using vector clocks to handle data divergence.
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/replication.svg)
+
+---
 
 ## Design Scope for Key-Value Store
 
