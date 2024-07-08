@@ -5,21 +5,43 @@
 
 Here are the corrected numbered sections based on your list:
 
-1. [CAP Theorem Overview](#cap-theorem-overview)
-2. [Introduction to Bloom Filters](#introduction-to-bloom-filters)
-3. [Difference Between Long-Polling, WebSockets, and Server-Sent Events](#difference-between-long-polling-websockets-and-server-sent-events)
+# Distributed Systems Concepts and Applications
+
+## Table of Contents
+
+1. [CAP Theorem](#cap-theorem)
+2. [Bloom Filters](#bloom-filters)
+3. [Long-Polling, WebSockets, and Server-Sent Events](#long-polling-websockets-and-server-sent-events)
 4. [Quorum in Distributed Systems](#quorum-in-distributed-systems)
-5. [Managing Server Failures in Distributed Systems](#managing-server-failures-in-distributed-systems)
-6. [Ensuring Data Integrity in Distributed Systems](#ensuring-data-integrity-in-distributed-systems)
+5. [HeartBeat](#heartbeat)
+6. [CheckSum](#checksum)
 7. [Leader and Follower Pattern in Distributed Systems](#leader-and-follower-pattern-in-distributed-systems)
-8. [Consistent Hashing for Horizontal Scaling](#consistent-hashing-for-horizontal-scaling)
+8. [Consistent Hashing](#consistent-hashing)
 9. [Proxy Server](#proxy-server)
 10. [Caching](#caching)
 11. [Messaging System](#messaging-system)
-12. [API Gateway](#api-gateway)
-13. [DNS](#dns)
-14. [CDN](#cdn)
-15. [Load Balancing](#load-balancing)
+    - [Introduction to Messaging System](#introduction-to-messaging-system)
+    - [Introduction to Kafka](#introduction-to-kafka)
+    - [Messaging Patterns](#messaging-patterns)
+    - [Popular Messaging Queue Systems](#popular-messaging-queue-systems)
+12. [DNS](#dns)
+13. [CDN](#cdn)
+14. [Load Balancing](#load-balancing)
+15. [API Gateway](#api-gateway)
+16. [Database (SQL vs NoSQL)](#database-sql-vs-nosql)
+17. [Data Replication vs. Data Mirroring](#data-replication-vs-data-mirroring)
+18. [Batch Processing vs. Stream Processing](#batch-processing-vs-stream-processing)
+19. [Scalability Overview](#scalability-overview)
+20. [Availability Overview](#availability-overview)
+21. [Latency and Performance in Distributed Systems](#latency-and-performance-in-distributed-systems)
+22. [Resilience and Error Handling in Distributed Systems](#resilience-and-error-handling-in-distributed-systems)
+23. [Fault Tolerance vs. High Availability](#fault-tolerance-vs-high-availability)
+24. [Introduction to Data Partitioning](#introduction-to-data-partitioning)
+    - [Partitioning Methods](#partitioning-methods)
+    - [Data Sharding Techniques](#data-sharding-techniques)
+25. [Key Points](#key-points)
+
+
 
 ### CAP Theorem 
 **Components of CAP Theorem**
