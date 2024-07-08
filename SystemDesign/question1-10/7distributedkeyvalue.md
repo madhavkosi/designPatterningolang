@@ -1,24 +1,24 @@
 ### Dynamo: Introduction(distributed key value store)
 
-#### Goal
+**Goal**
 The goal of Dynamo is to design a distributed key-value store that is highly available, scalable, and decentralized. 
 
-#### What is Dynamo?
+**What is Dynamo?**
 Dynamo is a highly available key-value store developed by Amazon for internal use. It caters to services like shopping carts and bestseller lists, which require only primary-key access to data. It offers a flexible design that lets applications choose their desired levels of availability and consistency, avoiding the limitations of traditional relational databases in terms of scalability and availability.
 
-#### Background
+**Background**
 Dynamo, not to be confused with DynamoDB, is a distributed key-value storage system designed for high availability and partition tolerance at the expense of strong consistency. It falls within the AP category of the CAP theorem. The primary motivation was to ensure high availability, as it correlates directly with customer satisfaction. Dynamo's design has inspired many NoSQL databases, including Cassandra, Riak, and Voldemort.
 
-#### Design Goals
+**Design Goals**
 1. **Highly Available**: Ensures the system is always on, even if imperfect.
 2. **Scalable**: Adding machines should proportionally improve system performance.
 3. **Decentralized**: Avoids single points of failure and performance bottlenecks.
 4. **Eventually Consistent**: Data is replicated optimistically, with inconsistencies resolved later to maintain high availability.
 
-#### Dynamo's Use Cases
+**Dynamo's Use Cases**
 Dynamo is ideal for applications where strong consistency is not critical. It supports strong consistency but at a performance cost. Amazon uses Dynamo for services requiring high reliability and flexible trade-offs between availability, consistency, cost-effectiveness, and performance. It provides a simple primary-key interface, making it suitable for services that would otherwise be inefficient with relational databases.
 
-#### System APIs
+**System APIs**
 Dynamo clients use `put()` and `get()` operations to write and read data:
 
 - **get(key)**: Retrieves the object associated with the given key, potentially returning conflicting versions and metadata context.
@@ -29,25 +29,25 @@ Both objects and keys are treated as byte arrays, with keys hashed using MD5 to 
 ---
 ### Dynamo: High-Level Architecture
 
-#### Introduction
+**Introduction**
 Dynamo is a Distributed Hash Table (DHT) replicated across a cluster for high availability and fault tolerance.
 
-#### 1. Data Distribution
+**1. Data Distribution**
 - **Consistent Hashing**: Distributes data among nodes, facilitating easy addition or removal of nodes.
 
-#### 2. Data Replication and Consistency
+**2. Data Replication and Consistency**
 - **Eventual Consistency**: Data is replicated optimistically, ensuring high availability.
 
-#### 3. Handling Temporary Failures
+**3. Handling Temporary Failures**
 - **Sloppy Quorum**: Replicates data to a subset of nodes to handle temporary failures, rather than requiring a strict majority.
 
-#### 4. Inter-node Communication and Failure Detection
+**4. Inter-node Communication and Failure Detection**
 - **Gossip Protocol**: Nodes communicate and maintain cluster state using the gossip protocol.
 
-#### 5. High Availability
+**5. High Availability**
 - **Hinted Handoff**: Ensures the system remains writable by temporarily handing off data to other nodes when the primary node is unavailable.
 
-#### 6. Conflict Resolution and Handling Permanent Failures
+**6. Conflict Resolution and Handling Permanent Failures**
 - **Vector Clocks**: Tracks value history to reconcile conflicts during reads.
 - **Merkle Trees**: Used as an anti-entropy mechanism to handle permanent failures and ensure data consistency in the background.
 
@@ -85,37 +85,37 @@ Vnodes enhance the consistent hashing scheme by ensuring smoother rebalancing an
 
 ### Dynamo Replication and Handling Failures: A Comprehensive Overview
 
-#### Optimistic Replication
+**Optimistic Replication**
 Dynamo uses a method called optimistic replication to ensure high availability and durability. Here's how it works:
 - **Replication Factor**: Each data item is replicated on multiple nodes, where the number of replicas is defined by the replication factor.
 - **Coordinator Node**: Each key is assigned to a coordinator node, which is the first node in the hash range.
 - **Replication Process**: The coordinator node stores the data locally and then replicates it to its `N-1` clockwise successor nodes on the ring.
 - **Asynchronous Replication**: This replication happens asynchronously in the background, supporting an eventually consistent model. This means that replicas are not guaranteed to be identical at all times.
 
-#### Consistent Hashing
+**Consistent Hashing**
 Dynamo employs consistent hashing to distribute data across nodes:
 - **Data Ownership**: Each node is responsible for a specific range of data.
 - **Replication**: Each data item is replicated on `N` nodes. If one node is down, other replicas can handle the queries.
 - **Preference List**: This list contains the nodes responsible for storing a particular key, including extra nodes to account for failures and ensuring only distinct physical nodes are included.
 
-#### Sloppy Quorum
+**Sloppy Quorum**
 Dynamo does not enforce strict quorum requirements to enhance availability:
 - **Quorum Requirements**: Traditional quorum systems can become unavailable during failures. Dynamo uses a sloppy quorum instead.
 - **Operation on Healthy Nodes**: Read/write operations are performed on the first `N` healthy nodes from the preference list, which might not be the first `N` nodes encountered on the hash ring.
 
-#### Example Scenario
+**Example Scenario**
 In a Dynamo setup with replication factor `N = 3`:
 - If Server 1 is down during a write operation, the data will be stored on Server 4 instead.
 - This transfer ensures that the system remains available even during temporary failures.
 
-#### Hinted Handoff
+**Hinted Handoff**
 Hinted handoff is a mechanism to handle node unavailability:
 - **Temporary Storage**: When a node is unreachable, another node temporarily stores the writes.
 - **Metadata Hint**: The replica contains metadata indicating the intended recipient.
 - **Periodic Scans**: Nodes periodically scan their local database to check if the intended recipient has recovered.
 - **Data Transfer**: Once the original node is back online, the temporarily stored data is transferred to it, and the holding node can delete the local copy.
 
-#### Conflict Resolution
+**Conflict Resolution**
 Due to the nature of sloppy quorum:
 - **Divergence**: Data can diverge, with concurrent writes being accepted by non-overlapping sets of nodes.
 - **Conflicts**: Multiple conflicting values for the same key can exist, leading to potential stale or conflicting reads.
@@ -135,8 +135,7 @@ Dynamo's replication strategy ensures high availability and durability through:
 
 ### Conflict Resolution in Dynamo: A Detailed Exploration
 
-#### Clock Skew
-
+**Clock Skew**
 **Clock skew** is the variance in the time kept by different clocks in a distributed system. Here’s how it can cause inconsistencies:
 
 - **Single Machine**: Assumes a linear progression of time (t1 < t2), enabling straightforward versioning.
@@ -152,8 +151,7 @@ Instead of wall clock timestamps, Dynamo uses **vector clocks** to track the cau
 
 ### How Vector Clocks Handle Conflicts
 
-#### Example Scenario
-
+**Example Scenario**
 1. **Initial Write**:
    - **Server A** writes key `k1` with value `foo`, version `[A:1]`. This is replicated to **Server B**.
 
@@ -175,8 +173,7 @@ Instead of wall clock timestamps, Dynamo uses **vector clocks** to track the cau
    
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keystore.svg)
 
-#### Conflict Resolution Process
-
+**Conflict Resolution Process**
 1. **Client-Side Reconciliation**:
    - The client receives conflicting versions and must merge them. For example, it might decide which value to keep based on application-specific logic.
 
@@ -210,8 +207,7 @@ Dynamo and systems like Apache Cassandra often use a simpler, though less reliab
 
 Dynamo handles `get()` and `put()` requests through a well-defined process designed to ensure availability, durability, and consistency. Here’s a detailed look into how Dynamo manages these operations, including strategies for choosing the coordinator node, the consistency protocol, and the specifics of the `put()` and `get()` processes.
 
-#### Strategies for Choosing the Coordinator Node
-
+**Strategies for Choosing the Coordinator Node**
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keystore2.svg)
 
 Dynamo clients can use two strategies to choose a node for their requests:
@@ -226,8 +222,7 @@ Dynamo clients can use two strategies to choose a node for their requests:
    - **Advantages**: Lower latency by directly contacting the node holding the required data.
    - **Disadvantages**: Less control over load distribution and request handling by Dynamo.
 
-#### Consistency Protocol
-
+**Consistency Protocol**
 Dynamo uses a quorum-like system for its consistency protocol, defined by parameters \(N\), \(R\), and \(W\):
 - **\(N\)**: Number of replicas.
 - **\(R\)**: Minimum number of nodes that must participate in a successful read.
@@ -240,22 +235,19 @@ Common configurations include:
 
 The latency of operations depends on the slowest replica involved. Lower values of \(R\) and \(W\) can improve latency but increase the risk of inconsistency and reduce durability.
 
-#### put() Process
-
+**put() Process**
 1. **Version and Vector Clock**: The coordinator generates a new data version and updates the vector clock.
 2. **Local Storage**: The coordinator saves the new data locally.
 3. **Replication**: The coordinator sends the write request to \(W\) highest-ranked healthy nodes from the preference list.
 4. **Confirmation**: The `put()` operation is considered successful after receiving \(W\) confirmations.
 
-#### get() Process
-
+**get() Process**
 1. **Request Data**: The coordinator requests the data version from \(R\) highest-ranked healthy nodes from the preference list.
 2. **Wait for Replies**: The coordinator waits until \(R\) replies are received.
 3. **Causal Versions**: The coordinator uses vector clocks to handle causal data versions.
 4. **Return Data**: All relevant data versions are returned to the caller.
 
-#### Request Handling through State Machine
-
+**Request Handling through State Machine**
 Each client request results in creating a state machine on the node that received the client request. The state machine handles:
 - Identifying responsible nodes for a key.
 - Sending requests and waiting for responses.
@@ -270,13 +262,12 @@ For read operations:
 5. **Syntactic Reconciliation**: Generate an opaque write context if versioning is enabled.
 6. **Read Repair**: Update nodes with the latest version if stale versions were returned.
 
-#### Load Distribution
-
+**Load Distribution**
 To avoid uneven load distribution:
 - Any of the top \(N\) nodes in the preference list can coordinate writes.
 - The coordinator for a write operation is often the node that responded fastest to the preceding read operation, increasing the chances of achieving "read-your-writes" consistency.
 
-### Summary
+**Summary**
 
 Dynamo's approach to `put()` and `get()` operations ensures high availability and eventual consistency through:
 - Multiple strategies for choosing the coordinator node.
