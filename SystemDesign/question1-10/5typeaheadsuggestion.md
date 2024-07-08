@@ -327,7 +327,7 @@ There are two primary methods for updating the trie:
 ---
 
 
-### Typeahead Client Optimizations**
+### Typeahead Client Optimizations
 1. **Debounce Requests**: Wait 50ms after user stops typing before hitting the server.
 2. **Cancel In-Progress Requests**: Cancel requests if the user continues typing.
 3. **Character Threshold**: Wait for a few characters before making a request.
