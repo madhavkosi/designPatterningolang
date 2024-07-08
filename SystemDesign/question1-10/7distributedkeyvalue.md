@@ -206,6 +206,85 @@ Dynamo and systems like Apache Cassandra often use a simpler, though less reliab
 
 ---
 
+### The Life of Dynamo’s put() & get() Operations
+
+Dynamo handles `get()` and `put()` requests through a well-defined process designed to ensure availability, durability, and consistency. Here’s a detailed look into how Dynamo manages these operations, including strategies for choosing the coordinator node, the consistency protocol, and the specifics of the `put()` and `get()` processes.
+
+#### Strategies for Choosing the Coordinator Node
+
+Dynamo clients can use two strategies to choose a node for their requests:
+
+1. **Load Balancer Strategy**:
+   - **Description**: Clients route their requests through a generic load balancer.
+   - **Advantages**: Scalability and loose coupling.
+   - **Disadvantages**: The load balancer might forward the request to a node not in the preference list, causing an extra hop.
+
+2. **Partition-Aware Client Library**:
+   - **Description**: Clients use a library that routes requests directly to the appropriate coordinator node.
+   - **Advantages**: Lower latency by directly contacting the node holding the required data.
+   - **Disadvantages**: Less control over load distribution and request handling by Dynamo.
+
+#### Consistency Protocol
+
+Dynamo uses a quorum-like system for its consistency protocol, defined by parameters \(N\), \(R\), and \(W\):
+- **\(N\)**: Number of replicas.
+- **\(R\)**: Minimum number of nodes that must participate in a successful read.
+- **\(W\)**: Minimum number of nodes that must participate in a successful write.
+
+Common configurations include:
+- \(N = 3\), \(R = 2\), \(W = 2\)
+- \(N = 3\), \(R = 3\), \(W = 1\): Fast reads, slow writes, not very durable.
+- \(N = 3\), \(R = 1\), \(W = 3\): Fast writes, slow reads, durable.
+
+The latency of operations depends on the slowest replica involved. Lower values of \(R\) and \(W\) can improve latency but increase the risk of inconsistency and reduce durability.
+
+#### put() Process
+
+1. **Version and Vector Clock**: The coordinator generates a new data version and updates the vector clock.
+2. **Local Storage**: The coordinator saves the new data locally.
+3. **Replication**: The coordinator sends the write request to \(W\) highest-ranked healthy nodes from the preference list.
+4. **Confirmation**: The `put()` operation is considered successful after receiving \(W\) confirmations.
+
+#### get() Process
+
+1. **Request Data**: The coordinator requests the data version from \(R\) highest-ranked healthy nodes from the preference list.
+2. **Wait for Replies**: The coordinator waits until \(R\) replies are received.
+3. **Causal Versions**: The coordinator uses vector clocks to handle causal data versions.
+4. **Return Data**: All relevant data versions are returned to the caller.
+
+#### Request Handling through State Machine
+
+Each client request results in creating a state machine on the node that received the client request. The state machine handles:
+- Identifying responsible nodes for a key.
+- Sending requests and waiting for responses.
+- Potential retries.
+- Processing replies and packaging the response.
+
+For read operations:
+1. **Send Read Requests**: To the nodes.
+2. **Wait for Responses**: Until the minimum required responses are received.
+3. **Fail Request**: If too few replies are received within the time limit.
+4. **Gather Data Versions**: And determine which ones to return.
+5. **Syntactic Reconciliation**: Generate an opaque write context if versioning is enabled.
+6. **Read Repair**: Update nodes with the latest version if stale versions were returned.
+
+#### Load Distribution
+
+To avoid uneven load distribution:
+- Any of the top \(N\) nodes in the preference list can coordinate writes.
+- The coordinator for a write operation is often the node that responded fastest to the preceding read operation, increasing the chances of achieving "read-your-writes" consistency.
+
+### Summary
+
+Dynamo's approach to `put()` and `get()` operations ensures high availability and eventual consistency through:
+- Multiple strategies for choosing the coordinator node.
+- A quorum-like consistency protocol with configurable \(N\), \(R\), and \(W\) parameters.
+- Detailed processes for handling writes (`put()`) and reads (`get()`).
+- The use of state machines for efficient request handling and consistency maintenance.
+- Optimizations for load distribution and maintaining data consistency.
+
+Would you like for me to generate a downloadable Word document of these notes?
+
 ## Design Scope for Key-Value Store
 
 ### Problem Understanding
