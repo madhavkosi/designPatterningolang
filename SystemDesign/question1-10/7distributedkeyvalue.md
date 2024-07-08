@@ -286,3 +286,33 @@ Dynamo's approach to `put()` and `get()` operations ensures high availability an
 - Optimizations for load distribution and maintaining data consistency.
 
 Would you like for me to generate a downloadable Word document of these notes?
+
+
+### Anti-Entropy Through Merkle Trees in Dynamo
+
+**Merkle Trees:**
+- **Structure**: Binary tree of hashes; each internal node is the hash of its children, each leaf node is the hash of a data portion.
+- **Comparison**: 
+  1. Compare root hashes of two trees.
+  2. If equal, datasets are identical.
+  3. If not, recursively compare child nodes.
+- **Efficiency**: Minimizes data transfer by identifying and synchronizing only differing parts.
+- **Independence**: Each branch can be checked independently, reducing disk reads.
+
+**Advantages:**
+- **Data Transfer Minimization**: Only differing data parts are exchanged.
+- **Efficient Disk Reads**: Reduced number of disk reads during synchronization.
+
+**Disadvantages:**
+- **Recalculation**: Required when nodes join or leave, changing key ranges.
+- **Resource Intensive**: Building and maintaining trees can be demanding.
+
+**Anti-Entropy Process:**
+1. **Build Merkle Trees**: Each node creates a Merkle tree for its data range.
+2. **Periodic Comparison**: Nodes exchange and compare root hashes.
+3. **Identify Differences**: Recursively compare differing branches.
+4. **Synchronize Data**: Exchange only the differing data parts to achieve consistency.
+
+Would you like for me to generate a downloadable Word document of these notes?
+
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/merkeltree.svg)
