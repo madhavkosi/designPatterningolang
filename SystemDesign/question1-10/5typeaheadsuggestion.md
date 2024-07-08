@@ -264,12 +264,12 @@ In the improved design of the query service, several optimizations ensure effici
 
 **Detailed Example and Figures**
 
-- **Figure 11: Improved Query Service Design:**
+- **Improved Query Service Design:**
   - **Load Balancer:** Distributes incoming queries evenly across API servers.
   - **API Servers:** Handle requests by fetching data from the Trie Cache.
   - **Trie Cache:** Maintains frequently accessed trie data in memory for fast retrieval.
 
-- **Figure 12: Browser Caching Example:**
+- **Browser Caching Example:**
   - **Cache-Control Header:** Example from Google search engine showing `cache-control: private, max-age=3600`, indicating a cache duration of one hour for autocomplete suggestions.
 
 By implementing these optimizations, the query service can achieve high-speed performance, ensuring that autocomplete suggestions are provided to users promptly and efficiently. This design leverages caching at both the server and browser levels, as well as efficient data handling strategies to maintain scalability and performance.
@@ -381,3 +381,31 @@ Advanced sharding and a Shard Map Manager ensure even data distribution and scal
 
 **Conclusion:**
 Extending the system for multiple languages and real-time queries involves using Unicode, country-specific tries, CDN storage, and stream processing technologies to handle continuous data and trending search queries effectively.
+
+### Typeahead Client Optimizations**
+1. **Debounce Requests**: Wait 50ms after user stops typing before hitting the server.
+2. **Cancel In-Progress Requests**: Cancel requests if the user continues typing.
+3. **Character Threshold**: Wait for a few characters before making a request.
+4. **Pre-Fetch Data**: Pre-fetch common queries from the server.
+5. **Local Storage**: Store recent suggestions locally for reuse.
+6. **Early Server Connection**: Establish server connection as soon as the website opens.
+7. **Cache and CDNs**: Push server cache to CDNs and ISPs for efficiency.
+
+
+### Data Partitioning Strategies**
+
+**1. Range-Based Partitioning:**
+- **Concept**: Store phrases in partitions based on their first letter (e.g., 'A', 'B', etc.).
+- **Advantages**: Predictable storage and search.
+- **Disadvantages**: Can lead to unbalanced servers if some letters have significantly more terms.
+
+**2. Capacity-Based Partitioning:**
+- **Concept**: Partition the trie based on server memory capacity.
+- **Example**: Server 1 stores 'A' to 'AABC', Server 2 stores 'AABD' to 'BXA', etc.
+- **Advantages**: Ensures partitions fit within server capacity.
+- **Disadvantages**: Requires querying multiple servers for overlapping ranges, potential hotspots for popular terms.
+
+**3. Hash-Based Partitioning:**
+- **Concept**: Hash each term to determine its server.
+- **Advantages**: Distributes terms randomly, minimizing hotspots.
+- **Disadvantages**: Requires querying all servers and aggregating results for typeahead suggestions.
