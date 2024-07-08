@@ -26,6 +26,7 @@ Dynamo clients use `put()` and `get()` operations to write and read data:
 
 Both objects and keys are treated as byte arrays, with keys hashed using MD5 to generate a 128-bit identifier for storage node allocation.
 
+---
 ### Dynamo: High-Level Architecture
 
 #### Introduction
@@ -49,6 +50,36 @@ Dynamo is a Distributed Hash Table (DHT) replicated across a cluster for high av
 #### 6. Conflict Resolution and Handling Permanent Failures
 - **Vector Clocks**: Tracks value history to reconcile conflicts during reads.
 - **Merkle Trees**: Used as an anti-entropy mechanism to handle permanent failures and ensure data consistency in the background.
+
+---
+
+### Data Partitioning and Consistent Hashing in Distributed Systems
+
+**Data Partitioning** is the method of distributing data across multiple nodes in a distributed system. It addresses two main challenges:
+
+1. **Determining Data Location**: Identifying which node stores a specific piece of data.
+2. **Handling Node Changes**: Efficiently managing data movement when nodes are added or removed to minimize disruption.
+
+A naive approach involves using a hash function to map data keys to nodes using modulo operation. However, this approach remaps all keys when nodes change, causing significant data movement.
+
+### Consistent Hashing
+
+**Consistent Hashing** solves this by mapping data to a ring structure where each node is assigned a range of data. This allows only a small set of keys to move when nodes are added or removed. In this system:
+
+- Each node in the ring is assigned a token that defines its range.
+- The hash of a data key determines its position in the ring and hence its storage node.
+
+For example, with nodes having tokens 1, 26, 51, and 76, data is distributed accordingly. When nodes change, only the next node in the ring is affected.
+
+### Virtual Nodes (Vnodes)
+
+**Virtual Nodes** further optimize data distribution. Instead of assigning a single range to each node, the range is divided into smaller subranges (Vnodes). Each physical node manages multiple Vnodes, which:
+
+- **Balance Load**: Evenly distribute data and load across nodes, making the system more resilient to node changes.
+- **Simplify Maintenance**: Facilitate easier handling of heterogeneous clusters with nodes of varying capacities.
+- **Reduce Hotspots**: Minimize the chance of data hotspots by distributing smaller ranges.
+
+Vnodes enhance the consistent hashing scheme by ensuring smoother rebalancing and reducing the impact on replica nodes during node rebuilds. This approach maintains efficient data management in dynamic and large-scale distributed systems.
 
 ## Design Scope for Key-Value Store
 
