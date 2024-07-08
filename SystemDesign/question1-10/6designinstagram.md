@@ -1,6 +1,6 @@
 ### Designing a Photo-Sharing Service like Instagram
 
-#### Overview
+**Overview**
 Instagram is a social networking service that allows users to upload, share, and view photos and videos. Users can share content publicly or privately and follow other users. A user's News Feed consists of top photos from the people they follow.
 
 #### Requirements and Goals
@@ -22,7 +22,7 @@ Instagram is a social networking service that allows users to upload, share, and
 
 ### Capacity Estimation for Instagram-like Service
 
-#### Assumptions
+**Assumptions**
 - **Total Users:** 500 million
 - **Active Users:** 100 million daily
 - **Photos per User per Day:** 2
@@ -32,8 +32,7 @@ Instagram is a social networking service that allows users to upload, share, and
 - **Like Size:** 50 bytes
 - **Comment Size:** 200 bytes
 
-#### Estimations
-
+**Estimations**
 1. **Photos:**
    - **Daily Uploads:** 200 million
    - **Daily Storage:** 40 TB
@@ -57,7 +56,7 @@ Instagram is a social networking service that allows users to upload, share, and
    - **Daily Bandwidth:** 400 TB
    - **Monthly Bandwidth:** 12 PB
 
-#### Summary
+**Summary**
 - **5-Year Storage:**
   - Photos: 73 PB
   - Likes: 365 TB
@@ -69,16 +68,14 @@ This summary provides a concise view of the storage and bandwidth requirements f
 
 To estimate the capacity required for an Instagram-like service, we need to consider several factors including the number of users, the amount of data uploaded, storage requirements, and bandwidth needs.
 
-#### Assumptions
-
+**Assumptions**
 - **Total Users:** 500 million
 - **Active Users:** 100 million daily active users (DAUs)
 - **Average Photos Uploaded per User per Day:** 2
 - **Average Photo Size:** 200 KB
 - **Retention Period:** Indefinite (all photos are stored permanently)
 
-#### Estimations
-
+**Estimations**
 1. **Photos Uploaded per Day:**
    - 100 million DAUs * 2 photos/user/day = 200 million photos/day
 
@@ -99,8 +96,7 @@ To estimate the capacity required for an Instagram-like service, we need to cons
 6. **Monthly Bandwidth Requirement:**
    - 400 TB/day * 30 days = 12 PB/month
 
-#### Summary
-
+**Summary**
 - **Daily Uploads:** 200 million photos
 - **Daily Storage:** 40 TB
 - **Annual Storage:** 14.6 PB
@@ -113,7 +109,7 @@ To estimate the capacity required for an Instagram-like service, we need to cons
 ### High-Level System Design for Instagram-like Photo-Sharing Service
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/instagram1.gif)
-#### Scenarios to Support:
+**Scenarios to Support:**
 1. **Upload Photos**
 2. **View/Search Photos**
 3. **Like Photos**
@@ -121,8 +117,7 @@ To estimate the capacity required for an Instagram-like service, we need to cons
 5. **Tag Users in Photos**
 6. **Search by Tags**
 
-#### Core Components:
-
+**Core Components:**
 1. **Client Application:**
    - **Mobile Apps/Web Interface:** For user interactions including uploading, viewing, liking, commenting, tagging, and searching photos.
 
@@ -156,8 +151,7 @@ To estimate the capacity required for an Instagram-like service, we need to cons
    - **Analytics Service:** Collects and analyzes user interaction data for insights and performance improvements.
    - **Monitoring and Alerts:** Monitors system health and triggers alerts for any issues (e.g., Prometheus, Grafana).
 
-#### Data Flow
-
+**Data Flow**
 1. **Upload Photos:**
    - User uploads a photo through the client application.
    - The photo is sent to the API Gateway.
@@ -201,7 +195,7 @@ To estimate the capacity required for an Instagram-like service, we need to cons
 
 ### Database Schema for Instagram-like Service
 
-#### 1. Users Table
+**1. Users Table**
 - **user_id:** INT, Primary Key, Auto Increment
 - **username:** VARCHAR(50), Unique, Not Null
 - **email:** VARCHAR(100), Unique, Not Null
@@ -210,14 +204,14 @@ To estimate the capacity required for an Instagram-like service, we need to cons
 - **profile_picture_url:** VARCHAR(255)
 - **bio:** TEXT
 
-#### 2. Followers Table
+**2. Followers Table**
 - **follower_id:** INT, Foreign Key (References Users)
 - **followee_id:** INT, Foreign Key (References Users)
 - **created_at:** TIMESTAMP, Default CURRENT_TIMESTAMP
 - **Primary Key:** (follower_id, followee_id)
 
 
-#### 3. Photos Table
+**3. Photos Table**
 - **photo_id:** INT, Primary Key, Auto Increment
 - **user_id:** INT, Foreign Key (References Users)
 - **photo_url:** VARCHAR(255), Not Null
@@ -225,13 +219,13 @@ To estimate the capacity required for an Instagram-like service, we need to cons
 - **created_at:** TIMESTAMP, Default CURRENT_TIMESTAMP
 
 
-#### 4. Likes Table
+**4. Likes Table**
 - **like_id:** INT, Primary Key, Auto Increment
 - **photo_id:** INT, Foreign Key (References Photos)
 - **user_id:** INT, Foreign Key (References Users)
 - **created_at:** TIMESTAMP, Default CURRENT_TIMESTAMP
 
-#### 5. Comments Table
+**5. Comments Table**
 - **comment_id:** INT, Primary Key, Auto Increment
 - **photo_id:** INT, Foreign Key (References Photos)
 - **user_id:** INT, Foreign Key (References Users)
@@ -239,7 +233,7 @@ To estimate the capacity required for an Instagram-like service, we need to cons
 - **created_at:** TIMESTAMP, Default CURRENT_TIMESTAMP
 
 
-#### 6. Tags Table
+**6. Tags Table**
 - **tag_id:** INT, Primary Key, Auto Increment
 - **photo_id:** INT, Foreign Key (References Photos)
 - **user_id:** INT, Foreign Key (References Users)
@@ -247,22 +241,22 @@ To estimate the capacity required for an Instagram-like service, we need to cons
 
 ### Storing Instagram-like Schema: SQL vs. NoSQL
 
-#### SQL (e.g., MySQL)
+**SQL (e.g., MySQL)**
 - **Pros:** Structured data, ACID properties, efficient joins.
 - **Cons:** Scalability challenges, performance bottlenecks with high loads.
 
-#### NoSQL (e.g., Cassandra, MongoDB)
+**NoSQL (e.g., Cassandra, MongoDB)**
 - **Pros:** Horizontal scalability, flexibility, fast read/write, reliability through replication.
 - **Cons:** Eventual consistency, limited support for complex queries.
 
-#### Hybrid Approach
+**Hybrid Approach**
 - **Metadata in NoSQL:**
   - Key: `PhotoID`
   - Value: JSON object (PhotoLocation, UserLocation, CreationTimestamp, etc.)
 - **Photos in Distributed Storage:**
   - Use HDFS or S3 for actual photo files.
 
-#### NoSQL Characteristics
+**NoSQL Characteristics**
 - **Reliability:** Multiple replicas for data availability.
 - **Consistency:** Eventual consistency; support for undeleting.
 
@@ -321,9 +315,9 @@ Combining SQL and NoSQL leverages their strengths, ensuring scalability and perf
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/instagram3.gif)
 
 
-### Notes on Data Sharding for Metadata
+### Data Sharding for Metadata
 
-#### a. Partitioning based on UserID
+**a. Partitioning based on UserID**
 - **Sharding Method**: UserID % 10
 - **PhotoID Generation**: Each shard uses its own auto-increment sequence, appended with ShardID for uniqueness.
 - **Issues**:
@@ -332,7 +326,7 @@ Combining SQL and NoSQL leverages their strengths, ensuring scalability and perf
   - **Single Shard Limitation**: If one shard can't store all photos of a user, distributing photos across shards may increase latency.
   - **Shard Availability**: If a shard is down, all data for that user is unavailable, causing higher latency under high load.
 
-#### b. Partitioning based on PhotoID
+**b. Partitioning based on PhotoID**
 - **Sharding Method**: PhotoID % 10
 - **PhotoID Generation**: 
   - **Single DB**: A dedicated instance generates auto-increment IDs, which may become a single point of failure.
@@ -347,16 +341,16 @@ Combining SQL and NoSQL leverages their strengths, ensuring scalability and perf
     - auto-increment-offset = 2
 - **Scalability**: Implement a 'key' generation scheme similar to TinyURL.
 
-#### Planning for Future Growth
+**Planning for Future Growth**
 - **Logical Partitions**: Create multiple logical partitions to accommodate data growth.
 - **Physical Database Servers**: Multiple logical partitions can reside on a single physical server initially.
 - **Migration**: Move logical partitions to different servers as needed.
 - **Config File**: Map logical partitions to database servers for easy migration and updates.
 
 
-### Notes on Ranking and News Feed Generation
+###  Ranking and News Feed Generation
 
-#### Fetching Top Photos
+**Fetching Top Photos**
 - **Process**:
   1. Get the list of people the user follows.
   2. Fetch metadata of each user's latest 100 photos.
@@ -364,15 +358,14 @@ Combining SQL and NoSQL leverages their strengths, ensuring scalability and perf
   4. Return the top 100 photos based on recency, likeness, etc.
 - **Issue**: Higher latency due to multiple queries and sorting/merging/ranking operations.
 
-#### Pre-generating the News Feed
+**Pre-generating the News Feed**
 - **Method**:
   1. Dedicated servers continuously generate and store users' News Feeds in the 'UserNewsFeed' table.
   2. Query this table to get the latest photos for the News Feed.
   3. Generate new News Feed data from the last update time for each user.
 - **Benefits**: Reduces latency by pre-generating and storing the feed.
 
-#### Approaches for Sending News Feed Contents
-
+**Approaches for Sending News Feed Contents**
 1. **Pull**:
    - **Method**: Clients pull the News Feed from the server at regular intervals or manually.
    - **Problems**:
@@ -394,25 +387,25 @@ Combining SQL and NoSQL leverages their strengths, ensuring scalability and perf
 
 
 
-### Notes on Cache and Load Balancing
+### Cache and Load Balancing
 
-#### Massive-Scale Photo Delivery System
+**Massive-Scale Photo Delivery System**
 - **Global Users**: Serve a large number of geographically distributed users.
 - **Content Delivery**: Push content closer to the user using geographically distributed photo cache servers and CDNs.
 
-#### Caching Strategy
+**Caching Strategy**
 - **Metadata Caching**:
   - **Cache Hot Rows**: Use Memcache to store frequently accessed database rows.
   - **Application Servers**: Check Memcache before querying the database.
   - **Eviction Policy**: Use Least Recently Used (LRU) to discard the least recently accessed rows first.
 
-#### Intelligent Caching
+**Intelligent Caching**
 - **Eighty-Twenty Rule**:
   - **Traffic Distribution**: 20% of daily read volume generates 80% of the traffic.
   - **Popular Photos**: Certain photos are significantly more popular.
   - **Caching Strategy**: Cache 20% of the daily read volume of photos and metadata to maximize efficiency.
 
-#### Implementation Example
+**Implementation Example**
 1. **Photo Delivery**:
    - Use CDNs to store and deliver photos closer to users.
    - Geographically distributed cache servers reduce latency and improve load times.
@@ -430,7 +423,7 @@ Combining SQL and NoSQL leverages their strengths, ensuring scalability and perf
    - Identify the 20% of photos that generate 80% of the traffic.
    - Prioritize caching these popular photos and their metadata.
 
-#### Benefits
+**Benefits**
 - **Reduced Latency**: Serving data from cache or nearby CDN reduces response time.
 - **Load Balancing**: Distributes load across multiple cache servers, reducing the burden on the central database.
 - **Efficiency**: Intelligent caching maximizes the use of cache space, focusing on the most frequently accessed data.
