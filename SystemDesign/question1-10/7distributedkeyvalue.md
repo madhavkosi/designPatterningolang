@@ -212,6 +212,8 @@ Dynamo handles `get()` and `put()` requests through a well-defined process desig
 
 #### Strategies for Choosing the Coordinator Node
 
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keystore2.svg)
+
 Dynamo clients can use two strategies to choose a node for their requests:
 
 1. **Load Balancer Strategy**:
