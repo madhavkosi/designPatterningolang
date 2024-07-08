@@ -1,34 +1,54 @@
-## Key-Value Store Design
+### Dynamo: Introduction(distributed key value store)
 
-### Key-Value Store Definition
-- A key-value store is a non-relational database.
-- Each entry is a unique identifier (key) paired with a value, forming a "key-value" pair.
+#### Goal
+The goal of Dynamo is to design a distributed key-value store that is highly available, scalable, and decentralized. 
 
-### Key Characteristics
-- **Uniqueness**: Keys must be unique.
-- **Access**: Values are accessed through their keys.
-- **Types**: Keys can be plain text or hashed values. Short keys are preferable for performance.
+#### What is Dynamo?
+Dynamo is a highly available key-value store developed by Amazon for internal use. It caters to services like shopping carts and bestseller lists, which require only primary-key access to data. It offers a flexible design that lets applications choose their desired levels of availability and consistency, avoiding the limitations of traditional relational databases in terms of scalability and availability.
 
-### Key Examples
-- Plain text key: “last_logged_in_at”
-- Hashed key: 253DDEC4
+#### Background
+Dynamo, not to be confused with DynamoDB, is a distributed key-value storage system designed for high availability and partition tolerance at the expense of strong consistency. It falls within the AP category of the CAP theorem. The primary motivation was to ensure high availability, as it correlates directly with customer satisfaction. Dynamo's design has inspired many NoSQL databases, including Cassandra, Riak, and Voldemort.
 
-### Value Characteristics
-- Values can be various data types (strings, lists, objects, etc.).
-- Values are usually treated as opaque objects.
+#### Design Goals
+1. **Highly Available**: Ensures the system is always on, even if imperfect.
+2. **Scalable**: Adding machines should proportionally improve system performance.
+3. **Decentralized**: Avoids single points of failure and performance bottlenecks.
+4. **Eventually Consistent**: Data is replicated optimistically, with inconsistencies resolved later to maintain high availability.
 
-### Example Data Snippet
-```
-key    value
-145    john
-147    bob
-160    julia
-```
+#### Dynamo's Use Cases
+Dynamo is ideal for applications where strong consistency is not critical. It supports strong consistency but at a performance cost. Amazon uses Dynamo for services requiring high reliability and flexible trade-offs between availability, consistency, cost-effectiveness, and performance. It provides a simple primary-key interface, making it suitable for services that would otherwise be inefficient with relational databases.
 
-### Required Operations
-1. **put(key, value)**: Insert a value associated with a key.
-2. **get(key)**: Retrieve the value associated with a key.
 
+### Dynamo: High-Level Architecture
+
+#### Introduction
+Dynamo is a Distributed Hash Table (DHT) replicated across a cluster for high availability and fault tolerance.
+
+#### 1. Data Distribution
+- **Consistent Hashing**: Distributes data among nodes, facilitating easy addition or removal of nodes.
+
+#### 2. Data Replication and Consistency
+- **Eventual Consistency**: Data is replicated optimistically, ensuring high availability.
+
+#### 3. Handling Temporary Failures
+- **Sloppy Quorum**: Replicates data to a subset of nodes to handle temporary failures, rather than requiring a strict majority.
+
+#### 4. Inter-node Communication and Failure Detection
+- **Gossip Protocol**: Nodes communicate and maintain cluster state using the gossip protocol.
+
+#### 5. High Availability
+- **Hinted Handoff**: Ensures the system remains writable by temporarily handing off data to other nodes when the primary node is unavailable.
+
+#### 6. Conflict Resolution and Handling Permanent Failures
+- **Vector Clocks**: Tracks value history to reconcile conflicts during reads.
+- **Merkle Trees**: Used as an anti-entropy mechanism to handle permanent failures and ensure data consistency in the background.
+#### System APIs
+Dynamo clients use `put()` and `get()` operations to write and read data:
+
+- **get(key)**: Retrieves the object associated with the given key, potentially returning conflicting versions and metadata context.
+- **put(key, context, object)**: Writes the object associated with the given key to storage nodes, using context to verify object validity.
+
+Both objects and keys are treated as byte arrays, with keys hashed using MD5 to generate a 128-bit identifier for storage node allocation.
 
 ## Design Scope for Key-Value Store
 
