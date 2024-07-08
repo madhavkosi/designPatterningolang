@@ -832,6 +832,7 @@ When a user requests content:
 - **Cache Invalidation:** Removes content from the cache before TTL expires when updates or deletions occur.
 - **Cache Control Headers:** Origin server provides caching instructions to the CDN, such as cacheability and TTL.
 
+**CDN Network Topologies:**
 
 | **Topology**             | **Description**                                                                                          | **Advantages**                                                                                   | **Disadvantages**                                                                                  | **Applications/Uses**                                                                         |
 |--------------------------|----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
@@ -842,36 +843,15 @@ When a user requests content:
 
 This table now includes a column for the applications and uses of each CDN topology, providing a more comprehensive overview.
 
-**Push CDN vs. Pull CDN**
 
-**Pull CDN:**
-- **How it Works:** Content is fetched from the origin server when first requested by a user and then cached on the CDN's edge server.
-- **Caching:** Automatically managed by the CDN, refreshed upon expiration or TTL.
-- **Examples:** Cloudflare, Fastly, Amazon CloudFront.
+Here's a table summarizing the characteristics, advantages, disadvantages, and examples of Pull and Push CDNs:
 
-**Advantages:**
-- Easy to set up with minimal infrastructure changes.
-- Reduces load on the origin server by only accessing it when content is not cached.
-- CDN handles cache management and expiration.
+| **Type**       | **How it Works**                                                                                         | **Caching**                                | **Advantages**                                                                                                 | **Disadvantages**                                                                                                 | **Examples**                           | **Applications/Uses**                                                                                 |
+|----------------|----------------------------------------------------------------------------------------------------------|--------------------------------------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|----------------------------------------|--------------------------------------------------------------------------------------------------------|
+| **Pull CDN**   | Content is fetched from the origin server when first requested by a user and then cached on the edge server. | Automatically managed by the CDN, refreshed upon expiration or TTL. | Easy to set up with minimal infrastructure changes.<br>Reduces load on the origin server.<br>CDN handles cache management and expiration. | Initial request may be slower.<br>Requires the origin server to be always accessible.                            | Cloudflare, Fastly, Amazon CloudFront | Best for frequently accessed content.<br>Ideal for websites and applications with dynamic or updated content. |
+| **Push CDN**   | Content is manually or automatically uploaded to the CDN's servers and proactively distributed across edge servers. | Managed by the content provider.            | Greater control over content distribution and caching.<br>Consistent load times.<br>Ideal for large or infrequently accessed files. | More complex setup and maintenance.<br>Higher storage costs.<br>Content provider responsible for cache management and expiration. | Rackspace Cloud Files, Akamai NetStorage | Suited for large or infrequently accessed files.<br>Ideal for static content, software distributions, and media files. |
 
-**Disadvantages:**
-- Initial request may be slower as the CDN fetches content from the origin server.
-- Requires the origin server to be always accessible.
-
-**Push CDN:**
-- **How it Works:** Content is manually or automatically uploaded to the CDN's servers and proactively distributed across edge servers.
-- **Caching:** Managed by the content provider.
-
-**Examples:** Rackspace Cloud Files, Akamai NetStorage.
-
-**Advantages:**
-- Greater control over content distribution and caching, ideal for large or infrequently accessed files.
-- Consistent load times as content is readily available on CDN servers.
-
-**Disadvantages:**
-- More complex setup and maintenance, requiring manual upload or synchronization of content.
-- Higher storage costs due to content being stored on both origin and CDN servers.
-- Content provider responsible for cache management and expiration.
+This table provides a concise overview of Pull and Push CDNs, their functioning, caching mechanisms, advantages, disadvantages, examples, and typical applications/uses.
 
 **Summary:**
 - **Pull CDNs:** Best for frequently accessed content, easy to set up, and reduces origin server load.
