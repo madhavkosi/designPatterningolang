@@ -154,6 +154,7 @@ Typeahead suggestions help users search for known and frequently searched terms 
   - Cached top 2 queries [true: 35, try: 29] are returned instantly.
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/trie.svg)
+---
 
 
 ### Scalable Data Gathering Service for Trie-based Autocomplete
@@ -228,6 +229,7 @@ By leveraging these components and optimizations, the data gathering service can
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/trie.svg)
 
+---
 
 ### Optimized Query Service for Autocomplete
 
@@ -275,6 +277,7 @@ In the improved design of the query service, several optimizations ensure effici
 By implementing these optimizations, the query service can achieve high-speed performance, ensuring that autocomplete suggestions are provided to users promptly and efficiently. This design leverages caching at both the server and browser levels, as well as efficient data handling strategies to maintain scalability and performance.
 
 
+---
 
 ### Trie Operations in the Autocomplete System
 
@@ -321,8 +324,40 @@ There are two primary methods for updating the trie:
 
 ![alt text](https://raw.githubusercontent.com/madhavkosi/designPatterningolang/main/SystemDesign/image%20folder/filter.webp)
 
+---
 
-### Scalable Storage for Large Trie Structures
+
+### Typeahead Client Optimizations**
+1. **Debounce Requests**: Wait 50ms after user stops typing before hitting the server.
+2. **Cancel In-Progress Requests**: Cancel requests if the user continues typing.
+3. **Character Threshold**: Wait for a few characters before making a request.
+4. **Pre-Fetch Data**: Pre-fetch common queries from the server.
+5. **Local Storage**: Store recent suggestions locally for reuse.
+6. **Early Server Connection**: Establish server connection as soon as the website opens.
+7. **Cache and CDNs**: Push server cache to CDNs and ISPs for efficiency.
+---
+
+
+### Data Partitioning Strategies
+
+**1. Range-Based Partitioning:**
+- **Concept**: Store phrases in partitions based on their first letter (e.g., 'A', 'B', etc.).
+- **Advantages**: Predictable storage and search.
+- **Disadvantages**: Can lead to unbalanced servers if some letters have significantly more terms.
+
+**2. Capacity-Based Partitioning:**
+- **Concept**: Partition the trie based on server memory capacity.
+- **Example**: Server 1 stores 'A' to 'AABC', Server 2 stores 'AABD' to 'BXA', etc.
+- **Advantages**: Ensures partitions fit within server capacity.
+- **Disadvantages**: Requires querying multiple servers for overlapping ranges, potential hotspots for popular terms.
+
+**3. Hash-Based Partitioning:**
+- **Concept**: Hash each term to determine its server.
+- **Advantages**: Distributes terms randomly, minimizing hotspots.
+- **Disadvantages**: Requires querying all servers and aggregating results for typeahead suggestions.
+
+
+**Some More Notes Scalable Storage for Large Trie Structures**
 
 When the trie grows too large for a single server, sharding is necessary to distribute the load.
 
@@ -351,6 +386,7 @@ When the trie grows too large for a single server, sharding is necessary to dist
    - **Trie Cache:** Distributed in-memory storage.
    - **Trie DB:** Persistent storage, distributed by sharding logic.
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/shard-map-manager.svg)
+
 **Query Handling Flow**
 
 1. Query sent to load balancer.
@@ -362,8 +398,9 @@ When the trie grows too large for a single server, sharding is necessary to dist
 
 Advanced sharding and a Shard Map Manager ensure even data distribution and scalable storage for trie-based autocomplete systems, maintaining high performance as the system grows.
 
+---
 
-**Extending Trie-based Autocomplete to Multiple Languages and Real-Time Queries**
+### Extending Trie-based Autocomplete to Multiple Languages and Real-Time Queries
 
 **Supporting Multiple Languages:**
 - **Unicode Characters:** Use Unicode characters in trie nodes to support all global writing systems.
@@ -381,31 +418,3 @@ Advanced sharding and a Shard Map Manager ensure even data distribution and scal
 
 **Conclusion:**
 Extending the system for multiple languages and real-time queries involves using Unicode, country-specific tries, CDN storage, and stream processing technologies to handle continuous data and trending search queries effectively.
-
-### Typeahead Client Optimizations**
-1. **Debounce Requests**: Wait 50ms after user stops typing before hitting the server.
-2. **Cancel In-Progress Requests**: Cancel requests if the user continues typing.
-3. **Character Threshold**: Wait for a few characters before making a request.
-4. **Pre-Fetch Data**: Pre-fetch common queries from the server.
-5. **Local Storage**: Store recent suggestions locally for reuse.
-6. **Early Server Connection**: Establish server connection as soon as the website opens.
-7. **Cache and CDNs**: Push server cache to CDNs and ISPs for efficiency.
-
-
-### Data Partitioning Strategies**
-
-**1. Range-Based Partitioning:**
-- **Concept**: Store phrases in partitions based on their first letter (e.g., 'A', 'B', etc.).
-- **Advantages**: Predictable storage and search.
-- **Disadvantages**: Can lead to unbalanced servers if some letters have significantly more terms.
-
-**2. Capacity-Based Partitioning:**
-- **Concept**: Partition the trie based on server memory capacity.
-- **Example**: Server 1 stores 'A' to 'AABC', Server 2 stores 'AABD' to 'BXA', etc.
-- **Advantages**: Ensures partitions fit within server capacity.
-- **Disadvantages**: Requires querying multiple servers for overlapping ranges, potential hotspots for popular terms.
-
-**3. Hash-Based Partitioning:**
-- **Concept**: Hash each term to determine its server.
-- **Advantages**: Distributes terms randomly, minimizing hotspots.
-- **Disadvantages**: Requires querying all servers and aggregating results for typeahead suggestions.
