@@ -841,17 +841,17 @@ When a user requests content:
 | **Mesh Topology**        | Edge servers are interconnected, enhancing redundancy and fault tolerance.                               | High redundancy; Fault tolerance; Reduced origin server load.                                    | Complex configuration; Higher maintenance overhead.                                               | Used in CDNs requiring high availability and fault tolerance (e.g., critical web applications). |
 | **Hybrid Topology**      | Combines elements of various topologies to optimize content delivery for specific needs.                 | Flexible and customizable; Can optimize performance for different scenarios.                     | Complexity in design and management; Requires careful planning to balance trade-offs.             | Suitable for large-scale, diverse CDNs needing customized solutions (e.g., multi-service content providers).|
 
-This table now includes a column for the applications and uses of each CDN topology, providing a more comprehensive overview.
 
 
-Here's a table summarizing the characteristics, advantages, disadvantages, and examples of Pull and Push CDNs:
+**Push CDN vs. Pull CDN**
+
 
 | **Type**       | **How it Works**                                                                                         | **Caching**                                | **Advantages**                                                                                                 | **Disadvantages**                                                                                                 | **Examples**                           | **Applications/Uses**                                                                                 |
 |----------------|----------------------------------------------------------------------------------------------------------|--------------------------------------------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|----------------------------------------|--------------------------------------------------------------------------------------------------------|
 | **Pull CDN**   | Content is fetched from the origin server when first requested by a user and then cached on the edge server. | Automatically managed by the CDN, refreshed upon expiration or TTL. | Easy to set up with minimal infrastructure changes.<br>Reduces load on the origin server.<br>CDN handles cache management and expiration. | Initial request may be slower.<br>Requires the origin server to be always accessible.                            | Cloudflare, Fastly, Amazon CloudFront | Best for frequently accessed content.<br>Ideal for websites and applications with dynamic or updated content. |
 | **Push CDN**   | Content is manually or automatically uploaded to the CDN's servers and proactively distributed across edge servers. | Managed by the content provider.            | Greater control over content distribution and caching.<br>Consistent load times.<br>Ideal for large or infrequently accessed files. | More complex setup and maintenance.<br>Higher storage costs.<br>Content provider responsible for cache management and expiration. | Rackspace Cloud Files, Akamai NetStorage | Suited for large or infrequently accessed files.<br>Ideal for static content, software distributions, and media files. |
 
-This table provides a concise overview of Pull and Push CDNs, their functioning, caching mechanisms, advantages, disadvantages, examples, and typical applications/uses.
+
 
 **Summary:**
 - **Pull CDNs:** Best for frequently accessed content, easy to set up, and reduces origin server load.
@@ -875,50 +875,20 @@ This table provides a concise overview of Pull and Push CDNs, their functioning,
 
 **Definition**: A method used by a load balancer to distribute incoming traffic among multiple servers to ensure efficient resource utilization, high performance, availability, and reliability.
 
- **1. Round Robin**
-- **Description**: Distributes requests cyclically to servers.
-- **Pros**: Equal distribution, simple to implement.
-- **Cons**: Not optimal for different server capacities or workloads.
 
- **2. Least Connections**
-- **Description**: Directs requests to the server with the fewest active connections.
-- **Pros**: Adapts to varying workloads.
-- **Cons**: Requires tracking active connections, ignores server response time.
+| **Algorithm**               | **Description**                                                 | **Pros**                                       | **Cons**                                         | **Applications/Uses**                                                    |
+|-----------------------------|-----------------------------------------------------------------|------------------------------------------------|--------------------------------------------------|--------------------------------------------------------------------------|
+| **Round Robin**             | Distributes requests cyclically to servers.                     | Equal distribution; Simple to implement.       | Not optimal for different server capacities or workloads.                | Suitable for evenly distributing requests across similar servers.         |
+| **Least Connections**       | Directs requests to the server with the fewest active connections. | Adapts to varying workloads.                   | Requires tracking active connections; Ignores server response time.      | Ideal for environments with varying workloads and connection counts.      |
+| **Weighted Round Robin**    | Distributes requests based on server capacities using assigned weights. | Accounts for different server capacities.      | Manual weight management; Ignores server health.                         | Useful for environments with servers of varying capacities.               |
+| **Weighted Least Connections** | Combines least connections and weighted round robin.              | Balances load based on server capacity and connections. | Requires tracking and maintaining weights; Ignores response time.        | Effective for balancing load in environments with varied server capacities and connection counts. |
+| **IP Hash**                 | Uses IP addresses to determine the server for each request.     | Maintains session persistence.                 | May not balance load effectively with few clients; Ignores server health. | Best for applications needing session persistence (e.g., user sessions).  |
+| **Least Response Time**     | Directs requests to the server with the lowest response time and fewest connections. | Optimizes user experience.                     | Requires monitoring response times; Adds complexity.                     | Suitable for applications where user experience and low latency are critical. |
+| **Random**                  | Randomly selects a server for each request.                     | Simple and easy to implement.                  | Ignores server health, response times, and capacities.                   | Useful for simple, small-scale environments.                              |
+| **Least Bandwidth**         | Directs requests to the server using the least bandwidth.       | Manages network resources effectively.         | Requires monitoring bandwidth; Ignores other factors.                    | Ideal for applications with significant network resource demands.         |
+| **Custom Load**             | Allows custom algorithms based on specific requirements.        | Highly customizable.                           | Time-consuming development and maintenance.                              | Best for specialized environments with unique load balancing requirements. |
 
- **3. Weighted Round Robin**
-- **Description**: Distributes requests based on server capacities using assigned weights.
-- **Pros**: Accounts for different server capacities.
-- **Cons**: Manual weight management, ignores server health.
-
- **4. Weighted Least Connections**
-- **Description**: Combines least connections and weighted round robin.
-- **Pros**: Balances load based on server capacity and connections.
-- **Cons**: Requires tracking and maintaining weights, ignores response time.
-
- **5. IP Hash**
-- **Description**: Uses IP addresses to determine the server for each request.
-- **Pros**: Maintains session persistence.
-- **Cons**: May not balance load effectively with few clients, ignores server health.
-
- **6. Least Response Time**
-- **Description**: Directs requests to the server with the lowest response time and fewest connections.
-- **Pros**: Optimizes user experience.
-- **Cons**: Requires monitoring response times, adds complexity.
-
- **7. Random**
-- **Description**: Randomly selects a server for each request.
-- **Pros**: Simple and easy to implement.
-- **Cons**: Ignores server health, response times, and capacities.
-
-**8. Least Bandwidth**
-- **Description**: Directs requests to the server using the least bandwidth.
-- **Pros**: Manages network resources effectively.
-- **Cons**: Requires monitoring bandwidth, ignores other factors.
-
- **9. Custom Load**
-- **Description**: Allows custom algorithms based on specific requirements.
-- **Pros**: Highly customizable.
-- **Cons**: Time-consuming development and maintenance.
+This table provides a concise overview of each load balancing algorithm, their advantages, disadvantages, and typical applications.
 
 **Load Balancer Types**
 
