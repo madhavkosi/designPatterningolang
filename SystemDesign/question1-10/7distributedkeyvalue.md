@@ -81,6 +81,53 @@ For example, with nodes having tokens 1, 26, 51, and 76, data is distributed acc
 
 Vnodes enhance the consistent hashing scheme by ensuring smoother rebalancing and reducing the impact on replica nodes during node rebuilds. This approach maintains efficient data management in dynamic and large-scale distributed systems.
 
+### Dynamo Replication and Handling Failures: A Comprehensive Overview
+
+#### Optimistic Replication
+Dynamo uses a method called optimistic replication to ensure high availability and durability. Here's how it works:
+- **Replication Factor**: Each data item is replicated on multiple nodes, where the number of replicas is defined by the replication factor.
+- **Coordinator Node**: Each key is assigned to a coordinator node, which is the first node in the hash range.
+- **Replication Process**: The coordinator node stores the data locally and then replicates it to its `N-1` clockwise successor nodes on the ring.
+- **Asynchronous Replication**: This replication happens asynchronously in the background, supporting an eventually consistent model. This means that replicas are not guaranteed to be identical at all times.
+
+#### Consistent Hashing
+Dynamo employs consistent hashing to distribute data across nodes:
+- **Data Ownership**: Each node is responsible for a specific range of data.
+- **Replication**: Each data item is replicated on `N` nodes. If one node is down, other replicas can handle the queries.
+- **Preference List**: This list contains the nodes responsible for storing a particular key, including extra nodes to account for failures and ensuring only distinct physical nodes are included.
+
+#### Sloppy Quorum
+Dynamo does not enforce strict quorum requirements to enhance availability:
+- **Quorum Requirements**: Traditional quorum systems can become unavailable during failures. Dynamo uses a sloppy quorum instead.
+- **Operation on Healthy Nodes**: Read/write operations are performed on the first `N` healthy nodes from the preference list, which might not be the first `N` nodes encountered on the hash ring.
+
+#### Example Scenario
+In a Dynamo setup with replication factor `N = 3`:
+- If Server 1 is down during a write operation, the data will be stored on Server 4 instead.
+- This transfer ensures that the system remains available even during temporary failures.
+
+#### Hinted Handoff
+Hinted handoff is a mechanism to handle node unavailability:
+- **Temporary Storage**: When a node is unreachable, another node temporarily stores the writes.
+- **Metadata Hint**: The replica contains metadata indicating the intended recipient.
+- **Periodic Scans**: Nodes periodically scan their local database to check if the intended recipient has recovered.
+- **Data Transfer**: Once the original node is back online, the temporarily stored data is transferred to it, and the holding node can delete the local copy.
+
+#### Conflict Resolution
+Due to the nature of sloppy quorum:
+- **Divergence**: Data can diverge, with concurrent writes being accepted by non-overlapping sets of nodes.
+- **Conflicts**: Multiple conflicting values for the same key can exist, leading to potential stale or conflicting reads.
+- **Vector Clocks**: Dynamo uses vector clocks to resolve these conflicts, allowing the system to manage and reconcile divergent data effectively.
+
+### Summary
+Dynamo's replication strategy ensures high availability and durability through:
+- Optimistic replication with asynchronous updates.
+- Consistent hashing to distribute data and handle node failures.
+- Sloppy quorum to maintain operations during temporary failures.
+- Hinted handoff to accept writes even when nodes are unreachable, ensuring eventual consistency.
+- Conflict resolution using vector clocks to handle data divergence.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/replication.svg)
+
 ## Design Scope for Key-Value Store
 
 ### Problem Understanding
