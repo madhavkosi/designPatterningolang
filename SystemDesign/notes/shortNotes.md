@@ -832,12 +832,15 @@ When a user requests content:
 - **Cache Invalidation:** Removes content from the cache before TTL expires when updates or deletions occur.
 - **Cache Control Headers:** Origin server provides caching instructions to the CDN, such as cacheability and TTL.
 
-**CDN Network Topologies:**
-- **Flat Topology:** All edge servers directly connected to the origin server; effective for smaller CDNs but limited scalability.
-- **Hierarchical Topology:** Edge servers are organized into tiers, improving scalability and reducing direct origin server connections.
-- **Mesh Topology:** Edge servers are interconnected, enhancing redundancy, fault tolerance, and reducing origin server load.
-- **Hybrid Topology:** Combines elements of various topologies to optimize content delivery for specific needs.
 
+| **Topology**             | **Description**                                                                                          | **Advantages**                                                                                   | **Disadvantages**                                                                                  | **Applications/Uses**                                                                         |
+|--------------------------|----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| **Flat Topology**        | All edge servers directly connected to the origin server; effective for smaller CDNs.                    | Simple design; Low latency for smaller networks.                                                 | Limited scalability; Increased load on the origin server.                                         | Suitable for small-scale CDNs with limited content distribution needs.                       |
+| **Hierarchical Topology**| Edge servers are organized into tiers, reducing direct origin server connections.                        | Improved scalability; Efficient content distribution.                                            | Increased complexity; Potential for higher latency between tiers.                                | Ideal for large CDNs requiring hierarchical content distribution (e.g., global streaming services). |
+| **Mesh Topology**        | Edge servers are interconnected, enhancing redundancy and fault tolerance.                               | High redundancy; Fault tolerance; Reduced origin server load.                                    | Complex configuration; Higher maintenance overhead.                                               | Used in CDNs requiring high availability and fault tolerance (e.g., critical web applications). |
+| **Hybrid Topology**      | Combines elements of various topologies to optimize content delivery for specific needs.                 | Flexible and customizable; Can optimize performance for different scenarios.                     | Complexity in design and management; Requires careful planning to balance trade-offs.             | Suitable for large-scale, diverse CDNs needing customized solutions (e.g., multi-service content providers).|
+
+This table now includes a column for the applications and uses of each CDN topology, providing a more comprehensive overview.
 
 **Push CDN vs. Pull CDN**
 
