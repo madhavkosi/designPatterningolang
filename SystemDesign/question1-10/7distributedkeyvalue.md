@@ -128,7 +128,81 @@ Dynamo's replication strategy ensures high availability and durability through:
 - Sloppy quorum to maintain operations during temporary failures.
 - Hinted handoff to accept writes even when nodes are unreachable, ensuring eventual consistency.
 - Conflict resolution using vector clocks to handle data divergence.
+
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/replication.svg)
+
+---
+
+### Conflict Resolution in Dynamo: A Detailed Exploration
+
+#### Clock Skew
+
+**Clock skew** is the variance in the time kept by different clocks in a distributed system. Here’s how it can cause inconsistencies:
+
+- **Single Machine**: Assumes a linear progression of time (t1 < t2), enabling straightforward versioning.
+- **Distributed System**: Different machines have unsynchronized clocks, so time t on one machine doesn’t necessarily happen before time t+1 on another. This makes relying on wall clock timestamps unreliable for versioning.
+
+### Vector Clocks
+
+Instead of wall clock timestamps, Dynamo uses **vector clocks** to track the causality between different versions of a data item. Here’s how they work:
+
+1. **Structure**: A vector clock is a list of (node, counter) pairs.
+2. **Versioning**: Each version of a data item is associated with a vector clock.
+3. **Causality**: By comparing vector clocks, the system can determine if one version is an ancestor of another or if they are concurrent and conflicting.
+
+### How Vector Clocks Handle Conflicts
+
+#### Example Scenario
+
+1. **Initial Write**:
+   - **Server A** writes key `k1` with value `foo`, version `[A:1]`. This is replicated to **Server B**.
+
+2. **Subsequent Write**:
+   - **Server A** writes key `k1` with value `bar`, version `[A:2]`. This is also replicated to **Server B**.
+
+3. **Network Partition**:
+   - **Server A** and **Server B** cannot communicate.
+
+4. **Concurrent Writes**:
+   - **Server A** writes key `k1` with value `baz`, version `[A:3]`.
+   - **Server B** writes key `k1` with value `bax`, version `[B:1]`.
+
+5. **Network Heals**:
+   - **Server A** and **Server B** synchronize. They detect two versions: `[A:3]` and `[A:2, B:1]`.
+
+6. **Conflict Detection**:
+   - **Server A** and **Server B** recognize the versions are conflicting and return both to the client for reconciliation.
+   
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/keystore.svg)
+
+#### Conflict Resolution Process
+
+1. **Client-Side Reconciliation**:
+   - The client receives conflicting versions and must merge them. For example, it might decide which value to keep based on application-specific logic.
+
+2. **Semantic Reconciliation**:
+   - The client merges different branches of data evolution. For example, merging shopping cart items ensures no items are lost.
+
+3. **Truncation**:
+   - Dynamo truncates vector clocks when they grow too large. This is a potential issue for maintaining eventual consistency if older vector clocks necessary for reconciliation are deleted.
+
+### Conflict-Free Replicated Data Types (CRDTs)
+
+**CRDTs** are designed to resolve conflicts automatically, ensuring strong eventual consistency. Here’s how they work:
+
+1. **Modeling Data**: Data is modeled such that concurrent changes can be applied in any order, yielding the same result.
+2. **Example**: Amazon’s shopping cart:
+   - Adding items A and B can be done in any order. Both additions result in a cart containing A and B.
+   - Removing items is modeled as a negative add operation.
+
+### Last-Write-Wins (LWW)
+
+Dynamo and systems like Apache Cassandra often use a simpler, though less reliable, conflict resolution strategy: **last-write-wins** (LWW):
+
+1. **Wall Clock Timestamp**: Conflicts are resolved by choosing the version with the most recent timestamp.
+2. **Drawbacks**:
+   - LWW can lead to data loss if conflicting writes occur simultaneously.
+   - It essentially discards one of the conflicting updates, akin to flipping a coin to decide which version to keep.
 
 ---
 
