@@ -80,7 +80,7 @@
     - 400M tweets/day * 365 days/year * 5 years = 730 billion tweets.
   - **TweetID Size**:
     - Each tweet needs a unique identifier.
-    - Number of Bits: \( \log_2(730 \text{ billion}) \approx 39.1 \) bits.
+    - Number of Bits: log2(730 billion)≈39.4 bits
     - Rounding up, we need 40 bits.
     - 40 bits = 5 bytes.
   - **ID Generation Service**:
@@ -100,10 +100,7 @@
 - **Memory for TweetIDs**:
   - Tweets in Two Years: 292 billion.
   - Each TweetID requires 5 bytes.
-  - Memory for TweetIDs: 
-    \[
-    292 \text{ billion} \times 5 \text{ bytes} = 1460 \text{ GB} 
-    \]
+  - Memory for TweetIDs:   292 billion×5 bytes=1460 GB
 
 - **Average Words per Tweet**:
   - On average, each tweet has 40 words.
@@ -115,9 +112,7 @@
 
 - **Memory Requirement for Storing Index**:
   - Total memory required:
-    \[
-    1460 \text{ GB} \times 15 \approx 21900 \text{ GB} \approx 21 \text{ TB}
-    \]
+    1460GB×15=21900GB 21900GB÷1024≈21.3867TB
   - This accounts for the storage of TweetIDs across all relevant words.
 
 - **Index Storage**:
@@ -130,9 +125,7 @@
   - Assuming each server has 144GB of RAM.
   - Total Memory for Index: 21TB = 21000GB.
   - Required Servers: 
-    \[
-    \frac{21000 \text{ GB}}{144 \text{ GB/server}} \approx 146 \text{ servers}
-    \]
+   21000/144 =~ 145.83
 
 **Data Partitioning for Index**:
 
