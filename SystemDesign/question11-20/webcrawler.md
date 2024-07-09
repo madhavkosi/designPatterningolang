@@ -148,6 +148,9 @@ A web crawler should start with a list of seed URLs and use BFS to explore the w
 
 
 ### Detailed Component Design
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/crawler3.gif" width="800" />
+</p>
 
 #### Distributed URL Frontier
 
@@ -235,3 +238,64 @@ A web crawler should start with a list of seed URLs and use BFS to explore the w
   - URL is passed to the relevant protocol module.
   - Protocol module initializes the DIS from the network connection with the document’s contents.
   - DIS is then passed to all relevant processing modules.
+
+
+#### Document Dedupe Test Notes
+
+- **Purpose**: Prevents processing the same document multiple times by removing duplicates.
+- **Issue**: Web documents often available under different URLs or mirrored on various servers, causing redundant downloads.
+- **Solution**:
+  - Calculate a 64-bit checksum (using MD5 or SHA) for every processed document.
+  - Store checksums in a database.
+  - For each new document, compare its checksum against stored checksums to check for duplicates.
+- **Checksum Store Size**:
+  - 15 billion distinct web pages.
+  - 15B * 8 bytes = 120 GB.
+  - Fits into modern server memory, but may require an alternative approach if memory is insufficient.
+- **Alternative Approach**:
+  - Use a smaller LRU-based cache on each server.
+  - Backed by persistent storage.
+  - Dedupe test first checks if the checksum is in the cache.
+  - If not, checks persistent storage.
+  - If found, the document is ignored.
+  - If not found, the checksum is added to both the cache and persistent storage.
+
+#### URL Filters Notes
+
+- **Purpose**: Provides control over which URLs are downloaded.
+- **Function**: 
+  - Blocks websites to be ignored by the crawler.
+  - Worker thread consults user-supplied URL filter before adding URLs to the frontier.
+  - Filters can restrict URLs by domain, prefix, or protocol type.
+
+#### Domain Name Resolution Notes
+
+- **Purpose**: Maps Web server hostnames to IP addresses using DNS.
+- **Issue**: DNS name resolution can be a bottleneck due to the high number of URLs.
+- **Solution**:
+  - Cache DNS results by building a local DNS server.
+  - Reduces repeated DNS requests.
+
+#### URL Dedupe Test Notes
+
+- **Purpose**: Prevents downloading and processing the same document multiple times.
+- **Process**:
+  - Store all seen URLs in canonical form using fixed-sized checksums in a database.
+  - In-memory cache of popular URLs on each host to reduce database operations.
+  - High in-memory hit rate due to common URLs.
+- **Storage Requirement**:
+  - 15 billion distinct URLs.
+  - 15B * 8 bytes = 120 GB.
+- **Bloom Filters**:
+  - Probabilistic data structure for set membership testing.
+  - Reduces space but may yield false positives.
+  - False positives cause URLs to be ignored, preventing document download.
+  - Larger bit vectors can reduce false positive rates.
+
+#### Checkpointing Notes
+
+- **Purpose**: Guards against failures during long web crawls.
+- **Function**:
+  - Regular snapshots of crawler state written to disk.
+  - Allows interrupted or aborted crawls to restart from the latest checkpoint.
+
