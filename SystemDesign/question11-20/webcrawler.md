@@ -180,16 +180,6 @@ A web crawler should start with a list of seed URLs and use BFS to explore the w
     - Only one worker thread downloads from a specific web server at a time.
     - FIFO queue usage prevents overloading any single web server.
 
-**Key Points**
-- **URL Frontier:** Central to managing URLs yet to be crawled.
-- **Breadth-First Traversal:** Simplified by FIFO queues.
-- **Distribution Strategy:**
-  - URLs are hashed and distributed to servers and threads.
-  - Ensures balanced load and adherence to politeness policies.
-- **Politeness Constraints:**
-  - Critical to avoid overloading servers.
-  - Managed by structured sub-queues and thread assignments.
-
 
 **Size and Storage of URL Frontier**
 - **URL Frontier Size:**
@@ -206,12 +196,6 @@ A web crawler should start with a list of seed URLs and use BFS to explore the w
     - Maintains a cache of URLs that need to be visited next.
     - Periodically reads from the disk to replenish the buffer.
 
-**Key Points**
-- **Disk Storage Necessity:**
-  - Essential for handling the vast number of URLs.
-- **Buffer System:**
-  - Ensures efficient management and retrieval of URLs.
-  - Separate buffers optimize enqueue and dequeue operations.
 
 
 #### Fetcher Module 
