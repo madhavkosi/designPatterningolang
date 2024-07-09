@@ -145,3 +145,93 @@ A web crawler should start with a list of seed URLs and use BFS to explore the w
 <p float="left">
   <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/crawler2.gif" width="800" />
 </p>
+
+
+### Detailed Component Design
+
+#### Distributed URL Frontier
+
+**Overview**
+- **URL Frontier:** The data structure holding URLs yet to be downloaded.
+- **Breadth-First Traversal:** Initial pages (seed set) are traversed using a FIFO (First-In, First-Out) queue.
+
+**Distributed URL Frontier**
+- **Distribution Across Servers:**
+  - URLs are distributed to multiple servers.
+  - Each server has multiple worker threads for crawling tasks.
+  - URLs are assigned to servers via a hash function mapping each URL to a specific server.
+
+**Politeness Requirements**
+- **Preventing Server Overload:**
+  - Avoid downloading many pages from a single server rapidly.
+  - Ensure no multiple machines connect to the same web server concurrently.
+
+**Implementation of Politeness Constraints**
+- **FIFO Sub-Queues:**
+  - Each server hosts multiple distinct FIFO sub-queues.
+  - Each worker thread operates from its own sub-queue.
+- **URL Placement in Sub-Queues:**
+  - New URLs are placed in sub-queues based on their canonical hostname.
+  - The hash function maps each hostname to a specific thread number.
+  - Ensures:
+    - Only one worker thread downloads from a specific web server at a time.
+    - FIFO queue usage prevents overloading any single web server.
+
+**Key Points**
+- **URL Frontier:** Central to managing URLs yet to be crawled.
+- **Breadth-First Traversal:** Simplified by FIFO queues.
+- **Distribution Strategy:**
+  - URLs are hashed and distributed to servers and threads.
+  - Ensures balanced load and adherence to politeness policies.
+- **Politeness Constraints:**
+  - Critical to avoid overloading servers.
+  - Managed by structured sub-queues and thread assignments.
+
+
+**Size and Storage of URL Frontier**
+- **URL Frontier Size:**
+  - Estimated to be in the hundreds of millions of URLs.
+- **Storage Solution:**
+  - URLs must be stored on disk due to their large volume.
+
+**Implementation of Queues**
+- **Separate Buffers for Enqueueing and Dequeuing:**
+  - **Enqueue Buffer:**
+    - Collects URLs to be added to the frontier.
+    - Once filled, dumps the URLs to the disk.
+  - **Dequeue Buffer:**
+    - Maintains a cache of URLs that need to be visited next.
+    - Periodically reads from the disk to replenish the buffer.
+
+**Key Points**
+- **Disk Storage Necessity:**
+  - Essential for handling the vast number of URLs.
+- **Buffer System:**
+  - Ensures efficient management and retrieval of URLs.
+  - Separate buffers optimize enqueue and dequeue operations.
+
+
+#### Fetcher Module 
+
+- **Purpose**: Downloads documents from given URLs using network protocols (e.g., HTTP).
+- **Robot.txt Compliance**: Webmasters use robot.txt to restrict crawler access to specific site parts.
+- **Caching**: To prevent downloading robot.txt with each request, maintain a fixed-sized cache.
+- **Cache Function**: Maps host-names to their robot's exclusion rules.
+
+
+#### Document Input Stream (DIS) 
+
+- **Purpose**: Allows the same document to be processed by multiple modules without repeated downloads.
+- **Caching**: Caches documents locally to avoid multiple downloads.
+- **Functionality**: 
+  - Provides methods to re-read documents.
+  - Caches small documents (≤ 64 KB) in memory.
+  - Temporarily writes larger documents to a backing file.
+- **Worker Threads**: 
+  - Each worker thread has an associated DIS.
+  - DIS is reused for different documents.
+- **Process Flow**:
+  - Worker extracts a URL from the frontier.
+  - URL is passed to the relevant protocol module.
+  - Protocol module initializes the DIS from the network connection with the document’s contents.
+  - DIS is then passed to all relevant processing modules.
