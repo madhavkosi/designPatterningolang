@@ -18,8 +18,8 @@
 - **Extensibility**:
   - Modular design for adding new functionality.
   - Support for future document types.
-
-**3. Some Design Considerations**
+  
+  **3. Some Design Considerations**
 - **Content Type**:
   - Initially focus on HTML pages.
   - Extensible to support other media types (images, videos, etc.).
@@ -40,26 +40,41 @@
 **Crawling Rate**:
 - **Target**: Crawl 15 billion pages in 4 weeks.
 - **Required Rate**: 
-  \[
-  \frac{15 \text{ billion pages}}{4 \text{ weeks} \times 7 \text{ days/week} \times 86400 \text{ seconds/day}} \approx 6200 \text{ pages/second}
-  \]
+
+```
+15 billion pages / (4 weeks * 7 days/week * 86400 seconds/day) ≈ 6200 pages/second
+```
+
+
+Certainly! Here's the content with both LaTeX and plain text formats:
+
+---
 
 **Storage Requirements**:
 - **Average Page Size**: 100KB (HTML text).
 - **Metadata Size**: 500 bytes per page.
 - **Total Storage**:
-  \[
-  15 \text{ billion pages} \times (100 \text{ KB} + 500 \text{ bytes}) \approx 1.5 \text{ petabytes}
-  \]
+
+```
+Total Storage: 
+15 billion pages * (100 KB + 500 bytes) ≈ 1.5 petabytes
+```
+
+---
 
 **Capacity Model**:
 - **70% Capacity Utilization**: Avoid exceeding 70% of total storage capacity.
 - **Total Storage Needed**:
-  \[
-  \frac{1.5 \text{ petabytes}}{0.7} \approx 2.14 \text{ petabytes}
-  \]    
+ 
 
+```
+Total Storage Needed: 
+1.5 petabytes / 0.7 ≈ 2.14 petabytes
+```
 
+---
+
+By including both LaTeX and plain text formats, you ensure clarity for different viewing environments.
   ### High Level Design for Web Crawler
 
 **Basic Algorithm**:
