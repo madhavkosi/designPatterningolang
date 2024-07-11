@@ -150,8 +150,6 @@ A JSON object indicating the status of the reservation. Possible statuses includ
 
 ### Database Design for Movie Ticket Booking System
 
-### Database Design for Movie Ticket Booking System
-
 | Entity  | Description                                          | Relationships                                       |
 |---------|------------------------------------------------------|-----------------------------------------------------|
 | **City** | Each city can have multiple cinemas.                 | One-to-Many with Cinema                             |
