@@ -212,3 +212,13 @@ Normalized to 3NF:
 - Eliminates transitive dependency, ensuring that non-key attributes depend only on the primary key.
 
 By following these normalization steps, databases can be designed to reduce redundancy, improve data integrity, and enhance the efficiency of data retrieval and manipulation.
+
+
+### Types of Relationships in General Database Design
+
+| Relationship Type | Description | Example |
+|-------------------|-------------|---------|
+| **One-to-One (1:1)** | Each row in Table A is linked to one and only one row in Table B, and vice versa. | Person and Passport tables where each person has one passport and each passport belongs to one person. |
+| **One-to-Many (1:N)** | Each row in Table A can be linked to multiple rows in Table B, but each row in Table B is linked to one and only one row in Table A. | Customer and Order tables where each customer can place multiple orders, but each order is placed by one customer. |
+| **Many-to-One (N:1)** | Each row in Table B can be linked to multiple rows in Table A. | Book and Library tables where each library can have multiple books, but each book is located in one library. |
+| **Many-to-Many (N:N)** | Each row in Table A can be linked to multiple rows in Table B, and each row in Table B can be linked to multiple rows in Table A. | Student and Course tables where each student can enroll in multiple courses, and each course can have multiple students. |

@@ -148,3 +148,83 @@ A JSON object indicating the status of the reservation. Possible statuses includ
 ```
 
 
+### Database Design for Movie Ticket Booking System
+
+### Database Design for Movie Ticket Booking System
+
+| Entity  | Description                                          | Relationships                                       |
+|---------|------------------------------------------------------|-----------------------------------------------------|
+| **City** | Each city can have multiple cinemas.                 | One-to-Many with Cinema                             |
+| **Cinema** | Each cinema belongs to one city.<br>Each cinema can have multiple halls. | Many-to-One with City<br>One-to-Many with Hall |
+| **Hall** | Each hall belongs to one cinema.<br>Each hall can host multiple shows. | Many-to-One with Cinema<br>One-to-Many with Show |
+| **Movie** | Each movie can have multiple shows.                  | One-to-Many with Show                               |
+| **Show** | Each show belongs to one hall and is for one specific movie.<br>Each show can have multiple bookings. | Many-to-One with Hall<br>Many-to-One with Movie<br>One-to-Many with Booking |
+| **User** | Each user can have multiple bookings.                 | One-to-Many with Booking                            |
+| **Booking** | Each booking belongs to one show and one user.     | Many-to-One with Show<br>Many-to-One with User      |
+| **Seat** | Each seat belongs to a hall.<br>Each seat can be associated with multiple bookings over time. | Many-to-One with Hall                               |
+
+This table outlines the entities, their descriptions, and the relationships they have with other entities in the movie ticket booking system.
+
+#### Entity-Relationship Diagram (ERD)
+
+```plaintext
+City --< Cinema --< Hall --< Show --< Booking >-- User
+                      |                 |
+                    Seat              Movie
+```
+
+#### Tables and Relationships
+
+1. **City**
+   - `CityID` (PK)
+   - `Name`
+   - `State`
+   - `Country`
+   - `PostalCode`
+
+2. **Cinema**
+   - `CinemaID` (PK)
+   - `Name`
+   - `CityID` (FK)
+
+3. **Hall**
+   - `HallID` (PK)
+   - `Name`
+   - `CinemaID` (FK)
+
+4. **Seat**
+   - `SeatID` (PK)
+   - `HallID` (FK)
+   - `SeatNumber`
+   - `Type`
+
+5. **Movie**
+   - `MovieID` (PK)
+   - `Title`
+   - `Description`
+   - `Duration`
+   - `Genre`
+   - `Language`
+   - `ReleaseDate`
+   - `Country`
+
+6. **Show**
+   - `ShowID` (PK)
+   - `MovieID` (FK)
+   - `HallID` (FK)
+   - `StartTime`
+   - `EndTime`
+
+7. **User**
+   - `UserID` (PK)
+   - `Name`
+   - `Email`
+   - `PhoneNumber`
+
+8. **Booking**
+   - `BookingID` (PK)
+   - `ShowID` (FK)
+   - `UserID` (FK)
+   - `SeatID` (FK)
+   - `BookingTime`
+   - `Status`
