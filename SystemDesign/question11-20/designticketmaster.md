@@ -170,61 +170,27 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
                       |                 |
                     Seat              Movie
 ```
+### Database Design for Movie Ticket Booking System
 
-#### Tables and Relationships
+| Table       | Columns                                                        |
+|-------------|----------------------------------------------------------------|
+| **City**    | CityID (PK), Name, State, Country, PostalCode                  |
+| **Cinema**  | CinemaID (PK), Name, CityID (FK)                               |
+| **Hall**    | HallID (PK), Name, CinemaID (FK)                               |
+| **Seat**    | SeatID (PK), HallID (FK), SeatNumber, Type                     |
+| **Movie**   | MovieID (PK), Title, Description, Duration, Genre, Language, ReleaseDate, Country |
+| **Show**    | ShowID (PK), MovieID (FK), HallID (FK), StartTime, EndTime     |
+| **User**    | UserID (PK), Name, Email, PhoneNumber                          |
+| **Booking** | BookingID (PK), ShowID (FK), UserID (FK), SeatID (FK), BookingTime, Status |
 
-1. **City**
-   - `CityID` (PK)
-   - `Name`
-   - `State`
-   - `Country`
-   - `PostalCode`
+### Entity Relationships
 
-2. **Cinema**
-   - `CinemaID` (PK)
-   - `Name`
-   - `CityID` (FK)
-
-3. **Hall**
-   - `HallID` (PK)
-   - `Name`
-   - `CinemaID` (FK)
-
-4. **Seat**
-   - `SeatID` (PK)
-   - `HallID` (FK)
-   - `SeatNumber`
-   - `Type`
-
-5. **Movie**
-   - `MovieID` (PK)
-   - `Title`
-   - `Description`
-   - `Duration`
-   - `Genre`
-   - `Language`
-   - `ReleaseDate`
-   - `Country`
-
-6. **Show**
-   - `ShowID` (PK)
-   - `MovieID` (FK)
-   - `HallID` (FK)
-   - `StartTime`
-   - `EndTime`
-
-7. **User**
-   - `UserID` (PK)
-   - `Name`
-   - `Email`
-   - `PhoneNumber`
-
-8. **Booking**
-   - `BookingID` (PK)
-   - `ShowID` (FK)
-   - `UserID` (FK)
-   - `SeatID` (FK)
-   - `BookingTime`
-   - `Status`
+- **City - Cinema**: One-to-Many (City can have multiple Cinemas)
+- **Cinema - Hall**: One-to-Many (Cinema can have multiple Halls)
+- **Hall - Seat**: One-to-Many (Hall can have multiple Seats)
+- **Hall - Show**: One-to-Many (Hall can host multiple Shows)
+- **Movie - Show**: One-to-Many (Movie can have multiple Shows)
+- **Show - Booking**: One-to-Many (Show can have multiple Bookings)
+- **User - Booking**: One-to-Many (User can have multiple Bookings)
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/databasedeisgn.svg)
