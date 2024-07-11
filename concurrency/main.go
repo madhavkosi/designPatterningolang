@@ -4,28 +4,37 @@ import (
 	"fmt"
 )
 
-// Function to compare two sets
-func compareSets(set1 map[string][]string, set2 map[string]struct{}) {
-	for value, data := range set1 {
-		if _, found := set2[value]; !found {
-			fmt.Println(data)
-			fmt.Printf("Error: %s Should not be allowed to modify or delete as this is used in %s", value, data)
-		}
-	}
+// LogLevel represents a logging level.
+type LogLevel int
+
+// Define logging levels.
+const (
+	DEBUG LogLevel = iota
+	INFO
+	WARN
+	ERROR
+)
+
+// String converts the LogLevel to its string representation.
+func (l LogLevel) String() string {
+	return [...]string{"DEBUG", "INFO", "WARN", "ERROR"}[l]
+}
+
+// logMessage logs a message with a given log level.
+func logMessage(level LogLevel, message string) {
+	fmt.Printf("[%s] %s\n", level.String(), message)
 }
 
 func main() {
-	set1 := map[string][]string{
-		"apple":  {"abc", ""},
-		"banana": {},
-		"cherry": {},
-	}
+	// Create variables of type LogLevel.
+	currentLevel := INFO
+	debugLevel := DEBUG
+	warnLevel := WARN
+	errorLevel := ERROR
 
-	set2 := map[string]struct{}{
-		"banana": {},
-		"cherry": {},
-		"date":   {},
-	}
-
-	compareSets(set1, set2)
+	// Log messages with different levels.
+	logMessage(currentLevel, "This is an info message.")
+	logMessage(debugLevel, "This is a debug message.")
+	logMessage(warnLevel, "This is a warning message.")
+	logMessage(errorLevel, "This is an error message.")
 }

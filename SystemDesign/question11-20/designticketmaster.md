@@ -185,3 +185,163 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
 
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/databasedeisgn.svg)
+
+
+### Detailed Component Design
+
+#### Ticket Booking Workflow
+
+1. **User Searches for a Movie**: User inputs movie search criteria.
+2. **User Selects a Movie**: User chooses a movie from the search results.
+3. **Available Shows Displayed**: User views showtimes for the selected movie.
+4. **User Selects a Show**: User picks a specific showtime.
+5. **User Selects Number of Seats**: User specifies the number of seats to reserve.
+6. **Seat Availability Check**:
+   - **If Seats Available**: User is shown a theater map to select seats.
+   - **If Seats Not Available**: User is taken to step 8.
+7. **Seat Reservation Attempt**:
+   - **Successful Reservation**: Seats are reserved, and user proceeds to payment.
+   - **Failed Reservation**: User sees an error message or is taken back to the theater map to choose different seats.
+8. **Waiting for Seats**:
+   - **Seats Become Available**: User is notified to select seats.
+   - **Seats Not Available**: User is shown an error message or taken back to the movie search page.
+   - **Session Timeout**: After one hour, user is taken back to the movie search page.
+9. **Payment Process**:
+   - **Successful Payment**: Booking is completed.
+   - **Failed Payment**: Reserved seats are released after five minutes.
+
+### ActiveReservationsService
+
+#### Overview:
+- **Purpose**: Manage reservations of a 'show' in memory and database.
+- **Memory Storage**: Utilizes a data structure similar to Linked HashMap or TreeMap.
+- **Database Storage**: Reservations stored in the 'Booking' table.
+
+#### Key Components:
+1. **In-Memory Data Structure**:
+   - **Type**: Linked HashMap.
+   - **Function**: Allows direct access to any reservation to remove it when booking is complete.
+   - **Expiry Management**: Head always points to the oldest reservation for expiry management.
+
+2. **HashTable**:
+   - **Key**: ShowID.
+   - **Value**: Linked HashMap containing BookingID and creation Timestamp.
+
+3. **Database**:
+   - **Table**: Booking.
+   - **Fields**:
+     - **Timestamp**: Stores the expiry time.
+     - **Status**:
+       - Reserved (1)
+       - Booked (2)
+       - Expired (3)
+   - **Operations**:
+     - Update status to Booked (2) upon completion.
+     - Remove or mark as Expired (3) when reservation expires.
+
+#### Workflow:
+1. **Reservation Management**:
+   - **Creation**: New reservations added to Linked HashMap and database.
+   - **Completion**: Updates status to Booked (2) in the database and removes from Linked HashMap.
+   - **Expiry**: Removes expired reservations from Linked HashMap and either deletes or marks as Expired (3) in the database.
+
+2. **Payment Processing**:
+   - **Integration**: Works with an external financial service to process payments upon booking completion or reservation expiry.
+
+3. **WaitingUsersService**:
+   - **Notification**: Signals WaitingUsersService to serve waiting customers when a reservation is completed or expired.
+
+
+### WaitingUsersService
+
+#### Overview:
+- **Purpose**: Manage waiting users of a 'show' in memory and ensure fair service based on waiting time.
+- **Memory Storage**: Utilizes a data structure similar to Linked HashMap or TreeMap.
+- **Database Storage**: Not explicitly mentioned, but implied to work in conjunction with ActiveReservationsService.
+
+#### Key Components:
+1. **In-Memory Data Structure**:
+   - **Type**: Linked HashMap.
+   - **Function**: Allows direct access to any waiting user to remove them upon cancellation.
+   - **Fair Service**: Head always points to the longest waiting user for fair first-come-first-serve handling when seats become available.
+
+2. **HashTable**:
+   - **Key**: ShowID.
+   - **Value**: Linked HashMap containing UserIDs and their wait-start-time.
+
+#### Workflow:
+1. **Waiting List Management**:
+   - **Addition**: New waiting users added to the Linked HashMap and HashTable.
+   - **Cancellation**: Users can cancel their request, and they are removed from the Linked HashMap.
+   - **Notification**: When seats become available, the head of the Linked HashMap (longest waiting user) is served first.
+
+2. **Client Updates**:
+   - **Long Polling**: Clients use long polling to stay updated on their reservation status.
+   - **Notification**: Server uses long polling requests to notify users when seats become available.
+
+3. **Reservation Expiration**:
+   - **Tracking**: ActiveReservationsService tracks the expiry of active reservations based on reservation time.
+   - **Client Timer**: Clients see a timer for expiration time, potentially out of sync with the server.
+   - **Buffer**: A five-second buffer is added on the server to prevent timing out on the client side before the server, ensuring a seamless experience and successful purchase.
+
+#### Summary:
+- **WaitingUsersService** maintains a fair and efficient system for managing waiting users using an in-memory Linked HashMap.
+- Ensures that the longest waiting users are served first when seats become available.
+- Integrates with client-side long polling for real-time updates.
+- Collaborates with ActiveReservationsService for managing reservation expirations, incorporating a buffer to ensure a smooth user experience.
+
+
+### Lecture Notes: Concurrency Handling in SQL Databases
+
+#### Key Topic: Concurrency
+- **Objective**: Prevent multiple users from booking the same seat simultaneously.
+
+#### Handling Concurrency Using Transactions
+- **SQL Transactions**:
+  - Ensure operations are completed successfully without interference.
+  - Use transactions to manage concurrent seat bookings.
+
+#### Transaction Isolation Levels
+- **Serializable Isolation Level**:
+  - Highest level of isolation.
+  - Prevents Dirty Reads, Nonrepeatable Reads, and Phantom Reads.
+  - Ensures that once rows are read in a transaction, they are locked for writing.
+
+#### Sample SQL Code
+```sql
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+BEGIN TRANSACTION;
+
+    -- Intent: Reserve seats 54, 55, 56 for ShowID 99
+    SELECT * FROM Show_Seat 
+    WHERE ShowID=99 AND ShowSeatID IN (54, 55, 56) AND Status=0; -- Check if seats are free
+
+    -- If the above returns three rows, proceed with update
+    -- Otherwise, return failure
+
+    UPDATE Show_Seat ...
+    UPDATE Booking ...
+
+COMMIT TRANSACTION;
+```
+
+
+#### Key Points
+- **Serializable Isolation**:
+  - Ensures safety from concurrent modifications.
+  - Locks rows for writing once read within a transaction.
+  
+- **Locking Mechanism**:
+  - Within a transaction, reading rows places a write lock on them.
+  - Prevents updates by other transactions.
+
+#### Post-Transaction Process
+- **ActiveReservationService**:
+  - Once the transaction is successful, track the reservation using `ActiveReservationService`.
+
+#### Summary
+- Use transactions with the `Serializable` isolation level to handle concurrency.
+- Ensure seat availability before updating the booking records.
+- Lock rows during transactions to prevent concurrent modifications.
+- Track successful reservations with an active service.
