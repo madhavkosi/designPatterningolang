@@ -41,3 +41,110 @@ Calculation for daily data storage:
 
 To store five years of this data:
 2 GB/day * 365 days/year * 5 years = 3.6 TB 
+
+
+### API Definitions for Movie Ticket Booking System
+
+#### 1. SearchMovies API
+The `SearchMovies` API allows users to search for movie shows based on various filters. This API can be useful for finding specific movies or shows in a particular location and timeframe.
+
+**Function Signature**: `SearchMovies(api_dev_key, keyword, city, lat_long, radius, start_datetime, end_datetime, postal_code, includeSpellcheck, results_per_page, sorting_order)`
+
+**Parameters**:
+- `api_dev_key` (string): The API developer key of a registered account. Used for authentication and quota management.
+- `keyword` (string): Keyword to search for movies.
+- `city` (string): City to filter movies.
+- `lat_long` (string): Latitude and longitude to filter the search area.
+- `radius` (number): Radius (in kilometers) around the specified lat_long to search within.
+- `start_datetime` (string): Filter movies starting from this datetime.
+- `end_datetime` (string): Filter movies ending at this datetime.
+- `postal_code` (string): Postal code to filter movies.
+- `includeSpellcheck` (Enum: "yes" or "no"): Include spell check suggestions if "yes".
+- `results_per_page` (number): Number of results per page, maximum is 30.
+- `sorting_order` (string): Sorting order of the results. Acceptable values include 'name,asc', 'name,desc', 'date,asc', 'date,desc', 'distance,asc', 'name,date,asc', 'name,date,desc', 'date,name,asc', 'date,name,desc'.
+
+**Returns**:
+A JSON object containing a list of movies and their shows. Each movie show includes details such as MovieID, ShowID, Title, Description, Duration, Genre, Language, ReleaseDate, Country, StartTime, EndTime, and a list of available seats with their types, prices, and status.
+
+**Sample Response**:
+```json
+[
+  {
+    "MovieID": 1,
+    "ShowID": 1,
+    "Title": "Cars 2",
+    "Description": "About cars",
+    "Duration": 120,
+    "Genre": "Animation",
+    "Language": "English",
+    "ReleaseDate": "8th Oct. 2014",
+    "Country": "USA",
+    "StartTime": "14:00",
+    "EndTime": "16:00",
+    "Seats": [
+      {
+        "Type": "Regular",
+        "Price": 14.99,
+        "Status": "Almost Full"
+      },
+      {
+        "Type": "Premium",
+        "Price": 24.99,
+        "Status": "Available"
+      }
+    ]
+  },
+  {
+    "MovieID": 1,
+    "ShowID": 2,
+    "Title": "Cars 2",
+    "Description": "About cars",
+    "Duration": 120,
+    "Genre": "Animation",
+    "Language": "English",
+    "ReleaseDate": "8th Oct. 2014",
+    "Country": "USA",
+    "StartTime": "16:30",
+    "EndTime": "18:30",
+    "Seats": [
+      {
+        "Type": "Regular",
+        "Price": 14.99,
+        "Status": "Full"
+      },
+      {
+        "Type": "Premium",
+        "Price": 24.99,
+        "Status": "Almost Full"
+      }
+    ]
+  }
+]
+```
+
+#### 2. ReserveSeats API
+The `ReserveSeats` API allows users to reserve seats for a specific movie show.
+
+**Function Signature**: `ReserveSeats(api_dev_key, session_id, movie_id, show_id, seats_to_reserve[])`
+
+**Parameters**:
+- `api_dev_key` (string): The API developer key of a registered account. Used for authentication and quota management.
+- `session_id` (string): User's session ID to track the reservation. The reservation will be removed when the session expires.
+- `movie_id` (string): ID of the movie to reserve.
+- `show_id` (string): ID of the show to reserve.
+- `seats_to_reserve` (array of numbers): An array containing seat IDs to reserve.
+
+**Returns**:
+A JSON object indicating the status of the reservation. Possible statuses include:
+1. "Reservation Successful"
+2. "Reservation Failed - Show Full"
+3. "Reservation Failed - Retry, as other users are holding reserved seats"
+
+**Sample Response**:
+```json
+{
+  "status": "Reservation Successful"
+}
+```
+
+
