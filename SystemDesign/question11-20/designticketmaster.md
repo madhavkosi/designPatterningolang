@@ -183,14 +183,5 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
 | **User**    | UserID (PK), Name, Email, PhoneNumber                          |
 | **Booking** | BookingID (PK), ShowID (FK), UserID (FK), SeatID (FK), BookingTime, Status |
 
-### Entity Relationships
-
-- **City - Cinema**: One-to-Many (City can have multiple Cinemas)
-- **Cinema - Hall**: One-to-Many (Cinema can have multiple Halls)
-- **Hall - Seat**: One-to-Many (Hall can have multiple Seats)
-- **Hall - Show**: One-to-Many (Hall can host multiple Shows)
-- **Movie - Show**: One-to-Many (Movie can have multiple Shows)
-- **Show - Booking**: One-to-Many (Show can have multiple Bookings)
-- **User - Booking**: One-to-Many (User can have multiple Bookings)
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/databasedeisgn.svg)
