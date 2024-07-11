@@ -226,3 +226,5 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
    - `SeatID` (FK)
    - `BookingTime`
    - `Status`
+
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/databasedeisgn.svg)
