@@ -37,7 +37,7 @@ An online movie ticket booking system allows customers to purchase theater seats
 - **Data Storage:** 50 bytes per seat booking, 50 bytes for movie and cinema information.
 
 Calculation for daily data storage:
-\[ 500 \text{ cities} \times 10 \text{ cinemas} \times 2000 \text{ seats} \times 2 \text{ shows} \times (50 + 50) \text{ bytes} = 2 \text{ GB/day} \]
+500 cities * 10 cinemas * 2000 seats * 2 shows * (50 + 50) bytes = 2 GB/day
 
 To store five years of this data:
-\[ 2 \text{ GB/day} \times 365 \text{ days/year} \times 5 \text{ years} = 3.6 \text{ TB} \]
+2 GB/day * 365 days/year * 5 years = 3.6 TB 
