@@ -38,7 +38,7 @@ Certainly! Here's a table summarizing the key points about Strong Consistency an
 |                          | - Minimize External Calls: Reduce number of API calls or external dependencies.                                      | - Network Bandwidth: Increase to accommodate higher data transfer rates.                                      |
 
 
-Here's the information formatted in a table with short notes:
+## ACID vs BASE Properties in Databases
 
 | **Property**                  | **ACID Properties**                                                                                                         | **BASE Properties**                                                                                                     |
 |-------------------------------|-----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
