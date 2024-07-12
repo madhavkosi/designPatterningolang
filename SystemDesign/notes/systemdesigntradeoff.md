@@ -1,3 +1,17 @@
+Here's a more concise table for a quick comparison between Strong Consistency and Eventual Consistency:
+
+| **Aspect**               | **Strong Consistency**                                               | **Eventual Consistency**                                             |
+|--------------------------|----------------------------------------------------------------------|----------------------------------------------------------------------|
+| **Definition**           | Immediate, consistent reads after a write.                           | Reads eventually reflect the latest write.                           |
+| **Characteristics**      | - Immediate consistency<br>- Read-Write synchronization              | - Delayed consistency<br>- Higher performance                        |
+| **Example**              | Banking system: Instant balance updates.                             | Social media: Temporary different like counts.                       |
+| **Pros**                 | - High data reliability<br>- User simplicity                         | - Scalability<br>- High availability                                 |
+| **Cons**                 | - Potential latency<br>- Scalability challenges                      | - Temporary inconsistency<br>- User complexity                       |
+| **Guarantee**            | All users see the same data at the same time.                        | Data becomes consistent eventually.                                  |
+| **Application**          | Financial systems needing strict accuracy.                           | Social media and applications tolerating temporary inconsistency.    |
+
+This table provides a brief comparison of the key points between strong consistency and eventual consistency.
+
 ### Read-Heavy vs. Write-Heavy Systems
 
 Designing systems for read-heavy versus write-heavy workloads involves different strategies tailored to each system's demands and challenges.
