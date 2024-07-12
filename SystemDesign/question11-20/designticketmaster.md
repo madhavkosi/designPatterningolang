@@ -346,9 +346,9 @@ COMMIT TRANSACTION;
 - Lock rows during transactions to prevent concurrent modifications.
 - Track successful reservations with an active service.
 
-# Lecture 11: Data Partitioning
+### Data Partitioning
 
-## Database Partitioning
+ **Database Partitioning**
 
 - **Partition by MovieID**:
   - All the shows of a movie are stored on a single server.
@@ -358,7 +358,7 @@ COMMIT TRANSACTION;
   - Distributes the load among different servers.
   - More efficient in handling popular movies.
 
-## ActiveReservationService and WaitingUserService Partitioning
+ **ActiveReservationService and WaitingUserService Partitioning**
 
 - **Web Servers**:
   - Manage active user sessions.
@@ -369,7 +369,7 @@ COMMIT TRANSACTION;
   - Ensures reservations and waiting users of a particular show are managed by a specific set of servers.
   - For load balancing, each show is allocated three servers.
 
-### Handling Expired Reservations
+**Handling Expired Reservations**
 
 1. **Update Database**:
    - Remove the booking or mark it as expired.
@@ -388,7 +388,7 @@ COMMIT TRANSACTION;
    - Send a message to the WaitingUserService server with the longest waiting user.
    - Process the request if required seats become available.
 
-### Handling Successful Reservations
+**Handling Successful Reservations**
 
 1. **Notify WaitingUserService**:
    - The server holding the successful reservation informs all servers holding waiting users of the show.
@@ -402,7 +402,7 @@ COMMIT TRANSACTION;
    - Iterate through the Linked HashMap of all waiting users.
    - Expire users who need more seats than are available.
 
-## Summary of Key Points
+**Summary of Key Points**
 
 - **Partitioning by ShowID** effectively distributes load among servers.
 - **Consistent Hashing** helps allocate servers efficiently for ActiveReservationService and WaitingUserService.
