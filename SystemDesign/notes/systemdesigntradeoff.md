@@ -170,7 +170,8 @@ Short Notes:
 3. **Use Cases**: API Gateway for large-scale architectures needing unified access and management. Direct Service Exposure for simpler architectures with a focus on reduced latency and no single point of failure.
 
 
-Here's the information in a table format with short notes:
+## SQL vs. NoSQL
+
 
 | **Aspect**                | **SQL Databases**                                                                                           | **NoSQL Databases**                                                                                                      |
 |---------------------------|-------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
