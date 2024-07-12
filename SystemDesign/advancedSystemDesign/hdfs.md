@@ -252,3 +252,54 @@ The HDFS read process involves a client requesting data from the HDFS by communi
 These steps outline the efficient process of reading data in HDFS, ensuring high performance and reliability. 
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/hdfs5.svg)
+
+
+### Anatomy of a Write Operation in HDFS
+
+The Hadoop Distributed File System (HDFS) manages a write operation through a series of steps involving the client, NameNode, and DataNodes. Here is a detailed explanation of the HDFS write process:
+
+#### HDFS Write Process:
+
+1. **Client Initiates Write Request**:
+   - The HDFS client initiates a write request by calling the `create()` method of the `DistributedFileSystem` object.
+
+2. **Request to NameNode**:
+   - The `DistributedFileSystem` object sends a file creation request to the NameNode.
+
+3. **Verification by NameNode**:
+   - The NameNode checks if the file already exists and verifies the client's permissions to create the file.
+   - If both conditions are met, the NameNode creates a new file record and sends an acknowledgment to the client.
+
+4. **Writing Data Using FSDataOutputStream**:
+   - The client proceeds to write the file using `FSDataOutputStream`.
+   - `FSDataOutputStream` writes data to a local queue called 'Data Queue.' Data is stored in the queue until a complete block of data is accumulated.
+
+5. **DataStreamer Notification**:
+   - Once a complete block is accumulated in the queue, the `DataStreamer` component is notified to manage data transfer to the DataNode.
+
+6. **Block Allocation Request**:
+   - The `DataStreamer` asks the NameNode to allocate a new block on DataNodes and selects desirable DataNodes for replication.
+   - The NameNode provides a list of blocks and the locations of each block replica.
+
+7. **Data Transfer to DataNodes**:
+   - Upon receiving the block locations, the `DataStreamer` starts transferring the blocks from the internal queue to the nearest DataNode.
+   - Each block is written to the first DataNode, which then pipelines the block to other DataNodes to write replicas of the block.
+
+8. **Replication and Acknowledgment**:
+   - Blocks are replicated during the file write itself. HDFS does not acknowledge a write to the client until all replicas for that block have been written by the DataNodes.
+   - Once the `DataStreamer` finishes writing all blocks, it waits for acknowledgments from all the DataNodes.
+
+9. **Closing the OutputStream**:
+   - Once all acknowledgments are received, the client calls the `close()` method of the `OutputStream`.
+
+10. **Final Notification to NameNode**:
+    - The `DistributedFileSystem` contacts the NameNode to notify that the file write operation is complete.
+    - At this point, the NameNode commits the file creation operation, making the file available for reading. 
+    - If the NameNode dies before this step, the file is lost.
+
+This process ensures that data is reliably written to HDFS with the necessary replication for fault tolerance.
+
+
+### Summary
+- **Steps**: `create()` -> verification by NameNode -> `FSDataOutputStream` writes data to queue -> `DataStreamer` manages block transfer and replication -> wait for acknowledgments -> `close()` -> notify NameNode of completion.
+- **Reliability**: Ensures all replicas are written before acknowledging write, but file is lost if NameNode fails before final commit.
