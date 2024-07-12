@@ -60,3 +60,36 @@ Short Notes:
 3. **Examples**: ACID - Bank transactions; BASE - Social media platforms.
 4. **Use Cases**: ACID - Banking systems; BASE - Social networks, e-commerce.
 5. **Key Differences**: ACID prioritizes consistency; BASE prioritizes availability.
+
+
+
+## Read-Through vs Write-Through Cache
+
+| **Aspect**                | **Read-Through Cache**                                                                                                                | **Write-Through Cache**                                                                                                           |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| **Definition**            | Data is loaded into the cache on demand, typically when a read request occurs for data not already in the cache.                       | Data is written simultaneously to the cache and the primary storage system, ensuring the cache always contains the most recent data.|
+| **Process**               | - Cache checks for data availability (cache hit).                                                                                      | - Data is written first to the cache.                                                                                            |
+|                           | - On cache miss, data is fetched from primary storage, stored in the cache, and then returned to the client.                           | - Simultaneously, data is written to primary storage.                                                                            |
+|                           | - Subsequent reads are served from the cache until data expires or is evicted.                                                         | - Read requests are served from the cache, which contains up-to-date data.                                                       |
+| **Pros**                  | - Ensures consistency between cache and primary storage.                                                                               | - Provides strong consistency between cache and primary storage.                                                                  |
+|                           | - Reduces load on primary storage by offloading frequent read operations.                                                              | - No data loss on cache failure as data is also in primary storage.                                                              |
+| **Cons**                  | - Initial read requests (cache misses) incur latency due to data fetching from primary storage.                                        | - Each write operation incurs latency due to simultaneous writing to cache and primary storage.                                   |
+|                           |                                                                                                                                         | - Higher load on primary storage due to every write request impacting it.                                                        |
+| **Example**               | **Online Product Catalog:**                                                                                                            | **Banking System Transaction:**                                                                                                  |
+|                           | - Cache Miss: On customer search for a product not in cache, system experiences cache miss.                                             | - Transaction Execution: User makes a transaction (e.g., deposit), transaction details are written to cache.                     |
+|                           | - Fetching and Caching: System fetches product details from primary database and stores in cache.                                      | - Simultaneous Database Write: Transaction is also recorded in the primary database.                                             |
+|                           | - Subsequent Requests: Future searches for the same product are served from cache.                                                     | - Consistent Data: Ensures cached data is up-to-date with database for fast retrieval.                                           |
+|                           | - Reduced Database Load: Popular product queries served from cache reduce primary database load.                                       | - Data Integrity: Ensures cache and database synchronization, reducing risk of discrepancies.                                    |
+|                           | - Improved Read Performance: Product information retrieval is faster after initial caching.                                            | - Reliability: Data is safe in primary database even if cache system fails.                                                      |
+| **Key Differences**       | - Synchronizes data at the point of reading.                                                                                           | - Synchronizes data at the point of writing.                                                                                     |
+|                           | - Improves read performance after initial load.                                                                                        | - Ensures write reliability but may have slower write performance.                                                               |
+|                           | - Ideal for read-heavy workloads with infrequent data updates.                                                                         | - Suitable for environments where data integrity and consistency are crucial, especially for write operations.                    |
+| **Conclusion**            | Optimal for scenarios where read performance is crucial, and data can be loaded into cache on the first read request.                  | Suited for applications where data integrity and consistency on write operations are paramount.                                   |
+|                           | Enhances performance in read efficiency.                                                                                               | Enhances performance in reliable writes.                                                                                         |
+
+Short Notes:
+1. **Read-Through Cache**: Emphasizes efficient loading and serving of read-heavy data after the initial request. Ideal for data read frequently but updated less often.
+2. **Write-Through Cache**: Ensures high data integrity and consistency between cache and database, essential for transactional data where every write is critical.
+3. **Use Cases**: Read-Through - Online product catalogs; Write-Through - Banking systems.
+4. **Performance Impact**: Read-Through improves read performance; Write-Through ensures reliable writes with potential slower write performance.
+5. **Data Synchronization**: Read-Through synchronizes at read time; Write-Through synchronizes at write time.
