@@ -1,18 +1,24 @@
-Here's a more concise table for a quick comparison between Strong Consistency and Eventual Consistency:
+## Strong Consistency and Eventual Consistency:
 
-| **Aspect**               | **Strong Consistency**                                               | **Eventual Consistency**                                             |
-|--------------------------|----------------------------------------------------------------------|----------------------------------------------------------------------|
-| **Definition**           | Immediate, consistent reads after a write.                           | Reads eventually reflect the latest write.                           |
-| **Characteristics**      | - Immediate consistency<br>- Read-Write synchronization              | - Delayed consistency<br>- Higher performance                        |
-| **Example**              | Banking system: Instant balance updates.                             | Social media: Temporary different like counts.                       |
-| **Pros**                 | - High data reliability<br>- User simplicity                         | - Scalability<br>- High availability                                 |
-| **Cons**                 | - Potential latency<br>- Scalability challenges                      | - Temporary inconsistency<br>- User complexity                       |
-| **Guarantee**            | All users see the same data at the same time.                        | Data becomes consistent eventually.                                  |
-| **Application**          | Financial systems needing strict accuracy.                           | Social media and applications tolerating temporary inconsistency.    |
+Certainly! Here's a table summarizing the key points about Strong Consistency and Eventual Consistency:
 
-This table provides a brief comparison of the key points between strong consistency and eventual consistency.
+| **Aspect**                  | **Strong Consistency**                                                                 | **Eventual Consistency**                                                                 |
+|-----------------------------|----------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| **Definition**              | Guarantees that once a write operation is completed, subsequent reads reflect that write. | Guarantees that if no new updates are made, all accesses eventually return the last updated value. |
+| **Characteristics**         | - Immediate consistency: All clients see the same data instantly.                      | - Delayed consistency: Data eventually becomes consistent.                                |
+|                             | - Read-Write synchronization: Reads might wait for writes to complete.                  | - Higher performance: Often provides better performance and availability.                 |
+| **Example**                 | Banking system: Account balance is immediately updated for all queries post-transfer.  | Social media platform: Like counts might differ temporarily across users.                 |
+| **Pros**                    | - Data reliability: High integrity and reliability.                                    | - Scalability: Easier to scale across multiple nodes.                                     |
+|                             | - Simplicity for users: Easier to understand and work with.                            | - High availability: Remains available even with network partitions.                      |
+| **Cons**                    | - Potential latency: Ensuring consistency across nodes can introduce delays.           | - Data inconsistency window: Temporary inconsistency in data.                             |
+|                             | - Scalability challenges: Complex to scale with immediate consistency.                 | - Complexity for users: Users might see outdated information temporarily.                 |
+| **Consistency Guarantee**   | Ensures all users see the same data at the same time.                                   | Allows for temporary inconsistency, but data eventually becomes consistent.               |
+| **Performance vs Consistency** | Prioritizes consistency, potentially affecting performance and scalability.          | Prioritizes performance and availability, with a trade-off in immediate consistency.      |
+| **Application Suitability** | Ideal for applications needing strict data accuracy (e.g., financial systems).          | Suitable for applications tolerating temporary inconsistency for better performance (e.g., social media). |
 
-### Read-Heavy vs. Write-Heavy Systems
+This table provides a concise comparison between strong consistency and eventual consistency in distributed systems.
+
+## Read-Heavy vs. Write-Heavy Systems
 
 Designing systems for read-heavy versus write-heavy workloads involves different strategies tailored to each system's demands and challenges.
 
