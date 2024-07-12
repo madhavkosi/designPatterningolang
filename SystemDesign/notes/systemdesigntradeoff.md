@@ -96,7 +96,7 @@ Short Notes:
 
 
 
-Here's the information in a table format with short notes:
+## Batch Processing vs Stream Processing
 
 | **Aspect**                  | **Batch Processing**                                                                                     | **Stream Processing**                                                                                              |
 |-----------------------------|----------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
