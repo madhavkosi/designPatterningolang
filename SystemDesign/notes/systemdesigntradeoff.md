@@ -37,6 +37,26 @@ Certainly! Here's a table summarizing the key points about Strong Consistency an
 |                          | - Code Optimization: Optimize algorithms, remove unnecessary computations.                                          | - Asynchronous Processing: Use for non-immediate tasks.                                                       |
 |                          | - Minimize External Calls: Reduce number of API calls or external dependencies.                                      | - Network Bandwidth: Increase to accommodate higher data transfer rates.                                      |
 
-### Summary
-- **Latency**: Essential for applications requiring fast response times. Improve by optimizing network routes, upgrading hardware, using faster communication protocols, optimizing databases, load balancing, optimizing code, and minimizing external calls.
-- **Throughput**: Vital for systems processing large volumes of data. Improve by scaling horizontally, implementing caching, using parallel processing, batch processing, optimizing database performance, asynchronous processing, and increasing network bandwidth.
+
+Here's the information formatted in a table with short notes:
+
+| **Property**                  | **ACID Properties**                                                                                                         | **BASE Properties**                                                                                                     |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| **Definition**                | ACID stands for Atomicity, Consistency, Isolation, and Durability. Guarantees reliable processing of database transactions. | BASE stands for Basically Available, Soft state, and Eventual consistency. Alternative approach favoring availability.   |
+| **Components**                | **Atomicity**: Ensures a transaction is fully completed or not executed at all.                                              | **Basically Available**: System is available most of the time.                                                          |
+|                               | **Consistency**: Guarantees a transaction brings the database from one valid state to another.                               | **Soft State**: System state may change over time, even without input.                                                  |
+|                               | **Isolation**: Ensures concurrent transactions do not interfere with each other.                                              | **Eventual Consistency**: System will eventually become consistent, given enough time.                                  |
+|                               | **Durability**: Once a transaction is committed, it remains so, even in case of system failure.                              |                                                                                                                         |
+| **Example**                   | Bank transfer: Ensures atomicity, consistency, isolation, and durability of debit/credit operations.                        | Social media: May show different counts of likes temporarily but eventually becomes consistent for all users.           |
+| **Use Cases**                 | Systems requiring high reliability and data integrity, like banking or financial systems.                                   | Distributed systems where availability and partition tolerance are critical, like social networks or e-commerce catalogs.|
+| **Key Differences**           | **Consistency and Availability**: Prioritizes consistency and reliability of transactions.                                   | **Consistency and Availability**: Prioritizes system availability and partition tolerance, allowing some data inconsistency.|
+|                               | **System Design**: Generally used in traditional relational databases.                                                      | **System Design**: Often associated with NoSQL and distributed databases.                                               |
+|                               | **Use Case Alignment**: Ideal for applications needing strong data integrity.                                                | **Use Case Alignment**: Better for large-scale applications needing high availability and scalability.                  |
+| **Conclusion**                | Critical for systems where transactions must be reliable and consistent.                                                    | Beneficial in environments where high availability and scalability are necessary, with acceptable data inconsistency.   |
+
+Short Notes:
+1. **ACID Properties**: Emphasizes reliability and consistency of transactions in traditional databases.
+2. **BASE Properties**: Focuses on availability and partition tolerance in distributed systems.
+3. **Examples**: ACID - Bank transactions; BASE - Social media platforms.
+4. **Use Cases**: ACID - Banking systems; BASE - Social networks, e-commerce.
+5. **Key Differences**: ACID prioritizes consistency; BASE prioritizes availability.
