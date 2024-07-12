@@ -121,3 +121,78 @@
 - **High Availability**: Multiple data copies across the cluster.
 - **Client Interactions**: Metadata from NameNode, data transfers directly with DataNodes.
 - **Comparative Features**: Similarities with GFS, but with distinct differences in terms of implementation, replication strategies, and file operations.
+
+
+### Deep Dive into HDFS Design Components
+
+#### Cluster Topology
+- **Data Center Configuration**:
+  - Many racks of servers connected via switches.
+  - Typical configuration: 30 to 40 servers per rack.
+  - Each rack has a dedicated gigabit switch connecting its servers.
+  - Uplink from each rack switch to a core switch/router, bandwidth shared by many racks.
+
+- **Server Configuration in HDFS**:
+  - Each server is mapped to a particular rack.
+  - Network distance between servers is measured in hops:
+    - One hop corresponds to one link in the topology.
+    - Tree-style topology is assumed by Hadoop.
+    - Distance calculation: Sum of distances to the closest common ancestor.
+  
+- **Example**:
+  - Distance between Node 1 and itself: 0 hops.
+  - Distance between Node 1 and Node 2: 2 hops.
+  - Distance between Node 3 and Node 4: 4 hops.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/hdfs3.svg)
+
+#### Rack-Aware Replication
+- **Replica Placement**:
+  - Critical for HDFS reliability and performance.
+  - **Replication Factor**: Typically set to 3.
+  - Placement Strategy:
+    - First replica on the same node as the client writing the block (if the client is within the cluster).
+    - Second replica on a different rack from the first (off-rack replica).
+    - Third replica on another random node on the same rack as the second.
+    - Additional replicas on random nodes, avoiding excessive replicas on the same rack.
+  
+- **Failure Tolerance**:
+  - Designed to tolerate node and rack failures.
+  - Example: If an entire rack goes offline, the block can still be located on a different rack.
+
+- **Policy Summary**:
+  - No DataNode contains more than one replica of any block.
+  - No rack contains more than two replicas of the same block, given enough racks.
+  - Intentional tradeoff: Slows write operations but enhances reliability and performance.
+
+#### Synchronization Semantics
+- **Early Versions**:
+  - Followed strict immutable semantics: Files once written could not be re-opened for writes.
+  - Files could be deleted but not modified.
+  
+- **Current Versions**:
+  - Support append operations.
+  - Existing binary data once written cannot be modified in place.
+  - Design aligns with common MapReduce workloads (write-once, read-many pattern).
+
+- **MapReduce**:
+  - Reducers write independent files to HDFS as output.
+  - Focus on fast read access for multiple clients.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/hdfs4.svg)
+
+#### HDFS Consistency Model
+- **Strong Consistency**:
+  - Each data block is replicated to multiple nodes.
+  - Write declared successful only when all replicas are written successfully.
+  - Ensures all clients see a consistent view of the file.
+
+- **Single Writer Policy**:
+  - No multiple concurrent writers for a single HDFS file.
+  - Simplifies implementation of strong consistency.
+
+---
+
+### Key Points Summary
+- **Cluster Topology**: Servers mapped to racks, network distance measured in hops, tree-style topology.
+- **Rack-Aware Replication**: Strategy for replica placement enhances reliability and performance, tolerates node and rack failures.
+- **Synchronization Semantics**: Supports append operations, aligns with write-once, read-many pattern common in MapReduce workloads.
+- **Consistency Model**: Strong consistency ensured by successful replication to multiple nodes, single writer policy simplifies consistency implementation.
