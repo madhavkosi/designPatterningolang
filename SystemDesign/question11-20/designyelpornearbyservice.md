@@ -24,7 +24,7 @@ A Yelp-like service allows users to search for nearby places such as restaurants
 3. **Annual Growth**: 20% increase in places and QPS
 
 
-### 4. Database Schema
+## 4. Database Schema
 
 **Places Table**: This table will store information about each place.
 
@@ -56,7 +56,7 @@ A Yelp-like service allows users to search for nearby places such as restaurants
 **Total Size**: 4 + 8 + 4 + 256 = 272 bytes
 
 
-## Api contract
+## 5 Api contract
 
 | **Function**          | **Parameters**                                                                                                                                                                       | **Returns**                                                |
 |-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
