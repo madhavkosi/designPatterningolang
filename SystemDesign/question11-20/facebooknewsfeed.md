@@ -214,7 +214,7 @@ The problem can be divided into two main parts:
   - Newsfeed Generation Service
   - Feed Notification Service
 
-![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/NewsfeedHLD.gifas)
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/NewsfeedHLD.gif)
 
 ### High-Level Architecture Diagram (Illustrative Description)
 
