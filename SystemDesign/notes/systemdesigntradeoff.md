@@ -196,3 +196,27 @@ Short Notes:
 2. **NoSQL Databases**: Suitable for projects needing flexibility, scalability, and handling large amounts of diverse data. Examples include MongoDB, Redis.
 3. **Key Differences**: SQL requires a predefined schema and scales vertically, while NoSQL is schema-less and scales horizontally.
 4. **Use Cases**: SQL for banking systems and applications with stable data structures; NoSQL for big data, real-time web applications, and systems with evolving data models.
+
+
+## REST vs RPC
+
+| **Aspect**                  | **REST (Representational State Transfer)**                                                                 | **RPC (Remote Procedure Call)**                                                                                    |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **Concept**                 | Architectural style using HTTP requests to access and manipulate data. Treats server data as resources.    | Protocol allowing a program to execute a procedure in another address space, typically on another networked computer. |
+| **Communication**           | Uses standard HTTP methods (GET, POST, PUT, DELETE) for CRUD operations on resources.                       | Clients and servers communicate through explicit remote procedure calls.                                           |
+| **Stateless**               | Yes, each request contains all the necessary information.                                                   | Can be stateful, maintaining client context between requests.                                                      |
+| **Data and Resources**      | Emphasizes resources identified by URLs, data transferred over HTTP in formats like JSON or XML.            | Procedure-oriented, using various formats like JSON (JSON-RPC), XML (XML-RPC), or binary formats like Protocol Buffers (gRPC). |
+| **Example**                 | URL like `http://example.com/articles` to access articles. GET retrieves articles, POST creates a new article. | Method `getArticle(articleId)` on a remote server, which returns article details.                                    |
+| **Advantages**              | - **Scalability:** Stateless interactions improve scalability.                                              | - **Tight Coupling:** Straightforward mapping of actions to server-side operations.                                |
+|                             | - **Performance:** Can leverage HTTP caching.                                                               | - **Efficiency:** Binary RPC (like gRPC) can be more efficient and faster.                                         |
+|                             | - **Simplicity and Flexibility:** Uses standard HTTP methods.                                               | - **Clear Contract:** Procedure definitions create a clear contract between client and server.                      |
+| **Disadvantages**           | - **Over-fetching or Under-fetching:** Might retrieve more or less data than needed.                         | - **Less Flexible:** Tightly coupled to server methods.                                                            |
+|                             | - **Standardization:** Lacks a strict standard, leading to varied implementations.                          | - **Stateful Interactions:** Can reduce scalability.                                                               |
+| **Best For**                | Web services and public APIs needing scalability, caching, and uniform interface.                           | Actions tightly coupled to server operations, where efficiency and speed are critical, like internal microservices.  |
+| **Conclusion**              | Suited for scalable, flexible web services and public APIs with stateless interactions.                     | Chosen for tightly coupled actions, efficiency, and speed, particularly in internal communications.                |
+
+Short Notes:
+1. **REST (Representational State Transfer)**: Uses HTTP requests for CRUD operations on resources, emphasizing scalability and flexibility. Ideal for web services and public APIs.
+2. **RPC (Remote Procedure Call)**: Allows execution of procedures on remote servers, focusing on efficiency and tight coupling. Suitable for internal microservices communication where speed is critical.
+3. **Advantages and Disadvantages**: REST is scalable and flexible but can suffer from over-fetching/under-fetching and lacks strict standardization. RPC provides clear contracts and efficiency but is less flexible and can be stateful.
+4. **Use Cases**: REST for scalable and flexible web services; RPC for tightly coupled server operations requiring efficiency and speed.
