@@ -118,3 +118,29 @@ Short Notes:
 2. **Stream Processing**: Necessary for real-time tasks requiring immediate action and adaptability to changing data. Examples include fraud detection and real-time analytics.
 3. **Pros and Cons**: Batch processing is simpler and resource-efficient but delays insights, while stream processing provides real-time analysis but is complex and resource-intensive.
 4. **Use Cases**: Batch processing for scheduled tasks without immediate needs; stream processing for real-time data handling and immediate decision-making.
+
+Here's the information in a table format with short notes:
+
+| **Aspect**               | **Load Balancer**                                                                                                      | **API Gateway**                                                                                                        |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| **Purpose**              | Distributes network or application traffic across multiple servers to optimize resource use and ensure reliability.    | Manages API calls, routes requests, simplifies the API, and aggregates results from various services.                  |
+| **How It Works**         | Accepts incoming requests and routes them to backend servers based on factors like connections, response times, or health. | Acts as a reverse proxy to route requests, handles API management tasks like rate limiting, authentication, and more.  |
+| **Types**                | - Hardware-based                                                                                                       | - Software-based                                                                                                       |
+|                          | - Layer 4 (transport level)                                                                                             | - Layer 7 (application level)                                                                                           | |
+| **Example**              | **E-commerce Website:** Distributes user requests to prevent server overload, increasing capacity and reliability.     | **Mobile Banking App:** Routes requests to services like account details and transaction history, handles authentication, and aggregates data. |
+| **Pros**                 | - Optimizes resource use                                                                                               | - Provides a unified interface for microservices                                                                         |
+|                          | - Maximizes throughput                                                                                                 | - Handles security, rate limiting, and request aggregation                                                             |
+|                          | - Reduces response time                                                                                                | - Simplifies API management for clients                                                                                 |
+| **Cons**                 | - Limited to routing and load distribution                                                                             | - More complex to implement and manage                                                                                 |
+|                          | - Does not handle API-specific tasks                                                                                   | - Can introduce latency due to additional processing                                                                    |
+| **Key Differences**      | **Focus:** Prevents server overloading and ensures high availability and redundancy.                                   | **Focus:** Manages, secures, and routes API calls, providing central API management.                                   |
+|                          | **Functionality:** Routes requests based on server health, connections, and response times.                            | **Functionality:** API transformation, composition, security, and more.                                                |
+| **Combined Use**         | **Load Balancer Before API Gateway:** Distributes traffic across multiple API Gateway instances.                       | **Load Balancer After API Gateway:** API Gateway processes requests and an internal load balancer distributes them to services. |
+|                          | **Benefits:** Enhances availability and scalability of the API Gateway.                                                | **Use Case:** Useful when different backend services require their own load balancing logic.                           |
+| **Hybrid Approach**      | Combines both approaches for complex architectures: Load Balancers manage traffic across API Gateway instances or directly to services. | External traffic hits the Load Balancer first, then routes to API Gateway for processing, and internal Load Balancer distributes to services.  |
+
+Short Notes:
+1. **Load Balancer**: Distributes traffic across servers to optimize resource use, maximize throughput, and ensure reliability. Commonly used in high-traffic scenarios like e-commerce websites.
+2. **API Gateway**: Manages API calls, routes requests, handles security, rate limiting, and request aggregation. Essential for microservices architectures to provide a unified interface.
+3. **Use Cases**: Load Balancer for high availability and performance; API Gateway for managing and simplifying API interactions.
+4. **Combined Use**: Often used together in complex web architectures to balance traffic and manage API requests efficiently.
