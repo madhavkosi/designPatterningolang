@@ -196,3 +196,59 @@
 - **Rack-Aware Replication**: Strategy for replica placement enhances reliability and performance, tolerates node and rack failures.
 - **Synchronization Semantics**: Supports append operations, aligns with write-once, read-many pattern common in MapReduce workloads.
 - **Consistency Model**: Strong consistency ensured by successful replication to multiple nodes, single writer policy simplifies consistency implementation.
+
+
+### HDFS Read Process
+
+#### Overview
+The HDFS read process involves a client requesting data from the HDFS by communicating with the NameNode and DataNodes. The following steps outline the detailed process:
+
+1. **Initiating the Read Request**:
+   - The client initiates a read request by calling the `open()` method of the `DistributedFileSystem` object.
+   - The client specifies:
+     - File name
+     - Start offset
+     - Read range length
+
+2. **Calculating Blocks to be Read**:
+   - The `DistributedFileSystem` object determines the blocks needed based on the given offset and range length.
+   - It requests the block locations from the NameNode.
+
+3. **NameNode's Role**:
+   - The NameNode provides metadata for all block locations.
+   - It returns a list of blocks and their replicas' locations to the client.
+   - Closest replica to the client is preferred:
+     - **Same Node**: Preferred if the block is on the same node as the client.
+     - **Same Rack**: Preferred if the block is in the same rack.
+     - **Off-Rack**: Preferred if the block is off-rack when the other two options are not available.
+
+4. **Reading Data from DataNodes**:
+   - The client calls the `read()` method of `FSDataInputStream`.
+   - The `FSDataInputStream` establishes a connection with the closest DataNode with the first block of the file.
+   - Data is read as streams and passed to the requesting application immediately, without waiting for the entire block to transfer.
+   - Once all data of a block is read, the connection closes, and the process repeats for the next block until all required blocks are read.
+
+5. **Completing the Read Operation**:
+   - After all required blocks are read, the client calls the `close()` method of the input stream object to complete the operation.
+
+#### Short Circuit Read
+- **Definition**: When the client and data are on the same machine, HDFS can bypass the DataNode and read the file directly.
+- **Benefits**:
+  - Reduces overhead.
+  - Minimizes processing resource usage.
+  - Enhances efficiency.
+
+### Summary
+- **Step-by-Step Process**:
+  - Client initiates read request (`open()` method).
+  - `DistributedFileSystem` calculates needed blocks and requests locations from NameNode.
+  - NameNode provides block locations, preferring the closest replicas.
+  - `FSDataInputStream` handles connections and streams data to the client.
+  - Client closes the input stream after reading all blocks (`close()` method).
+
+- **Efficiency**:
+  - Short circuit read optimizes read operations by bypassing DataNode when the client and data are on the same node.
+
+These steps outline the efficient process of reading data in HDFS, ensuring high performance and reliability. 
+
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/hdfs5.svg)
