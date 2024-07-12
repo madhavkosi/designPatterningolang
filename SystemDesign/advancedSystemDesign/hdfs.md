@@ -61,6 +61,7 @@
 - **Cluster Components**:
   - **NameNode**: Manages filesystem metadata.
   - **DataNodes**: Store the actual data.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/hdfs1.svg)
 
 #### Key Architectural Features
 
@@ -112,7 +113,6 @@
 | **Replication Strategy** | Chunk replicas spread across racks, 3 copies by default, auto re-replication | Automatic rack-aware replication, 3 copies by default, user can specify replication factor |
 | **File System Namespace** | Hierarchical, identified by pathnames | Hierarchical, supports traditional file organization and third-party file systems (e.g., S3, Cloud Store) |
 | **Database** | Bigtable uses GFS | HBase uses HDFS |
-![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/hdfs1.svg)
 
 #### Summary of HDFS High-Level Architecture
 - **Block-based Storage**: Files broken into 128 MB blocks.
