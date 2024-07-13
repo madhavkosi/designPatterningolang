@@ -73,3 +73,89 @@ When Redis performs a snapshot, it uses a copy-on-write mechanism to fork the pr
 ### Conclusion
 
 Redis's architecture is designed for high performance, flexibility, and scalability. Its in-memory data store, combined with support for various data structures, replication, sharding, persistence options, and high availability features, makes it a versatile tool for numerous applications. Whether used as a cache, a database, or a message broker, Redis can be tailored to meet the specific needs of your application.
+
+
+### Architecture of Memcached
+
+Memcached is a high-performance, distributed memory caching system designed to speed up dynamic web applications by alleviating database load. It is simple, yet highly effective, and its architecture is built to ensure high throughput and low latency. Here's a detailed look at the architecture of Memcached:
+
+#### 1. **Client-Server Model**
+
+**Client**:
+- **Library Integration**: Applications use Memcached client libraries to interact with the Memcached server. These libraries are available for various programming languages (e.g., Python, Java, PHP, C, Ruby).
+- **Hashing**: The client typically uses a consistent hashing mechanism to distribute keys across multiple Memcached servers in a cluster.
+
+**Server**:
+- **Daemon Process**: Memcached runs as a daemon process on one or more servers. Each Memcached instance stores data in memory and handles requests from clients.
+- **TCP/UDP**: Memcached supports both TCP and UDP protocols for communication.
+
+#### 2. **Data Storage**
+
+**Key-Value Store**:
+- **In-Memory Storage**: Data is stored in memory, which allows for extremely fast access times. Each piece of data is stored as a key-value pair.
+- **Ephemeral Storage**: Memcached does not provide persistence; data is stored only in RAM and is lost if the server is restarted.
+
+**Slab Allocator**:
+- **Memory Management**: Memcached uses a slab allocator to manage memory efficiently. Memory is pre-allocated into chunks of fixed sizes (slabs) to reduce fragmentation.
+- **Chunks and Slabs**: Data is stored in chunks, which are grouped into slabs based on size classes. Each slab contains chunks of a specific size.
+
+#### 3. **Distributed Architecture**
+
+**Horizontal Scalability**:
+- **Scaling Out**: Memcached can scale horizontally by adding more servers to the cluster. Each server operates independently, storing a portion of the data.
+- **Client-Side Distribution**: The client library is responsible for distributing keys across the servers. This is typically done using consistent hashing to ensure even distribution and minimal rehashing when nodes are added or removed.
+
+**No Replication**:
+- **Simplicity**: Memcached does not natively support replication. Each server is responsible for a subset of the data, and there is no built-in redundancy.
+- **External Management**: High availability and data redundancy must be managed externally, if needed (e.g., using client-side replication or a higher-level caching strategy).
+
+#### 4. **Cache Management**
+
+**Expiration**:
+- **TTL (Time to Live)**: Each key-value pair can have an expiration time (TTL) set. After this time, the data is automatically evicted from the cache.
+- **Lazy Eviction**: Expired items are only removed when accessed or when memory is needed for new data.
+
+**Eviction Policy**:
+- **Least Recently Used (LRU)**: Memcached uses an LRU eviction policy to manage memory. When the cache is full, the least recently used items are evicted to make space for new data.
+
+#### 5. **Concurrency**
+
+**Multi-Threading**:
+- **Concurrent Requests**: Memcached supports handling multiple concurrent connections using a multi-threaded architecture.
+- **Event Handling**: Uses the `libevent` library for asynchronous event notification, which helps manage multiple connections efficiently.
+
+#### 6. **Security**
+
+**Authentication**:
+- **SASL Authentication**: Memcached supports Simple Authentication and Security Layer (SASL) for authentication, which can be enabled if needed.
+
+**Network Security**:
+- **Access Control**: Typically, Memcached should be deployed within a trusted network or use firewall rules to restrict access.
+
+### Memcached Workflow
+
+1. **Client Request**:
+   - The client application uses a Memcached client library to send a request to the Memcached server.
+   - The client library hashes the key and determines which server in the cluster should handle the request.
+
+2. **Server Processing**:
+   - The Memcached server receives the request and processes it. If it's a read request (e.g., `GET`), it looks up the key in memory and returns the value.
+   - If it's a write request (e.g., `SET`), it stores the key-value pair in memory, managing the memory allocation using the slab allocator.
+
+3. **Response**:
+   - The server sends the response back to the client.
+
+4. **Cache Management**:
+   - If the server's memory is full, the LRU eviction policy is applied to remove the least recently used items.
+   - Expired items are lazily evicted when accessed or when memory is required for new data.
+
+### Example Use Case
+
+1. **Web Page Caching**:
+   - **Scenario**: A high-traffic website needs to serve dynamic content quickly.
+   - **Implementation**: The application caches rendered HTML fragments in Memcached. On subsequent requests, the application retrieves these fragments from Memcached, reducing the need to re-render the page and query the database.
+   - **Benefit**: This reduces the load on the database and application servers, leading to faster page load times and improved user experience.
+
+### Conclusion
+
+Memcached's architecture is designed for simplicity, high performance, and scalability. Its in-memory data storage, slab allocator for memory management, and client-side distribution for horizontal scalability make it an effective solution for caching in high-performance web applications. However, it lacks built-in persistence and replication, which need to be managed externally if required.
