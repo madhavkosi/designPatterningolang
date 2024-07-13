@@ -584,6 +584,7 @@ Created at LinkedIn in 2010, Kafka was designed to track various events like pag
 
 
 Kafka's ability to handle high throughput, real-time processing, and persistence makes it suitable for these diverse use cases.
+
 **Common Terms:**
 - **Brokers:** Kafka servers that store data from producers and make it available to consumers.
 - **Records:** Messages or events stored in Kafka, consisting of a key, value, timestamp, and optional metadata.
