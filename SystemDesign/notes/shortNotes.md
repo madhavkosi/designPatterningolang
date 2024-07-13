@@ -1486,47 +1486,28 @@ In-memory databases are ideal for scenarios needing rapid data access and proces
 
 ### Data Replication vs. Data Mirroring
 
-**Data Replication**
+| Aspect                     | Data Replication                                                                             | Data Mirroring                                                                               |
+|----------------------------|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| Definition                 | Copying data from one location to another, either synchronously or asynchronously.           | Creating an exact, real-time replica of a database or storage system.                       |
+| Characteristics            | - Asynchronous/Synchronous<br>- Multiple Copies<br>- Enhances availability, load balancing, data analysis | - Synchronous<br>- One-to-One Copy<br>- Ensures high availability and redundancy            |
+| Use Cases                  | - Distributed databases<br>- Backups<br>- Data warehouses                                     | - Critical applications requiring high availability, such as financial transactions         |
+| Example                    | Replicating a database across multiple data centers for continuous availability.             | Mirroring transactional data to a secondary server for immediate failover.                  |
+| Synchronization            | Synchronous or asynchronous.                                                                 | Typically synchronous.                                                                      |
+| Purpose                    | Load balancing, data localization, reporting.                                                | Disaster recovery, high availability.                                                      |
+| Number of Copies           | Multiple copies.                                                                             | Single mirror copy.                                                                         |
+| Performance Impact         | Can minimize performance impact.                                                             | May impact performance due to real-time sync.                                               |
+| Flexibility                | More flexible.                                                                               | Focused on exact real-time copy.                                                            |
 
-- **Definition**: Copying data from one location to another, either synchronously or asynchronously.
-- **Characteristics**:
-  - Asynchronous/Synchronous
-  - Multiple Copies
-  - Enhances availability, load balancing, data analysis
-- **Use Cases**: Distributed databases, backups, data warehouses
-- **Example**: Replicating a database across multiple data centers for continuous availability.
+### Summary
 
-**Data Mirroring**
+- **Data Replication**:
+  - **Ideal for**: Scalability and data accessibility.
+  - **Best suited for**: Distributed databases, backups, data warehouses, load balancing, and data analysis.
+  
+- **Data Mirroring**:
+  - **Ideal for**: Immediate failover and data integrity.
+  - **Best suited for**: Critical applications requiring high availability, such as financial transactions, where real-time synchronization is crucial.
 
-- **Definition**: Creating an exact, real-time replica of a database or storage system.
-- **Characteristics**:
-  - Synchronous
-  - One-to-One Copy
-  - Ensures high availability and redundancy
-- **Use Cases**: Critical applications requiring high availability, such as financial transactions
-- **Example**: Mirroring transactional data to a secondary server for immediate failover.
-
-**Key Differences**
-
-- **Synchronization**:
-  - **Replication**: Synchronous or asynchronous.
-  - **Mirroring**: Typically synchronous.
-- **Purpose**:
-  - **Replication**: Load balancing, data localization, reporting.
-  - **Mirroring**: Disaster recovery, high availability.
-- **Number of Copies**:
-  - **Replication**: Multiple copies.
-  - **Mirroring**: Single mirror copy.
-- **Performance Impact**:
-  - **Replication**: Can minimize performance impact.
-  - **Mirroring**: May impact performance due to real-time sync.
-- **Flexibility**:
-  - **Replication**: More flexible.
-  - **Mirroring**: Focused on exact real-time copy.
-
-**Summary**
-- **Replication**: For scalability and data accessibility.
-- **Mirroring**: For immediate failover and data integrity.
 
 
 ### Batch Processing vs. Stream Processing
