@@ -446,7 +446,7 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 5. **Server-Side Caching:** Occurs on the server. Stores frequently accessed or precomputed data to improve performance.
 
 6. **CDN Caching:** Distributed servers store data to reduce latency for global users. Common for static assets like images and videos.
-
+x
 7. **DNS Caching:** Temporarily stores DNS query results to improve resolution speed and reduce repeated queries.
 
 <p float="left">
@@ -602,33 +602,17 @@ Created at LinkedIn in 2010, Kafka was designed to track various events like pag
 - **Durability:** Stores messages reliably on disk.
 - **High Throughput:** Efficiently handles high message rates with low latency.
 
-
 #### Messaging Patterns
 
-**1. Point-to-Point (Direct Messaging):**
-- **Description:** Messages are sent from a single producer to a single consumer using queues.
-- **Use Case:** Applications where each message must be processed by a single consumer.
-- **Example:** Order processing system where each order is handled by a specific consumer.
+| Pattern               | Description                                                                                        | Use Case                                      | Example                                                                                                  |
+|-----------------------|----------------------------------------------------------------------------------------------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| Point-to-Point (Direct Messaging) | Messages are sent from a single producer to a single consumer using queues.                 | Applications where each message must be processed by a single consumer. | Order processing system where each order is handled by a specific consumer.                              |
+| Publish-Subscribe (Pub/Sub)  | Messages are sent from a producer to multiple consumers via topics.                             | Broadcasting information to multiple recipients. | Stock market ticker application sending updates to various subscribers.                                  |
+| Request-Reply (Request-Response) | A producer sends a request message to a consumer and waits for a response.                       | Synchronous communication where a response is required before proceeding. | E-commerce application sending payment requests to a gateway and awaiting confirmation.                   |
+| Fan-Out/Fan-In (Scatter-Gather)  | A message is sent to multiple consumers (fan-out), and responses are aggregated before returning to the sender (fan-in). | Distributing tasks across multiple workers and aggregating results. | Search engine distributing queries to multiple index servers and combining results.                      |
+| Dead Letter Queue (DLQ)       | Erroneous or unprocessable messages are sent to a dedicated queue for monitoring and reprocessing. | Handling problematic messages without blocking the main processing queue. | Email delivery system redirecting undeliverable messages to a dead letter queue for inspection and retry. |
 
-**2. Publish-Subscribe (Pub/Sub):**
-- **Description:** Messages are sent from a producer to multiple consumers via topics.
-- **Use Case:** Broadcasting information to multiple recipients.
-- **Example:** Stock market ticker application sending updates to various subscribers.
 
-**3. Request-Reply (Request-Response):**
-- **Description:** A producer sends a request message to a consumer and waits for a response.
-- **Use Case:** Synchronous communication where a response is required before proceeding.
-- **Example:** E-commerce application sending payment requests to a gateway and awaiting confirmation.
-
-**4. Fan-Out/Fan-In (Scatter-Gather):**
-- **Description:** A message is sent to multiple consumers (fan-out), and responses are aggregated before returning to the sender (fan-in).
-- **Use Case:** Distributing tasks across multiple workers and aggregating results.
-- **Example:** Search engine distributing queries to multiple index servers and combining results.
-
-**5. Dead Letter Queue (DLQ):**
-- **Description:** Erroneous or unprocessable messages are sent to a dedicated queue for monitoring and reprocessing.
-- **Use Case:** Handling problematic messages without blocking the main processing queue.
-- **Example:** Email delivery system redirecting undeliverable messages to a dead letter queue for inspection and retry.
 
 **Key Characteristics and Benefits:**
 
