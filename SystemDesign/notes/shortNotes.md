@@ -571,14 +571,19 @@ Created at LinkedIn in 2010, Kafka was designed to track various events like pag
 2. Enabling high throughput of message transfer.
 3. Streaming real-time data.
 
-**Kafka Use Cases:**
-1. **Metrics:** Collecting and aggregating operational metrics.
-2. **Log Aggregation:** Collecting logs from multiple sources.
-3. **Stream Processing:** Processing data in multiple stages.
-4. **Commit Log:** Serving as an external commit log for distributed systems.
-5. **Website Activity Tracking:** Building user activity tracking pipelines.
-6. **Product Suggestions:** Recording and processing user actions for real-time or batch processing of product suggestions.
+**Kafka use cases**
 
+| Use Case                 | Description                                                                                          | Example                                                                                                        |
+|--------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| Metrics                  | Collecting and aggregating monitoring data from distributed services.                                | Operational metrics from various services pushed to Kafka and aggregated to produce statistics.               |
+| Log Aggregation          | Collecting logs from multiple sources and making them available in a standard format to consumers.   | Application logs from different servers collected and standardized for analysis.                              |
+| Stream Processing        | Processing data through multiple stages, transforming, enriching, or aggregating it.                 | Raw data consumed, transformed, and pushed to new topics for further processing.                              |
+| Commit Log               | Acting as an external commit log for distributed systems, tracking transactions for replication and recovery. | Distributed services logging transactions to Kafka for replication and disaster recovery.                     |
+| Website Activity Tracking| Building a user activity tracking pipeline for real-time and offline processing.                     | User activities like clicks and searches published to Kafka topics for real-time monitoring and reporting.     |
+| Product Suggestions      | Tracking consumer actions to suggest related products in real-time or through batch processing.      | Tracking search queries and product clicks to provide real-time or batch product recommendations.             |
+
+
+Kafka's ability to handle high throughput, real-time processing, and persistence makes it suitable for these diverse use cases.
 **Common Terms:**
 - **Brokers:** Kafka servers that store data from producers and make it available to consumers.
 - **Records:** Messages or events stored in Kafka, consisting of a key, value, timestamp, and optional metadata.
