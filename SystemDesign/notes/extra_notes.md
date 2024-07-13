@@ -86,8 +86,7 @@
 - **Machine Learning**: Preparing and processing large datasets for training models.
 
 
-Here is a detailed comparison of Redis and Memcached, two popular in-memory data storage systems:
-
+## Redis vs MemCached
 | **Aspect**            | **Redis**                                                                                                                                   | **Memcached**                                                                                                                            |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | **Definition**        | An in-memory data structure store, used as a database, cache, and message broker.                                                            | An in-memory key-value store for small chunks of arbitrary data (strings, objects) from results of database calls, API calls, or page rendering. |
