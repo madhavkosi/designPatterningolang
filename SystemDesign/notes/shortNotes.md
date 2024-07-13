@@ -1117,32 +1117,27 @@ An API Gateway is a server-side architectural component that acts as an intermed
 - **Model**: Non-relational, prioritizes flexibility, scalability, and performance.
 - **Types**: Document databases, key-value stores, column-family stores, graph databases.
 - **Examples**: MongoDB, Redis, Apache Cassandra, Neo4j.
+Here's a detailed comparison of SQL and NoSQL databases, focusing on high-level differences:
 
-**High-Level Differences Between SQL and NoSQL**
+### High-Level Differences Between SQL and NoSQL
 
-1. **Storage**:
-   - **SQL**: Data in tables; rows represent entities, columns represent data points.
-   - **NoSQL**: Various models (key-value, document, graph, columnar).
+| Aspect              | SQL Databases                                                                  | NoSQL Databases                                                                     |
+|---------------------|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| **Storage**         | Data in tables; rows represent entities, columns represent data points.         | Various models (key-value, document, graph, columnar).                              |
+| **Schema**          | Fixed schema; all records must conform to it. Schema changes involve altering the database. | Dynamic schema; columns can be added on the fly, and records don’t have to contain data for each column. |
+| **Querying**        | Uses SQL (structured query language) for data manipulation.                      | Uses different query languages (sometimes UnQL - Unstructured Query Language) specific to the database type. |
+| **Scalability**     | Typically vertically scalable (adding more power to the existing hardware).      | Horizontally scalable (adding more servers to handle traffic), often more cost-effective. |
+| **Reliability (ACID Compliance)** | Most are ACID compliant, ensuring reliable and safe transactions.                  | Often sacrifices ACID compliance for availability, performance, and scalability.    |
 
-2. **Schema**:
-   - **SQL**: Fixed schema; all records must conform to it. Schema changes involve altering the database.
-   - **NoSQL**: Dynamic schema; columns can be added on the fly, and records don’t have to contain data for each column.
+### Conclusion
 
-3. **Querying**:
-   - **SQL**: Uses SQL (structured query language) for data manipulation.
-   - **NoSQL**: Uses different query languages (sometimes UnQL - Unstructured Query Language) specific to the database type.
+- **SQL Databases**:
+  - **Strengths**: High consistency, powerful querying capabilities, strong reliability (ACID compliance).
+  - **Use Cases**: E-commerce platforms, financial systems, content management systems.
 
-4. **Scalability**:
-   - **SQL**: Typically vertically scalable (adding more power to the existing hardware).
-   - **NoSQL**: Horizontally scalable (adding more servers to handle traffic), often more cost-effective.
-
-5. **Reliability (ACID Compliance)**:
-   - **SQL**: Most are ACID compliant, ensuring reliable and safe transactions.
-   - **NoSQL**: Often sacrifices ACID compliance for availability, performance, and scalability.
-
-**Summary**
-- **SQL Databases**: Best for applications requiring high data consistency and reliability, using a fixed schema, and supporting complex queries.
-- **NoSQL Databases**: Ideal for applications needing high scalability, handling diverse data types, and requiring flexible schemas.
+- **NoSQL Databases**:
+  - **Strengths**: High scalability, flexibility in handling diverse data types, performance under specific workloads.
+  - **Use Cases**: Social media platforms, big data analytics, IoT applications.
 
 
 **SQL Databases**
@@ -1282,54 +1277,6 @@ An API Gateway is a server-side architectural component that acts as an intermed
 **Summary**
 NoSQL databases provide flexibility, scalability, and performance for specific workloads, making them suitable for applications requiring high write loads, large-scale data storage, or complex relationships. However, they involve trade-offs in terms of consistency and query expressiveness, which need to be carefully considered based on application requirements.
 
-
-**ACID vs. BASE Properties**
-
-**ACID Properties**
-
-**Definition**: ACID stands for Atomicity, Consistency, Isolation, and Durability, ensuring reliable transaction processing in databases.
-
-**Components**:
-- **Atomicity**: Transaction is fully completed or not executed at all.
-- **Consistency**: Transaction moves database from one valid state to another.
-- **Isolation**: Concurrent transactions do not interfere with each other.
-- **Durability**: Committed transactions remain even after a system failure.
-
-**Example**: Bank transfer operations (debit and credit) must be atomic, consistent, isolated, and durable.
-
-**Use Cases**: Banking, financial systems requiring high reliability and data integrity.
-
-**BASE Properties**
-
-**Definition**: BASE stands for Basically Available, Soft state, and Eventual consistency, favoring availability over consistency in distributed systems.
-
-**Components**:
-- **Basically Available**: System is available most of the time.
-- **Soft State**: State of the system can change over time without input.
-- **Eventual Consistency**: System will become consistent over time.
-
-**Example**: Social media platforms may show varying likes count temporarily but will eventually show the correct count.
-
-**Use Cases**: Distributed systems like social networks or e-commerce catalogs where availability and partition tolerance are critical.
-
-**Key Differences**
-
-**Consistency and Availability**:
-- **ACID**: Prioritizes consistency and reliability.
-- **BASE**: Prioritizes availability and partition tolerance, allows for eventual consistency.
-
-**System Design**:
-- **ACID**: Traditional relational databases.
-- **BASE**: NoSQL and distributed databases.
-
-**Use Case Alignment**:
-- **ACID**: Applications requiring strong data integrity.
-- **BASE**: Large-scale applications needing high availability and scalability.
-
-**Summary**
-
-- **ACID**: Essential for systems needing reliable and consistent transactions.
-- **BASE**: Suitable for environments prioritizing high availability and scalability, accepting some data inconsistency.
 
 
 **Real-World Examples and Case Studies**
