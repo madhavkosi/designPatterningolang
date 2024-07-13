@@ -1884,7 +1884,7 @@ Here is a comparison of partitioning methods in a table format with short notes:
 | Vertical Partitioning        | Splits a table into partitions, each containing a subset of columns.                    | E-commerce site partitioning customer data into personal info and order history. | - Reduces data scanned for queries.<br>- Optimizes performance. | - Complexity in managing relationships between vertically partitioned data. |
 | Hybrid Partitioning          | Combines horizontal and vertical partitioning.                                          | E-commerce site partitioning customer data by geographic location (horizontal) and data type (vertical). | - Balances data distribution.<br>- Minimizes data scanned. | - Increased complexity in implementation and management. |
 
-### Conclusion
+**Conclusion**
 
 Designing an effective partitioning scheme requires careful consideration of application requirements and data characteristics. 
 
@@ -1909,8 +1909,7 @@ Choosing the right partitioning method depends on the specific needs of the appl
 | Dynamic Sharding       | Adapts the number of shards based on data size and access patterns.                           | IoT platform adjusts shards based on the volume and frequency of incoming sensor data.                       | - Optimizes resource utilization.<br>- Adapts to changing data patterns.                    | - Can be complex to implement.<br>- Requires continuous monitoring and adjustment.        |
 | Hybrid Sharding        | Combines multiple sharding strategies for optimized performance.                              | Cloud service providers use a mix of geo-based and directory-based sharding for global services.             | - Leverages strengths of multiple techniques.<br>- Tailored to diverse client needs.       | - Highly complex to implement.<br>- Requires extensive planning and management.           |
 
-
-### Conclusion
+**Conclusion**
 
 Each sharding strategy has its advantages and challenges, making them suitable for different use cases:
 
