@@ -589,12 +589,14 @@ Kafka's ability to handle high throughput, real-time processing, and persistence
 - **Brokers:** Kafka servers that store data from producers and make it available to consumers.
 - **Records:** Messages or events stored in Kafka, consisting of a key, value, timestamp, and optional metadata.
 - **Topics:** Categories into which Kafka divides messages. Each topic can have multiple subscribers and retains messages for a configurable time.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/topic.svg)
 
 **High-Level Architecture:**
 - **Producers:** Applications that publish records to Kafka.
 - **Consumers:** Applications that subscribe to Kafka topics and consume messages.
 - **Kafka Cluster:** Deployed as a cluster of servers, each running a Kafka broker.
 - **ZooKeeper:** A distributed key-value store used for coordination and storing configurations. Kafka uses ZooKeeper to maintain metadata information and coordinate between brokers.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/kafka.svg)
 
 **Kafka Model:**
 - **Producers** send messages to a Kafka broker.
@@ -618,6 +620,7 @@ Kafka's ability to handle high throughput, real-time processing, and persistence
 | Fan-Out/Fan-In (Scatter-Gather)  | A message is sent to multiple consumers (fan-out), and responses are aggregated before returning to the sender (fan-in). | Distributing tasks across multiple workers and aggregating results. | Search engine distributing queries to multiple index servers and combining results.                      |
 | Dead Letter Queue (DLQ)       | Erroneous or unprocessable messages are sent to a dedicated queue for monitoring and reprocessing. | Handling problematic messages without blocking the main processing queue. | Email delivery system redirecting undeliverable messages to a dead letter queue for inspection and retry. |
 
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/topic.svg)
 
 
 **Key Characteristics and Benefits:**
