@@ -1893,6 +1893,7 @@ Designing an effective partitioning scheme requires careful consideration of app
 - **Hybrid Partitioning**: Offers balanced data distribution and minimized data scanning, but is more complex to implement and manage.
 
 Choosing the right partitioning method depends on the specific needs of the application, such as data distribution, query performance, and management complexity.
+
 ---
 
 
