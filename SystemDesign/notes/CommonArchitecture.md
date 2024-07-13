@@ -159,3 +159,4 @@ Memcached is a high-performance, distributed memory caching system designed to s
 ### Conclusion
 
 Memcached's architecture is designed for simplicity, high performance, and scalability. Its in-memory data storage, slab allocator for memory management, and client-side distribution for horizontal scalability make it an effective solution for caching in high-performance web applications. However, it lacks built-in persistence and replication, which need to be managed externally if required.
+

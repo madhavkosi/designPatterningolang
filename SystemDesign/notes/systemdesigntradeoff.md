@@ -347,3 +347,26 @@ Short Notes:
 2. **Write-Heavy Systems**: Focus on optimizing write performance through databases designed for high write throughput, write batching, asynchronous processing, CQRS, and data partitioning. Suitable for applications with frequent write operations like logging systems and real-time analytics.
 3. **Key Differences**: Read-heavy systems prioritize read scalability and efficient data retrieval, while write-heavy systems prioritize write optimization and handling high volumes of write operations.
 4. **Use Cases**: Read-heavy for scenarios with frequent read operations and static content; write-heavy for scenarios with frequent updates and real-time data processing. Both require specific strategies to optimize performance and scalability.
+
+
+Here's the information presented in a table format for easy comparison:
+
+| Technique      | Definition                                                                                          | Characteristics                                                                                                             | Example                                                                                                         | Pros                                                           | Cons                                                                |
+|----------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|---------------------------------------------------------------------|
+| Polling        | The client repeatedly requests (polls) a server at regular intervals to get new or updated data.     | - Regular Requests: Client makes requests at fixed intervals.<br>- Client-Initiated: Client initiates each request.         | A weather app that checks for updated weather information every 15 minutes by sending a request to the server. | - Simple to Implement: Easy to set up on the client side.      | - Inefficient: Generates unnecessary traffic and server load.<br>- Delay in Updates: Delayed response to actual updates. |
+| Long-Polling   | An enhanced version of polling where the server holds the request open until new data is available.  | - Open Connection: Server keeps connection open until new data or timeout.<br>- Reduced Traffic: Less frequent requests.    | A chat application where the client sends a request and the server responds when new messages are available.  | - More Timely Updates: Quick response to updates.<br>- Reduced Network Traffic: Less frequent requests. | - Resource Intensive: Consumes server resources by holding connections open.                       |
+| Webhooks       | User-defined HTTP callbacks triggered by specific events, where the server sends data when updates occur. | - Server-Initiated: Server sends data without client requests.<br>- Event-Driven: Triggered by specific server events.      | A project management tool notifying a team's chat application when a new task is created via webhook.         | - Real-Time: Provides real-time updates.<br>- Efficient: Reduces network traffic and load.      | - Complexity: Client must handle incoming HTTP requests.<br>- Security Considerations: Secure handling needed.      |
+
+### Key Differences
+
+- **Initiation and Traffic**: 
+  - Polling: Client-initiated with frequent traffic.
+  - Long-Polling: Client-initiated but reduces traffic by keeping the request open.
+  - Webhooks: Server-initiated, no polling required.
+
+- **Real-Time Updates**: 
+  - Webhooks offer the most real-time updates.
+  - Polling and long-polling have inherent delays.
+
+### Conclusion
+The choice between polling, long-polling, and webhooks depends on the application's requirements for real-time updates, server and client capabilities, and efficiency considerations. Polling is simple but can be inefficient, long-polling offers a middle ground with more timely updates, and webhooks provide real-time updates efficiently but require the client to handle incoming requests.
