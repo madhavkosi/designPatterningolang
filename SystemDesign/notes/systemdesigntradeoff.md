@@ -318,7 +318,7 @@ Short Notes:
 3. **Key Differences**: Server-side caching benefits all users and is centrally managed, while client-side caching is specific to individual users and controlled by the client.
 4. **Use Cases**: Server-side for dynamic and shared data, client-side for static and user-specific data. Both can be combined for optimal performance.
 
-Here's the information in a table format with short notes:
+## Read Heavy vs Write Heavy System
 
 | **Aspect**                  | **Read-Heavy Systems**                                                                                            | **Write-Heavy Systems**                                                                                             |
 |-----------------------------|-------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
@@ -343,7 +343,6 @@ Here's the information in a table format with short notes:
 | **Conclusion**              | Best for scenarios like content delivery networks, reporting systems, and read-intensive APIs.                     | Best for scenarios like logging systems, real-time data collection, and transactional databases.                    |
 |                             | Use caching, database replication, CDNs, and optimized data retrieval to enhance performance.                      | Use databases optimized for writes, batching, CQRS, data partitioning, and event sourcing for efficient write handling.|
 
-Short Notes:
 1. **Read-Heavy Systems**: Focus on reducing load times and server load by using extensive caching, database replication, CDNs, and optimized data retrieval strategies. Ideal for content-heavy applications like news websites and e-commerce platforms.
 2. **Write-Heavy Systems**: Focus on optimizing write performance through databases designed for high write throughput, write batching, asynchronous processing, CQRS, and data partitioning. Suitable for applications with frequent write operations like logging systems and real-time analytics.
 3. **Key Differences**: Read-heavy systems prioritize read scalability and efficient data retrieval, while write-heavy systems prioritize write optimization and handling high volumes of write operations.
