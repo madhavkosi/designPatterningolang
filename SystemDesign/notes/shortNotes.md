@@ -449,7 +449,9 @@ Client -> Reverse Proxy -> Internal Network -> Web Servers
 
 7. **DNS Caching:** Temporarily stores DNS query results to improve resolution speed and reduce repeated queries.
 
-![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/cacheimage.svg)
+<p float="left">
+  <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/cacheimage.svg" width="500" />
+</p>
 
 **Cache Replacement Policies**
 
