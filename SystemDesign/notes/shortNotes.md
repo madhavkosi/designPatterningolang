@@ -620,8 +620,6 @@ Kafka's ability to handle high throughput, real-time processing, and persistence
 | Fan-Out/Fan-In (Scatter-Gather)  | A message is sent to multiple consumers (fan-out), and responses are aggregated before returning to the sender (fan-in). | Distributing tasks across multiple workers and aggregating results. | Search engine distributing queries to multiple index servers and combining results.                      |
 | Dead Letter Queue (DLQ)       | Erroneous or unprocessable messages are sent to a dedicated queue for monitoring and reprocessing. | Handling problematic messages without blocking the main processing queue. | Email delivery system redirecting undeliverable messages to a dead letter queue for inspection and retry. |
 
-![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/topic.svg)
-
 
 **Key Characteristics and Benefits:**
 
@@ -664,6 +662,25 @@ Kafka's ability to handle high throughput, real-time processing, and persistence
   - High Availability: Supports primary-replica replication and network of brokers.
   - Message Persistence: Options for file-based, in-memory, and JDBC-based storage.
   - Integration: Easily integrates with platforms like Java EE and Spring.
+
+#### Popular Messaging Queue Systems
+
+| Messaging Queue System           | Description                                                                                            | Key Features                                                                                                                                                  |
+|----------------------------------|--------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| RabbitMQ                         | Open-source message broker supporting various messaging patterns (publish-subscribe, request-reply, point-to-point). | - Flexibility: Supports multiple messaging patterns and protocols.<br>- Clustering & High Availability: Deployed in clusters for fault tolerance and load balancing.<br>- Extensibility: Plugin system for additional protocol support.<br>- Monitoring & Management: Built-in tools for overseeing operations. |
+| Apache Kafka                     | Distributed streaming platform for high-throughput, fault-tolerant, and scalable messaging.             | - Distributed Architecture: Scales horizontally for high throughput and fault tolerance.<br>- Durability: Stores messages persistently on disk, allowing for replay.<br>- Low Latency: Designed for real-time processing.<br>- Stream Processing: Includes a stream processing API for real-time applications. |
+| Amazon Simple Queue Service (SQS) | Fully managed message queuing service by AWS for decoupling components in distributed systems.          | - Scalability: Automatically scales with message and consumer volume.<br>- Reliability: Guarantees at-least-once message delivery with visibility timeouts.<br>- Security: Integrates with AWS IAM for access control.<br>- Cost-Effective: Pay-as-you-go pricing model. |
+| Apache ActiveMQ                  | Open-source, multi-protocol message broker supporting various messaging patterns.                       | - High Availability: Supports primary-replica replication and network of brokers.<br>- Message Persistence: Options for file-based, in-memory, and JDBC-based storage.<br>- Integration: Easily integrates with platforms like Java EE and Spring. |
+
+
+### Conclusion
+
+Each messaging queue system has its strengths and use cases:
+
+- **RabbitMQ**: Ideal for applications needing flexibility and support for multiple messaging patterns with built-in monitoring and management tools.
+- **Apache Kafka**: Suitable for high-throughput, fault-tolerant, and scalable messaging needs with real-time processing capabilities.
+- **Amazon SQS**: Best for fully managed, scalable, and reliable message queuing with seamless AWS integration.
+- **Apache ActiveMQ**: Perfect for applications requiring high availability, diverse storage options, and integration with Java-based platforms.
 
 
 ### DNS
