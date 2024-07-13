@@ -630,38 +630,7 @@ Kafka's ability to handle high throughput, real-time processing, and persistence
 - **Dead Letter Queue:** Error handling, monitoring, fault isolation, retention.
 
 
-#### Popular Messaging Queue Systems
 
-**1. RabbitMQ:**
-- **Description:** Open-source message broker supporting various messaging patterns (publish-subscribe, request-reply, point-to-point).
-- **Key Features:**
-  - Flexibility: Supports multiple messaging patterns and protocols.
-  - Clustering & High Availability: Deployed in clusters for fault tolerance and load balancing.
-  - Extensibility: Plugin system for additional protocol support.
-  - Monitoring & Management: Built-in tools for overseeing operations.
-
-**2. Apache Kafka:**
-- **Description:** Distributed streaming platform for high-throughput, fault-tolerant, and scalable messaging.
-- **Key Features:**
-  - Distributed Architecture: Scales horizontally for high throughput and fault tolerance.
-  - Durability: Stores messages persistently on disk, allowing for replay.
-  - Low Latency: Designed for real-time processing.
-  - Stream Processing: Includes a stream processing API for real-time applications.
-
-**3. Amazon Simple Queue Service (SQS):**
-- **Description:** Fully managed message queuing service by AWS for decoupling components in distributed systems.
-- **Key Features:**
-  - Scalability: Automatically scales with message and consumer volume.
-  - Reliability: Guarantees at-least-once message delivery with visibility timeouts.
-  - Security: Integrates with AWS IAM for access control.
-  - Cost-Effective: Pay-as-you-go pricing model.
-
-**4. Apache ActiveMQ:**
-- **Description:** Open-source, multi-protocol message broker supporting various messaging patterns.
-- **Key Features:**
-  - High Availability: Supports primary-replica replication and network of brokers.
-  - Message Persistence: Options for file-based, in-memory, and JDBC-based storage.
-  - Integration: Easily integrates with platforms like Java EE and Spring.
 
 #### Popular Messaging Queue Systems
 
