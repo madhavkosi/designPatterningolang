@@ -381,7 +381,7 @@ Short Notes:
 | Key Differences   | - Session Memory: Retains user session information.<br>- Server Design: More complex and resource-intensive.         | - Session Memory: Treats each request as an isolated transaction.<br>- Server Design: Simpler and more scalable. |
 | Use Cases         | Suitable for applications requiring continuous user interactions and personalization.                                | Ideal for services where each request can be processed independently, like many web APIs.                     |
 
-### Key Differences
+**Key Differences**
 
 - **Session Memory**:
   - **Stateful**: Retains user session information, influencing future interactions.
@@ -391,7 +391,7 @@ Short Notes:
   - **Stateful**: Maintains state, making it more complex and resource-intensive.
   - **Stateless**: Simpler and more scalable, with no need to maintain session state.
 
-### Conclusion
+**Conclusion**
 
 - **Stateful Architecture**: Provides a more personalized user experience but requires more resources and complexity to manage session states. Suitable for applications with continuous user interactions and multi-step transactions.
 - **Stateless Architecture**: Offers simplicity, scalability, and predictability, making it ideal for distributed systems and services where each request can be processed independently, such as RESTful APIs.
