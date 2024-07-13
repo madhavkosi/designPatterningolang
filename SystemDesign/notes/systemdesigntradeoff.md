@@ -349,7 +349,7 @@ Short Notes:
 4. **Use Cases**: Read-heavy for scenarios with frequent read operations and static content; write-heavy for scenarios with frequent updates and real-time data processing. Both require specific strategies to optimize performance and scalability.
 
 
-Here's the information presented in a table format for easy comparison:
+## Polling vs Long-Polling vs Webhooks
 
 | Technique      | Definition                                                                                          | Characteristics                                                                                                             | Example                                                                                                         | Pros                                                           | Cons                                                                |
 |----------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|---------------------------------------------------------------------|
@@ -357,8 +357,7 @@ Here's the information presented in a table format for easy comparison:
 | Long-Polling   | An enhanced version of polling where the server holds the request open until new data is available.  | - Open Connection: Server keeps connection open until new data or timeout.<br>- Reduced Traffic: Less frequent requests.    | A chat application where the client sends a request and the server responds when new messages are available.  | - More Timely Updates: Quick response to updates.<br>- Reduced Network Traffic: Less frequent requests. | - Resource Intensive: Consumes server resources by holding connections open.                       |
 | Webhooks       | User-defined HTTP callbacks triggered by specific events, where the server sends data when updates occur. | - Server-Initiated: Server sends data without client requests.<br>- Event-Driven: Triggered by specific server events.      | A project management tool notifying a team's chat application when a new task is created via webhook.         | - Real-Time: Provides real-time updates.<br>- Efficient: Reduces network traffic and load.      | - Complexity: Client must handle incoming HTTP requests.<br>- Security Considerations: Secure handling needed.      |
 
-### Key Differences
-
+**Key Differences**
 - **Initiation and Traffic**: 
   - Polling: Client-initiated with frequent traffic.
   - Long-Polling: Client-initiated but reduces traffic by keeping the request open.
@@ -367,6 +366,3 @@ Here's the information presented in a table format for easy comparison:
 - **Real-Time Updates**: 
   - Webhooks offer the most real-time updates.
   - Polling and long-polling have inherent delays.
-
-### Conclusion
-The choice between polling, long-polling, and webhooks depends on the application's requirements for real-time updates, server and client capabilities, and efficiency considerations. Polling is simple but can be inefficient, long-polling offers a middle ground with more timely updates, and webhooks provide real-time updates efficiently but require the client to handle incoming requests.
