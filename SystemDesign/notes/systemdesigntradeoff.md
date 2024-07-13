@@ -369,7 +369,7 @@ Short Notes:
 
 
 
-  Here is a comparison of stateful and stateless architecture in a table format with short notes:
+## Stateful vs Stateless Architecture
 
 | Aspect            | Stateful Architecture                                                                                              | Stateless Architecture                                                                                      |
 |-------------------|--------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
