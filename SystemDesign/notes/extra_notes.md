@@ -99,3 +99,70 @@
 | **Memory Management** | Uses a sophisticated memory management model that includes eviction policies, data compression, and advanced memory handling features.      | Employs a straightforward slab allocator for memory management, which is simple but less flexible than Redis's approach.                   |
 | **Advanced Features** | Includes Lua scripting, transactions, pub/sub messaging, geospatial support, and support for atomic operations on data structures.          | Focuses on simplicity and high performance for basic caching operations, without advanced features like scripting or complex data manipulation. |
 | **Setup and Maintenance** | Requires more setup and maintenance due to its rich feature set and potential for more complex configurations.                                   | Easier to set up and maintain due to its simplicity and limited feature set.                                                              |
+
+
+### Service Discovery with Apache Zookeeper
+
+**Service discovery** is a mechanism used to find and connect to network services. It’s essential in dynamic and distributed environments, like microservices architectures, where services can scale up and down, and their locations can change frequently. Apache Zookeeper is a popular tool used for service discovery.
+
+### Apache Zookeeper's Role in Service Discovery
+
+Apache Zookeeper is a distributed coordination service that provides various primitives for building distributed applications. It is widely used for service discovery due to its ability to maintain configuration information, naming, synchronization, and providing group services.
+
+#### How Zookeeper Works in Service Discovery
+
+1. **Service Registration:**
+   - Each service instance registers itself with Zookeeper when it starts. This involves creating a znode (a data node in Zookeeper’s hierarchical namespace) that contains information about the service instance, such as its IP address, port, and other metadata.
+   - Zookeeper nodes (znodes) can store metadata and state information that services use to find each other.
+
+2. **Service Health Monitoring:**
+   - Zookeeper periodically checks the health of the registered service instances. If a service instance fails or becomes unresponsive, Zookeeper will automatically remove its znode, ensuring that only healthy instances are discoverable.
+
+3. **Service Lookup:**
+   - When a client (like a chat application user) needs to connect to a service, it queries Zookeeper to find the best available service instance based on specific criteria (e.g., geographical location, server capacity, latency).
+   - Zookeeper responds with the details of the optimal service instance, enabling the client to establish a direct connection to it.
+
+
+### Benefits of Using Zookeeper for Service Discovery
+
+1. **Centralized Configuration Management:**
+   - Zookeeper acts as a centralized repository for service information, making it easier to manage and update configurations.
+
+2. **Automatic Failover:**
+   - By constantly monitoring the health of registered services, Zookeeper can automatically handle failover, ensuring clients always connect to healthy service instances.
+
+3. **Scalability:**
+   - Zookeeper is designed to handle a large number of service registrations and queries, making it suitable for large-scale distributed systems.
+
+4. **Consistency:**
+   - Zookeeper guarantees sequential consistency, ensuring that clients always have a consistent view of the registered services.
+
+## Detailed Steps Using Zookeeper in Service Discovery
+
+#### Step-by-Step Process (Refer to Figure 11)
+
+1. **User A Logs into the App:**
+   - User A opens the chat application and logs in.
+
+2. **Load Balancer Routes the Login Request to API Servers:**
+   - The initial login request from User A is handled by a load balancer, which routes the request to one of the available API servers responsible for handling authentication.
+
+3. **Authentication:**
+   - The API server authenticates User A’s credentials against the user database.
+
+4. **Service Discovery Finds the Best Chat Server:**
+   - After successful authentication, the API server queries Zookeeper to find the best chat server for User A.
+   - Zookeeper evaluates the available chat servers based on predefined criteria (e.g., geographical proximity to User A, current server load, server health status).
+
+5. **Zookeeper Returns the Server Info to the API Server:**
+   - Zookeeper returns the information of the most suitable chat server (e.g., Chat Server 2) to the API server.
+
+6. **API Server Provides Chat Server Info to User A:**
+   - The API server then sends the details of Chat Server 2 (e.g., IP address and port) back to User A.
+
+7. **User A Connects to Chat Server 2 via WebSocket:**
+   - Using the provided information, User A establishes a WebSocket connection directly to Chat Server 2 for real-time communication.
+
+### Conclusion
+
+Apache Zookeeper plays a crucial role in service discovery by providing a robust mechanism to register, monitor, and lookup services. In the context of a chat application, Zookeeper ensures that clients are connected to the most optimal chat server, enhancing performance and reliability. Its ability to manage configurations and monitor service health makes it an indispensable tool for dynamic and distributed environments.
