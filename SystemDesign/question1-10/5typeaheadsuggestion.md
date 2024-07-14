@@ -168,6 +168,7 @@ Typeahead suggestions help users search for known and frequently searched terms 
         - Insert the new term if its frequency is sufficient and remove the term with the lowest frequency if necessary.
 
 This ensures that typeahead suggestions are updated efficiently and accurately reflect the most recent search data.
+as
 **Removing a Term from Trie:**
 - Remove terms completely during regular updates.
 - Use a filtering layer on each server to exclude terms before sending to users.
