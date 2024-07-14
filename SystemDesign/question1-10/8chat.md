@@ -81,7 +81,7 @@
      - The client holds the connection open until new messages are available or a timeout occurs.
      - Once a message is received, the client immediately sends another request.
      - **Drawbacks:**
-       - Potential server-client connection issues due to stateless nature and load balancing.
+       - Sender and receiver may not connect to the same chat server. HTTP based servers are usually stateless. If you use round robin for load balancing, the server that receives the message might not have a long-polling connection with the client who receives the message.
        - Inefficient if the user is inactive, as it still makes periodic connections.
        - Difficulty in detecting client disconnections.
   3. **WebSocket (Refer to Figure 5):**
