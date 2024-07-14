@@ -108,7 +108,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 
  **Cons**
 - **Parameter Tuning**: Requires careful adjustment of bucket size and refill rate to meet needs accurately.
-![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/toeknBucket.svg)
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/toeknBucket.webp)
 
 
 **Leaking Bucket Algorithm**
