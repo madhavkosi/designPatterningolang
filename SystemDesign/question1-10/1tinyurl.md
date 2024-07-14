@@ -260,6 +260,7 @@ Implementing caching for frequently accessed URLs can significantly enhance the 
   - Upon a cache miss, servers query the backend database, update the cache, and propagate the new entry to all cache replicas.
   - Each replica updates its cache by adding the new entry or ignoring it if it already exists.
 
+**Redis on a modern server (3.5 GHz CPU, 32 GB RAM, SSD) can handle 100,000 to 200,000 requests per second for `GET`/`SET` commands.**
 ## Load Balancer (LB)
 
 **Purpose**: Distribute incoming requests to ensure efficient resource use and high availability.
