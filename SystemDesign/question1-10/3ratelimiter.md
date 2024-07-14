@@ -178,7 +178,7 @@ Rate limiting can be implemented using various algorithms, each with its own pro
 **How It Works**
 - **Calculation**: Uses the request counts from the current and previous windows to compute the effective request count for the rolling window.
 - **Formula**: 
-  \[ \text{Effective Request Count} = \text{Requests in Current Window} + (\text{Requests in Previous Window} \times \text{Overlap Percentage}) \]
+Effective Request Count=Requests in Current Window+(Requests in Previous Window×Overlap Factor)
 - **Example**:
   - **Allowed Requests**: 7 per minute.
   - **Previous Minute Requests**: 5.
