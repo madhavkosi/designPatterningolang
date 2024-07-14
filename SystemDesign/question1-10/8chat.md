@@ -51,6 +51,7 @@
 #### Overview
 - **Clients:** Can be either mobile applications or web applications.
 - **Chat Service:** Acts as an intermediary to handle message transmission between clients. Clients do not communicate directly with each other.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/chat.webp)
 
 #### Fundamental Operations of the Chat Service
 1. **Receive messages from clients.**

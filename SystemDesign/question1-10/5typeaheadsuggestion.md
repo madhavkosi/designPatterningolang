@@ -139,7 +139,7 @@ Typeahead suggestions help users search for known and frequently searched terms 
 - Utilize either a copy-switch method or a primary-secondary configuration to ensure updates do not impact read performance.
 - Regularly update the trie with new data in a resource-efficient manner.
 
-### Updating Frequencies of Typeahead Suggestions**
+### Updating Frequencies of Typeahead Suggestions
   - **Purpose**: To keep the frequencies of typeahead suggestions up to date without recounting all search terms from scratch.
   
 - **Method**:
