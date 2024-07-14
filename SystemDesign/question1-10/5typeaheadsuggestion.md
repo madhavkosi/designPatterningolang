@@ -77,17 +77,67 @@ Typeahead suggestions help users search for known and frequently searched terms 
 - Parent nodes recursively call child nodes to calculate top suggestions and counts.
 - Combine child suggestions to determine parent's top suggestions.
 
-**Updating the Trie:**
-- High query volume (~60K queries per second).
-- Offline updates to avoid blocking read requests.
-- Log queries and track frequencies.
-- Use Map-Reduce (MR) setup for periodic processing (e.g., hourly).
+### Updating the Trie for High Frequency Search Queries
 
-**Offline Update Strategies:**
-1. Make a copy of the trie, update offline, then switch to the new version.
-2. Primary-secondary server configuration:
-   - Update secondary while primary serves traffic.
-   - Switch roles after the update.
+#### Problem Statement
+- With approximately five billion searches daily (~60K queries per second), updating the trie for each query is resource-intensive.
+- Continuous updates can hamper read requests.
+
+#### Proposed Solution: Offline Trie Updates
+- **Logging Queries**:
+  - **Frequency Tracking**: Log incoming queries and their frequencies.
+  - **Sampling**: To reduce data volume, sample and log every 1000th query.
+    - If a term is searched fewer than 1000 times, it can be excluded from the trie.
+
+- **Batch Processing with Map-Reduce (MR)**:
+  - **Hourly Processing**: Use MR jobs to calculate the frequencies of all searched terms in the past hour.
+  - **Trie Update**:
+    - Take the current snapshot of the trie.
+    - Update the snapshot with new terms and their frequencies offline.
+    - Ensure read queries are not blocked during updates.
+
+#### Implementation Options
+1. **Copy and Switch Method**:
+   - Make a copy of the trie on each server.
+   - Update the copy offline.
+   - Switch to the updated trie and discard the old one.
+
+2. **Primary-Secondary Configuration**:
+   - Maintain a primary-secondary setup for each trie server.
+   - Update the secondary trie offline while the primary trie serves traffic.
+   - Once the update is complete, switch the secondary to be the new primary.
+   - Update the old primary offline, then it can also start serving traffic.
+
+#### Steps for Offline Trie Update Process
+1. **Log Query Data**:
+   - Continuously log incoming queries with frequencies.
+   - Implement sampling if necessary to reduce data volume.
+
+2. **Process Logged Data**:
+   - Set up periodic (e.g., hourly) MR jobs to process logged query data.
+   - Calculate the frequency of each term in the logged data.
+
+3. **Update Trie Snapshot**:
+   - Take a snapshot of the current trie.
+   - Integrate new terms and update frequencies based on the processed data.
+
+4. **Deploy Updated Trie**:
+   - **Option 1**: Copy and Switch
+     - Create a copy of the trie, update it, and then switch to it.
+   - **Option 2**: Primary-Secondary
+     - Update the secondary trie offline.
+     - Switch the secondary to primary once updated.
+     - Update the old primary offline and prepare it for future use.
+
+#### Key Considerations
+- **Performance**: Ensure read performance is not impacted by trie updates.
+- **Consistency**: Maintain consistency in search results post-update.
+- **Scalability**: The solution should handle the high query volume efficiently.
+
+#### Summary
+- To manage high-frequency search queries, perform offline trie updates using logged data and MR processing.
+- Utilize either a copy-switch method or a primary-secondary configuration to ensure updates do not impact read performance.
+- Regularly update the trie with new data in a resource-efficient manner.
 
 **Frequency Update for Typeahead Suggestions:**
 - Update only frequency differences.
