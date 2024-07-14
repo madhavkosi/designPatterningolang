@@ -250,6 +250,7 @@ The primary role of service discovery is to recommend the best chat server for a
 <p float="left">
   <img src="https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/chatflow.webp" width="500" />
 </p>
+
 **1-on-1 Chat Flow (Refer to Figure 12):**
 1. User A sends a message to Chat Server 1.
 2. Chat Server 1 obtains a message ID from the ID generator.
