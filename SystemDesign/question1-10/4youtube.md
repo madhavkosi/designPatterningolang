@@ -225,10 +225,21 @@ To design a scalable database schema for a video-sharing platform, we'll need to
 - **Concept**: Streaming allows immediate and continuous playback without waiting for the entire video to download.
 - **Streaming Protocols**:
   - **MPEG–DASH**: Dynamic Adaptive Streaming over HTTP.
+  
   - **Apple HLS**: HTTP Live Streaming.
   - **Microsoft Smooth Streaming**
   - **Adobe HTTP Dynamic Streaming (HDS)**
   - **Importance**: Different protocols support various encodings and playback players.
+
+  **Dynamic Adaptive Streaming over HTTP (DASH)**
+  - **Developed by:** MPEG (Moving Picture Experts Group)
+  - **Use Case:** Adaptive streaming for various media types.
+  - **Key Features:**
+    - HTTP-based
+    - Supports adaptive bitrate streaming
+    - Device and vendor-agnostic
+    - Media content is divided into segments
+
 - **CDN Streaming**: Videos streamed from the nearest edge server to minimize latency (Refer to Figure 7).
 
  **Summary**
