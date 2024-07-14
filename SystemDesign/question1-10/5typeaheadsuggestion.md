@@ -139,11 +139,35 @@ Typeahead suggestions help users search for known and frequently searched terms 
 - Utilize either a copy-switch method or a primary-secondary configuration to ensure updates do not impact read performance.
 - Regularly update the trie with new data in a resource-efficient manner.
 
-**Frequency Update for Typeahead Suggestions:**
-- Update only frequency differences.
-- Use Exponential Moving Average (EMA) for weighting recent data.
-- Traverse back from the terminal node, updating top 10 queries at each node.
+- **Updating Frequencies of Typeahead Suggestions**
+  - **Purpose**: To keep the frequencies of typeahead suggestions up to date without recounting all search terms from scratch.
+  
+- **Method**:
+  - **Incremental Update**: Instead of recounting all search terms, only the differences in frequencies are updated.
+    - **Time Frame Management**:
+      - Keep track of all search terms from the last 10 days.
+      - Subtract counts from the time period no longer included.
+      - Add counts for the new time period being included.
+  - **Exponential Moving Average (EMA)**:
+    - Uses EMA to update frequencies, giving more weight to the latest data.
+    - Also known as exponentially weighted moving average.
+  
+- **Steps to Update Frequencies**:
+  - **Insertion**:
+    - After inserting a new term in the trie:
+      - Navigate to the terminal node of the phrase.
+      - Increase its frequency.
+  - **Top 10 Queries Update**:
+    - As each node stores the top 10 queries, check if the new term affects these top 10.
+    - **Traversal**:
+      - Traverse back from the terminal node to the root.
+      - At each parent node, check if the new term is part of the top 10.
+      - **Frequency Update**:
+        - If the term is in the top 10, update its frequency.
+        - If not, check if the term's frequency is high enough to be in the top 10.
+        - Insert the new term if its frequency is sufficient and remove the term with the lowest frequency if necessary.
 
+This ensures that typeahead suggestions are updated efficiently and accurately reflect the most recent search data.
 **Removing a Term from Trie:**
 - Remove terms completely during regular updates.
 - Use a filtering layer on each server to exclude terms before sending to users.
