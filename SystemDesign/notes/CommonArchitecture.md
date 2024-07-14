@@ -6,7 +6,7 @@ Redis (REmote DIctionary Server) is designed for high performance, flexibility, 
 - **Primary Storage in RAM**: Redis stores all its data in RAM, providing extremely fast read and write operations.
 - **Persistence Options**: To ensure durability, Redis offers:
   - **RDB (Redis Database Backup)**: Periodic snapshots of the dataset saved to disk.
-  - **AOF (Append-Only File)**: Logs every write operation received by the server, which can be replayed to reconstruct the dataset.
+  - **AOF (Append-Only File)**: **Logs every write** operation received by the server, which can be replayed to reconstruct the dataset.
 
 #### 2. **Data Structures**
 Redis supports various data structures that are stored in memory and manipulated through commands:
