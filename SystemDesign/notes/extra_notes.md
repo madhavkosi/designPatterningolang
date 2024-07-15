@@ -169,30 +169,36 @@ Apache Zookeeper plays a crucial role in service discovery by providing a robust
 
 
 ## Various Server Type
+Here's the extended table including specifications for Cache Servers (Redis or Memcached):
 
-| **Server Type**      | **CPU Cores** | **RAM**         | **Storage**      | **Bandwidth**     | **Requests per Second (RPS)**   |
-|----------------------|---------------|-----------------|------------------|-------------------|---------------------------------|
-| **Web Servers**      |               |                 |                  |                   |                                 |
-| Small                | 2-4           | 4-8 GB          | 100 GB - 1 TB    | 1 TB/month        | 100 - 1,000                     |
-| Medium               | 4-8           | 8-16 GB         | 1-5 TB           | 5 TB/month        | 1,000 - 5,000                   |
-| Large                | 8-16          | 16-64 GB        | 5-10 TB          | 10 TB/month+      | 5,000 - 50,000                  |
-| **Database Servers** |               |                 |                  |                   |                                 |
-| Small                | 4-8           | 16-32 GB        | 1-5 TB SSD       | N/A               | 100 - 1,000                     |
-| Medium               | 8-16          | 32-64 GB        | 5-10 TB SSD      | N/A               | 1,000 - 5,000                   |
-| Large                | 16-32         | 64-256 GB       | 10-100 TB SSD    | N/A               | 5,000 - 50,000                  |
-| **File Servers**     |               |                 |                  |                   |                                 |
-| Small                | 2-4           | 4-8 GB          | 1-10 TB          | N/A               | N/A (Dependent on file size)    |
-| Medium               | 4-8           | 8-16 GB         | 10-50 TB         | N/A               | N/A (Dependent on file size)    |
-| Large                | 8-16          | 16-64 GB        | 50-500 TB+       | N/A               | N/A (Dependent on file size)    |
-| **Application Servers** |           |                 |                  |                   |                                 |
-| Small                | 4-8           | 8-16 GB         | 500 GB - 2 TB    | N/A               | 100 - 1,000                     |
-| Medium               | 8-16          | 16-32 GB        | 2-5 TB           | N/A               | 1,000 - 5,000                   |
-| Large                | 16-32         | 32-128 GB       | 5-10 TB+         | N/A               | 5,000 - 50,000                  |
-| **Cloud Servers**    |               |                 |                  |                   |                                 |
-| Small                | 2-8           | 4-16 GB         | 100 GB - 1 TB SSD| Variable          | 100 - 1,000                     |
-| Medium               | 8-32          | 16-64 GB        | 1-10 TB SSD      | Variable          | 1,000 - 10,000                  |
-| Large                | 32-64+        | 64-512+ GB      | 10+ TB SSD       | Variable          | 10,000 - 100,000+               |
+| Server Type | CPU Cores | RAM         | Storage          | Bandwidth     | Requests per Second (RPS)  |
+|-------------|------------|-------------|------------------|---------------|----------------------------|
+| **Web Servers**           |            |             |                  |               |                            |
+| Small       | 2-4        | 4-8 GB      | 100 GB - 1 TB    | 1 TB/month    | 100 - 1,000                |
+| Medium      | 4-8        | 8-16 GB     | 1-5 TB           | 5 TB/month    | 1,000 - 5,000              |
+| Large       | 8-16       | 16-64 GB    | 5-10 TB          | 10 TB/month+  | 5,000 - 50,000             |
+| **Database Servers**      |            |             |                  |               |                            |
+| Small       | 4-8        | 16-32 GB    | 1-5 TB SSD       | N/A           | 100 - 1,000                |
+| Medium      | 8-16       | 32-64 GB    | 5-10 TB SSD      | N/A           | 1,000 - 5,000              |
+| Large       | 16-32      | 64-256 GB   | 10-100 TB SSD    | N/A           | 5,000 - 50,000             |
+| **File Servers**          |            |             |                  |               |                            |
+| Small       | 2-4        | 4-8 GB      | 1-10 TB          | N/A           | N/A (Dependent on file size) |
+| Medium      | 4-8        | 8-16 GB     | 10-50 TB         | N/A           | N/A (Dependent on file size) |
+| Large       | 8-16       | 16-64 GB    | 50-500 TB+       | N/A           | N/A (Dependent on file size) |
+| **Application Servers**   |            |             |                  |               |                            |
+| Small       | 4-8        | 8-16 GB     | 500 GB - 2 TB    | N/A           | 100 - 1,000                |
+| Medium      | 8-16       | 16-32 GB    | 2-5 TB           | N/A           | 1,000 - 5,000              |
+| Large       | 16-32      | 32-128 GB   | 5-10 TB+         | N/A           | 5,000 - 50,000             |
+| **Cloud Servers**         |            |             |                  |               |                            |
+| Small       | 2-8        | 4-16 GB     | 100 GB - 1 TB SSD | Variable     | 100 - 1,000                |
+| Medium      | 8-32       | 16-64 GB    | 1-10 TB SSD      | Variable      | 1,000 - 10,000             |
+| Large       | 32-64+     | 64-512+ GB  | 10+ TB SSD       | Variable      | 10,000 - 100,000+          |
+| **Cache Servers (Redis/Memcached)** |   |             |                  |               |                            |
+| Small       | 2-4        | 4-8 GB      | 100 GB - 1 TB SSD | N/A           | 10,000 - 100,000           |
+| Medium      | 4-8        | 8-16 GB     | 1-2 TB SSD       | N/A           | 100,000 - 500,000          |
+| Large       | 8-16       | 16-32 GB    | 2-5 TB SSD       | N/A           | 500,000 - 1,000,000+       |
 
+Feel free to adjust any values based on specific requirements or preferences.
 ### Notes:
 - **Requests per Second (RPS):** The RPS values are approximate and can vary significantly based on the server's specific hardware, software configuration, and workload characteristics.
 - **Storage:** SSDs are preferred for better performance, especially for database and application servers.
