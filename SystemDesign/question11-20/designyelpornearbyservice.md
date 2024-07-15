@@ -73,6 +73,7 @@ A Yelp-like service allows users to search for nearby places such as restaurants
 - **Challenges:** Ensuring read efficiency, especially when location data changes infrequently.
 
 ### Storage and Indexing Methods
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/yelp.webp)
 
 #### a. SQL Solution
 - **Database:** MySQL
