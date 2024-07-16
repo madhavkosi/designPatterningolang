@@ -129,3 +129,39 @@ Total Egress:
 | **search_tweets**              | api_dev_key (string), query (string), page (number), count (number)                                               | (dict): A dictionary containing the search results if successful, otherwise an appropriate HTTP error is returned. |
 | **reply_to_tweet**             | api_dev_key (string), tweet_id (number), reply_data (string), reply_location (string, optional), user_location (string, optional), media_ids (number[], optional) | (string): URL to access the reply if successful, otherwise an appropriate HTTP error is returned. |
 | **tag_user_in_tweet**          | api_dev_key (string), tweet_id (number), tagged_user_ids (number[])                                               | (string): Success message if successful, otherwise an appropriate HTTP error is returned.         |
+
+
+### 5. High Level System Design
+
+- **System Requirements:**
+  - **Write Load:** 
+    - Daily: 100 million tweets
+    - Per second: 1150 tweets
+  - **Read Load:** 
+    - Daily: 28 billion tweets
+    - Per second: 325,000 tweets
+  - Read-heavy system
+
+- **Components:**
+  - **Application Servers:**
+    - Multiple servers to handle the high volume of requests
+    - Load balancers for traffic distribution
+  - **Backend Database:**
+    - Efficient database capable of handling high write and read loads
+  - **File Storage:**
+    - Storage solution for photos and videos
+
+- **Expected Traffic Patterns:**
+  - Average per second:
+    - 1160 new tweets
+    - 325,000 read requests
+  - Peak times:
+    - Several thousand write requests per second
+    - Approximately 1 million read requests per second
+
+- **Key Considerations:**
+  - Uneven traffic distribution throughout the day
+  - Design must accommodate peak traffic loads
+
+
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/twitter.gif)
