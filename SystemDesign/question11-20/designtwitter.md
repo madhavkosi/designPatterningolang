@@ -165,3 +165,85 @@ Total Egress:
   - Design must accommodate peak traffic loads
 
 
+## Database Schema
+
+We need to store data about users, their tweets, their favorite tweets, and people they follow. Here is a high-level schema for our Twitter-like service.
+
+### Users Table
+
+| **Column**       | **Type**     | **Description**                        |
+|------------------|--------------|----------------------------------------|
+| `user_id`        | BIGINT       | Primary Key, unique identifier for user|
+| `username`       | VARCHAR(50)  | Unique username                        |
+| `email`          | VARCHAR(100) | Unique email address                   |
+| `password`       | VARCHAR(255) | Hashed password                        |
+| `created_at`     | TIMESTAMP    | Account creation time                  |
+| `profile_info`   | TEXT         | User profile information (bio, etc.)   |
+
+### Tweets Table
+
+| **Column**       | **Type**     | **Description**                        |
+|------------------|--------------|----------------------------------------|
+| `tweet_id`       | BIGINT       | Primary Key, unique identifier for tweet|
+| `user_id`        | BIGINT       | Foreign Key, identifier for user       |
+| `content`        | TEXT         | Tweet content (up to 280 characters)   |
+| `media_ids`      | TEXT         | Comma-separated list of media IDs      |
+| `tweet_location` | POINT        | Optional location (longitude, latitude)|
+| `created_at`     | TIMESTAMP    | Tweet creation time                    |
+
+### Favorites Table
+
+| **Column**       | **Type**     | **Description**                        |
+|------------------|--------------|----------------------------------------|
+| `user_id`        | BIGINT       | Foreign Key, identifier for user       |
+| `tweet_id`       | BIGINT       | Foreign Key, identifier for tweet      |
+| `favorited_at`   | TIMESTAMP    | Time when tweet was favorited          |
+
+### Follows Table
+
+| **Column**       | **Type**     | **Description**                        |
+|------------------|--------------|----------------------------------------|
+| `follower_id`    | BIGINT       | Foreign Key, identifier for follower   |
+| `followee_id`    | BIGINT       | Foreign Key, identifier for followee   |
+| `followed_at`    | TIMESTAMP    | Time when follow action was made       |
+
+### Media Table
+
+| **Column**       | **Type**     | **Description**                        |
+|------------------|--------------|----------------------------------------|
+| `media_id`       | BIGINT       | Primary Key, unique identifier for media|
+| `user_id`        | BIGINT       | Foreign Key, identifier for user       |
+| `media_type`     | VARCHAR(50)  | Type of media (photo, video)           |
+| `media_url`      | VARCHAR(255) | URL to access the media                |
+| `uploaded_at`    | TIMESTAMP    | Time when media was uploaded           |
+
+### Diagram
+
+```plaintext
++-----------------+     +-----------------+     +-----------------+     +-----------------+
+|     Users       |     |     Tweets      |     |    Favorites    |     |     Follows     |
++-----------------+     +-----------------+     +-----------------+     +-----------------+
+| user_id (PK)    |<----| tweet_id (PK)   |<----| user_id (FK)    |<----| follower_id (FK)|
+| username        |     | user_id (FK)    |     | tweet_id (FK)   |     | followee_id (FK)|
+| email           |     | content         |     | favorited_at    |     | followed_at     |
+| password        |     | media_ids       |     +-----------------+     +-----------------+
+| created_at      |     | tweet_location  |     
+| profile_info    |     | created_at      |     
++-----------------+     +-----------------+
+         ^                     ^
+         |                     |
+         |                     |
+         +---------------------+
+                 |
+         +-----------------+
+         |     Media       |
+         +-----------------+
+         | media_id (PK)   |
+         | user_id (FK)    |
+         | media_type      |
+         | media_url       |
+         | uploaded_at     |
+         +-----------------+
+```
+
+This schema is designed to handle the high volume of tweets and user interactions efficiently, ensuring that both reads and writes are optimized for performance and scalability.
