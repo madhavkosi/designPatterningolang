@@ -141,6 +141,7 @@ Total Egress:
     - Daily: 28 billion tweets
     - Per second: 325,000 tweets
   - Read-heavy system
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/twitter.gif)
 
 - **Components:**
   - **Application Servers:**
@@ -164,4 +165,3 @@ Total Egress:
   - Design must accommodate peak traffic loads
 
 
-![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/twitter.gif)
