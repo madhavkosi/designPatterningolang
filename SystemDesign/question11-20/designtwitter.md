@@ -247,3 +247,100 @@ We need to store data about users, their tweets, their favorite tweets, and peop
 ```
 
 This schema is designed to handle the high volume of tweets and user interactions efficiently, ensuring that both reads and writes are optimized for performance and scalability.
+
+
+## Data Sharding
+
+Given the high volume of tweets and read requests, we need to distribute our data onto multiple machines for efficient read/write operations. Below are the various sharding strategies and their pros and cons.
+
+### Sharding Strategies
+
+1. **Sharding Based on UserID**
+
+   - **Approach:** Store all data of a user on one server. Use a hash function to map UserID to a database server.
+   - **Pros:**
+     - Efficient for querying data of a single user.
+   - **Cons:**
+     - **Hot Users:** High load on the server holding data of popular users.
+     - **Data Imbalance:** Over time, some users may accumulate more data than others, leading to uneven distribution.
+     - **Solution:** Repartition/redistribute data or use consistent hashing.
+
+2. **Sharding Based on TweetID**
+
+   - **Approach:** Use a hash function to map each TweetID to a random server.
+   - **Pros:**
+     - Solves the problem of hot users.
+   - **Cons:**
+     - **High Latency:** Requires querying all database partitions to find tweets of a user.
+     - **Solution:** Use caching to store hot tweets in front of the database servers.
+
+3. **Sharding Based on Tweet Creation Time**
+
+   - **Approach:** Store tweets based on their creation time.
+   - **Pros:**
+     - Efficient for fetching top tweets quickly.
+   - **Cons:**
+     - **Uneven Load Distribution:** New tweets will concentrate on one server, leaving others underutilized.
+     - **Solution:** Combine with TweetID-based sharding for balanced load.
+
+### Combined Sharding Strategy: TweetID and Creation Time
+
+- **Approach:** Use TweetID to reflect creation time. Make each TweetID universally unique with a timestamp.
+- **TweetID Structure:**
+  - **Epoch Time (31 bits):** To store number of seconds for the next 50 years.
+  - **Auto-incrementing Sequence (17 bits):** To store up to 130K new tweets per second.
+
+- **TweetID Example:**
+  - Epoch seconds: `1483228800`
+  - TweetID: `1483228800 000001`, `1483228800 000002`, ...
+
+- **Benefits:**
+  - **Efficient Writes:** Reduced write latency by avoiding secondary indexes.
+  - **Efficient Reads:** Faster reads due to epoch time in primary key.
+  - **Scalability:** Can store tweets for the next 100 years with millisecond granularity.
+
+### Implementation
+
+- **Auto-incrementing Sequence:**
+  - Use two database servers for generating keys.
+  - One server generates even-numbered keys; the other generates odd-numbered keys.
+
+### Data Sharding Diagram
+
+```plaintext
+               +---------------------+
+               |      Load Balancer  |
+               +---------+-----------+
+                         |
+         +---------------+------------------+
+         |               |                  |
++--------+-----+ +-------+--------+ +-------+--------+
+| App Server 1 | | App Server 2   | | App Server 3   |  ... (Horizontally scalable)
++--------------+ +----------------+ +----------------+
+         |               |                  |
++--------+-----+ +-------+--------+ +-------+--------+
+| Write DB      | | Read DB        | | Cache Layer   |
++--------------+ +----------------+ +----------------+
+                         |
+               +---------+-----------+
+               |     File Storage    |
+               +---------------------+
+```
+
+### High-Level Flow
+
+1. **Writing a Tweet:**
+   - Generate TweetID with epoch time and auto-incrementing sequence.
+   - Use hash function to determine shard.
+   - Store tweet in the appropriate shard.
+
+2. **Reading a Tweet:**
+   - Use hash function to determine shard based on TweetID.
+   - Fetch tweet from the appropriate shard.
+
+3. **Generating Timeline:**
+   - Find all users a user follows.
+   - Query relevant shards for tweets.
+   - Aggregate and sort results to generate the timeline.
+
+This combined sharding strategy allows efficient handling of both read and write operations, ensuring scalability and fault tolerance while managing high traffic loads effectively.
