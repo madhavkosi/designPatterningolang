@@ -298,7 +298,16 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
 
 #### Key Topic: Concurrency
 - **Objective**: Prevent multiple users from booking the same seat simultaneously.
+Some Notes on Concurrency 
 
+- **Dirty Reads:**  
+  - Uncommitted data read by another transaction; may lead to inconsistencies.
+
+- **Nonrepeatable Reads:**  
+  - Data read changes between reads in the same transaction due to updates by another transaction.
+
+- **Phantom Reads:**  
+  - New or deleted rows appear in repeated reads of a query due to another transaction.
 #### Handling Concurrency Using Transactions
 - **SQL Transactions**:
   - Ensure operations are completed successfully without interference.
