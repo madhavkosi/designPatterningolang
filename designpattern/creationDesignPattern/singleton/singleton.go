@@ -12,6 +12,10 @@ type single struct {
 	val string
 }
 
+func (s single) values() {
+	fmt.Println("Abc")
+}
+
 func NewSingleObject() *single {
 	if singleton == nil {
 		lock.Lock()
@@ -27,5 +31,3 @@ func NewSingleObject() *single {
 	}
 	return singleton
 }
-
-// The Singleton pattern ensures a class has only one instance and provides a global point of access to it.
