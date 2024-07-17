@@ -190,6 +190,7 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
 ### Detailed Component Design
 
 #### Ticket Booking Workflow
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/bookmyshow1.gif)
 
 1. **User Searches for a Movie**: User inputs movie search criteria.
 2. **User Selects a Movie**: User chooses a movie from the search results.
@@ -209,6 +210,7 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
 9. **Payment Process**:
    - **Successful Payment**: Booking is completed.
    - **Failed Payment**: Reserved seats are released after five minutes.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/bookmyshow2.gif)
 
 ### ActiveReservationsService
 
@@ -226,6 +228,7 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
 2. **HashTable**:
    - **Key**: ShowID.
    - **Value**: Linked HashMap containing BookingID and creation Timestamp.
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/bookmyshow.webp)
 
 3. **Database**:
    - **Table**: Booking.
