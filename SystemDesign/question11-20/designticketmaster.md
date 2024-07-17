@@ -190,7 +190,7 @@ City --< Cinema --< Hall --< Show --< Booking >-- User
 ### Detailed Component Design
 
 #### Ticket Booking Workflow
-![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/bookmyshow1.gif)
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/SystemDesign/image%20folder/bookmyshow.gif)
 
 1. **User Searches for a Movie**: User inputs movie search criteria.
 2. **User Selects a Movie**: User chooses a movie from the search results.
