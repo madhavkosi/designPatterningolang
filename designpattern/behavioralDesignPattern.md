@@ -1,4 +1,4 @@
-**Strategy Pattern**
+### Strategy Pattern
 The Strategy Pattern is a behavioral design pattern that enables selecting an algorithm's behavior at runtime. It defines a family of algorithms, encapsulates each one, and makes them interchangeable. The pattern allows the algorithm to vary independently from the clients that use it.
 
 **Key Characteristics**
@@ -114,7 +114,7 @@ func main() {
 The Strategy Pattern is useful for scenarios where you need to select and change algorithms dynamically. It promotes flexibility, reusability, and separation of concerns by encapsulating algorithms into separate classes.
 
 
-**Observer Pattern**
+### Observer Pattern
 The Observer Pattern is a behavioral design pattern that defines a one-to-many dependency between objects so that when one object (the subject) changes state, all its dependents (observers) are notified and updated automatically. This pattern is useful for implementing distributed event-handling systems.
 
 **Key Characteristics**
