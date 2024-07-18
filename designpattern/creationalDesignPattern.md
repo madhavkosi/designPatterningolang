@@ -11,9 +11,6 @@ The Singleton Pattern is a creational design pattern that ensures a class has on
 
 ### Implementation in Go
 
-Go, unlike some other languages, does not have built-in support for singletons. However, you can achieve the same result using package-level variables and sync mechanisms.
-
-Here’s a simple and thread-safe implementation of the Singleton pattern in Go:
 
 ```go
 package singleton
@@ -53,11 +50,6 @@ func NewSingleObject() *single {
 ```
 
 
-### Explanation
-
-- **Singleton Struct**: Represents the single instance you want to control.
-- **GetInstance Function**: Ensures that the Singleton instance is created only once and returns the same instance on subsequent calls. It uses `sync.Once` to ensure thread safety.
-- **DoSomething Method**: A sample method to demonstrate the functionality of the Singleton instance.
 
 ### When to Use the Singleton Pattern
 
@@ -65,20 +57,7 @@ func NewSingleObject() *single {
 2. **Global State**: When you need a single point of access to some global state or service.
 3. **Control Access**: When you need to ensure that only one instance of a class is created to prevent conflicting operations or state.
 
-### Benefits
-
-- **Controlled Access**: Provides a single point of access to the instance.
-- **Consistency**: Ensures consistency in resource management and state.
-- **Lazy Initialization**: Delays the creation of the instance until it is needed, improving startup time and resource usage.
-
-### Drawbacks
-
-- **Global State**: Can introduce global state into an application, which might lead to unexpected dependencies and difficulties in testing.
-- **Scalability**: Limits the scalability in a distributed environment since all operations go through the single instance.
-
-The Singleton pattern is a powerful tool in the right circumstances, but it should be used judiciously to avoid introducing tight coupling and global state into your application.
-### Key Concepts
-
+### Factory Method
 1. **Factory Method**:
    - Defines an interface for creating an object, but lets subclasses decide which class to instantiate.
    - Promotes loose coupling by reducing the dependency of application code on concrete classes.
