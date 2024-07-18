@@ -222,7 +222,3 @@ func main() {
 In this example, `UserService` depends on the `Logger` interface, not on the `FileLogger` directly, adhering to DIP.
 
 ---
-
-By following the SOLID principles in Go, you can create code that is more modular, easier to understand, and easier to maintain. These principles help in building scalable and robust applications.
-
-If you need visual aids or further detailed examples for any of these principles, please let me know!
