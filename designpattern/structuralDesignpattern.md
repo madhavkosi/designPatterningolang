@@ -12,7 +12,7 @@ The Facade Pattern is a structural design pattern that provides a simplified int
 
 In Go, the Facade Pattern can be implemented by creating a struct that provides a simplified interface to the underlying subsystem.
 
-#**Example: Home Theater System**
+**Example: Home Theater System**
 
 **Step 1: Define the Subsystem Components**
 
