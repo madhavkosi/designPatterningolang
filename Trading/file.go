@@ -123,7 +123,7 @@ func fetchURL(client *http.Client, url string, cookies map[string]string) ([]Met
 	}
 	var metadataList []Metadata
 	for _, item := range data.Data {
-		if item.Metadata.TotalTurnover > 10000000 && item.Metadata.PChange > 1.5 { // 10 crores in local currency units
+		if item.Metadata.TotalTurnover > 1000000 && item.Metadata.PChange > 1.5 { // 10 crores in local currency units
 			item.Metadata.QuantityToBuy = 500000 / item.Metadata.PrevClosePrice
 			metadataList = append(metadataList, item.Metadata)
 		}
