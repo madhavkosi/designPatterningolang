@@ -3,14 +3,13 @@
 
 The Singleton Pattern is a creational design pattern that ensures a class has only one instance and provides a global point of access to that instance. This is useful when exactly one object is needed to coordinate actions across a system.
 
-### Key Characteristics
+**Key Characteristics**
 
 1. **Single Instance**: Ensures that only one instance of the class exists.
 2. **Global Access**: Provides a global point of access to the instance.
 3. **Lazy Initialization**: The instance is created only when it is needed for the first time.
 
-### Implementation in Go
-
+**Implementation in Go**
 
 ```go
 package singleton
@@ -51,7 +50,7 @@ func NewSingleObject() *single {
 
 
 
-### When to Use the Singleton Pattern
+**When to Use the Singleton Pattern**
 
 1. **Resource Management**: When you need to control access to a shared resource such as a configuration object, database connection, or a file.
 2. **Global State**: When you need a single point of access to some global state or service.
@@ -62,7 +61,7 @@ func NewSingleObject() *single {
    - Defines an interface for creating an object, but lets subclasses decide which class to instantiate.
    - Promotes loose coupling by reducing the dependency of application code on concrete classes.
 
-### When to Use the Factory Method Pattern
+**When to Use the Factory Method Pattern**
 
 1. **When the exact type of the object cannot be determined until runtime**:
    - If your application needs to decide which class to instantiate at runtime, the Factory Method pattern allows this decision to be deferred to subclasses or implementing classes.
@@ -89,14 +88,14 @@ func NewSingleObject() *single {
    
    Example: An e-commerce platform where new types of payment methods can be added without changing the core order processing logic.
 
-### Benefits of Using the Factory Method Pattern
+**Benefits of Using the Factory Method Pattern**
 
 - **Encapsulation of Object Creation**: It encapsulates the creation logic, making the codebase more modular and easier to manage.
 - **Scalability**: New types of products can be added with minimal changes to existing code.
 - **Maintainability**: Centralizes the instantiation logic, making it easier to update or change.
 - **Loose Coupling**: Reduces dependencies between the client code and concrete classes.
 
-### Example Scenarios
+**Example Scenarios**
 
 1. **Plugin Architecture**:
    - You have a media player that supports different types of media formats through plugins. The Factory Method pattern can help dynamically load and create the appropriate media plugin at runtime.
@@ -111,7 +110,7 @@ func NewSingleObject() *single {
 
 Certainly! Here's a concise one-page implementation and explanation of the Factory Method pattern in Go, including the main usage example.
 
-### Factory Pattern in Go
+**Factory Pattern in Go**
 
 ```go
 package factory
@@ -150,7 +149,7 @@ func PrinterFactory(PrintType string) (Printer, error) {
 }
 ```
 
-### Usage Example
+**Usage Example**
 
 ```go
 package main
@@ -188,19 +187,19 @@ func main() {
 
 The Builder Pattern is a creational design pattern that allows you to construct complex objects step by step. Unlike other creational patterns, the Builder Pattern doesn't require products to have a common interface. This pattern is particularly useful when creating an object involves many steps or when an object can be created in multiple configurations.
 
-### Key Characteristics
+**Key Characteristics**
 
 1. **Step-by-Step Construction**: Constructs the object step by step.
 2. **Complex Object Creation**: Useful for creating complex objects with multiple configurations.
 3. **Separation of Concerns**: Separates the construction of an object from its representation.
 
-### Implementation in Go
+**Implementation in Go**
 
 In Go, the Builder Pattern can be implemented using a combination of struct and methods to build complex objects. Here’s an example:
 
-#### Example: Building a Computer
+**Example: Building a Computer**
 
-### Step 1: Define the Product
+**Step 1: Define the Product**
 
 ```go
 package main
@@ -221,7 +220,7 @@ func (c Computer) String() string {
 }
 ```
 
-### Step 2: Create the Builder
+**Step 2: Create the Builder**
 
 ```go
 package main
@@ -265,7 +264,7 @@ func (b *ComputerBuilder) Build() Computer {
 }
 ```
 
-### Step 3: Use the Builder
+**Step 3: Use the Builder**
 
 ```go
 package main
@@ -283,25 +282,25 @@ func main() {
 }
 ```
 
-### Explanation
+**Explanation**
 
 1. **Computer Struct**: The `Computer` struct represents the complex object that we want to build.
 2. **ComputerBuilder Struct**: The `ComputerBuilder` struct provides methods to set the various properties of the `Computer` object. Each method returns the builder itself to allow for method chaining.
 3. **Build Method**: The `Build` method returns the final `Computer` object.
 
-### When to Use the Builder Pattern
+**When to Use the Builder Pattern**
 
 1. **Complex Construction**: When the construction process of an object is complex and involves many steps.
 2. **Multiple Representations**: When you need to create different representations of the same object.
 3. **Immutability**: When you want to ensure that an object is immutable once it is constructed.
 
-### Benefits
+**Benefits**
 
 - **Control over the Construction Process**: Provides fine-grained control over the construction process.
 - **Readable Code**: Makes the code more readable and maintainable by separating the construction logic.
 - **Reusability**: Allows reusability of the construction process for different types of products.
 
-### Drawbacks
+**Drawbacks**
 
 - **Overhead**: Can introduce additional complexity and overhead if the object construction is simple.
 - **Verbose**: Can make the code more verbose compared to simple constructors or factory methods.
@@ -313,19 +312,19 @@ The Builder Pattern is especially useful when dealing with complex objects that 
 
 The Prototype Pattern is a creational design pattern that allows you to create new objects by copying an existing object, known as the prototype. This pattern is particularly useful when the creation of an object is a costly operation and the object already exists in a state that can be cloned.
 
-### Key Characteristics
+**Key Characteristics**
 
 1. **Clone Method**: Objects are created by copying an existing prototype.
 2. **Prototype Interface**: Defines the method to clone objects.
 3. **Reduced Overhead**: Useful for reducing the overhead of creating objects from scratch.
 
-### Implementation in Go
+**Implementation in Go**
 
 In Go, the Prototype Pattern can be implemented by defining an interface with a `Clone` method and creating concrete types that implement this interface.
 
-#### Example: Cloning Shapes
+#**Example: Cloning Shapes**
 
-### Step 1: Define the Prototype Interface
+**Step 1: Define the Prototype Interface**
 
 ```go
 package main
@@ -339,7 +338,7 @@ type Prototype interface {
 }
 ```
 
-### Step 2: Create Concrete Prototypes
+**Step 2: Create Concrete Prototypes**
 
 ```go
 package main
@@ -381,7 +380,7 @@ func (r *Rectangle) GetDetails() string {
 }
 ```
 
-### Step 3: Use the Prototype
+**Step 3: Use the Prototype**
 
 ```go
 package main
@@ -414,25 +413,25 @@ func main() {
 }
 ```
 
-### Explanation
+**Explanation**
 
 1. **Prototype Interface**: The `Prototype` interface declares the `Clone` method that all concrete prototypes must implement.
 2. **Concrete Prototypes**: The `Circle` and `Rectangle` structs implement the `Prototype` interface by providing their own `Clone` method, which creates a copy of the object.
 3. **Usage**: In the `main` function, we create initial instances of `Circle` and `Rectangle`, then clone these instances using the `Clone` method. The `GetDetails` method is used to print the details of the original and cloned objects.
 
-### When to Use the Prototype Pattern
+**When to Use the Prototype Pattern**
 
 1. **Costly Object Creation**: When creating a new object is a costly operation in terms of resources or time.
 2. **Multiple Configurations**: When an object can have one of several possible configurations, and you need to create multiple objects in different configurations.
 3. **Decoupling**: When you want to decouple the creation of objects from their specific classes.
 
-### Benefits
+**Benefits**
 
 - **Performance**: Reduces the overhead of creating objects from scratch.
 - **Flexibility**: Allows for easy creation of complex objects.
 - **Decoupling**: Decouples the client code from the classes of the objects being instantiated.
 
-### Drawbacks
+**Drawbacks**
 
 - **Cloning Complexity**: Cloning complex objects with circular references or deep hierarchies can be challenging.
 - **Memory Consumption**: May lead to increased memory consumption if many copies of large objects are created.
