@@ -964,3 +964,23 @@ func main() {
 | **Scanf**         | `fmt.Scanf("%s %d", &name, &age)`          | Reads formatted input.                      |
 
 These notes cover the basic and some advanced usage of the `fmt` package in Go for formatted I/O operations.
+
+
+
+### Detailed Notes on Slices vs Arrays in Go
+
+### Summary Table
+
+| Feature           | Array                            | Slice                                     |
+|-------------------|----------------------------------|-------------------------------------------|
+| **Size**          | Fixed                            | Dynamic                                   |
+| **Declaration**   | `var arr [3]int`                 | `var slice []int`                         |
+| **Initialization**| `arr := [3]int{1, 2, 3}`         | `slice := []int{1, 2, 3}`                 |
+| **Access**        | `arr[0]`                         | `slice[0]`                                |
+| **Modification**  | `arr[0] = 10`                    | `slice[0] = 10`                           |
+| **Slicing**       | `slice := arr[1:4]`              | `subSlice := slice[1:4]`                  |
+| **Appending**     | Not allowed                      | `slice = append(slice, 4, 5)`             |
+| **Memory**        | Fixed allocation                 | Dynamic allocation with possible reallocations |
+| **Function Pass** | Passed by value                  | Passed by reference                       |
+
+By understanding the differences and appropriate use cases for arrays and slices, you can make better decisions when designing your Go programs.
