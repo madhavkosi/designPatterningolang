@@ -1,3 +1,6 @@
+## Structural Pattern
+Structural patterns are concerned with how classes and objects are composed to form larger structures. 
+
 ### Facade Pattern
 
 The Facade Pattern is a structural design pattern that provides a simplified interface to a complex subsystem. It defines a higher-level interface that makes the subsystem easier to use by hiding the complexities behind it. This pattern is particularly useful when working with complex libraries, APIs, or frameworks.
