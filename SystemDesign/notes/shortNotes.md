@@ -938,25 +938,27 @@ This table provides a concise overview of each load balancing algorithm, their a
 - **Example**: Web application requiring user login, ensuring requests from the same user go to the same server.
 
  **Types of Stateful Load Balancing**
+Here's the information in a detailed table format, including additional information for a comprehensive comparison:
 
-1. **Source IP Affinity**
-   - **Description**: Assigns clients to servers based on IP address.
-   - **Pros**: Simple implementation.
-   - **Cons**: Issues with frequently changing IP addresses (e.g., mobile networks).
+| Feature                        | Source IP Affinity                                | Session Affinity                                |
+|--------------------------------|---------------------------------------------------|-------------------------------------------------|
+| **Description**                | Assigns clients to servers based on IP address.   | Uses session identifiers (cookies, URL parameters) to assign clients to servers. |
+| **Mechanism**                  | - Examines the client's IP address.               | - Tracks sessions using unique session identifiers.<br>- Identifiers are stored in cookies or URL parameters. |
+|                                | - Maps the IP address to a specific server.       | - Requests with the same session identifier are routed to the same server. |
+| **Pros**                       | - Simple implementation.                          | - Consistent server allocation regardless of IP address changes.<br>- Ensures session state is maintained. |
+| **Cons**                       | - Issues with frequently changing IP addresses (e.g., mobile networks, DHCP environments). | - Requires additional mechanisms to manage session identifiers.<br>- Can lead to load imbalance if certain sessions are more demanding. |
+| **Decision Criteria**          | - Suitable for environments where clients have static IP addresses. | - Necessary for applications requiring persistent session data.<br>- Suitable for dynamic IP environments. |
+| **Implementation Complexity**  | - Low.                                            | - Moderate to high, depending on the session tracking method. |
+| **Reliability**                | - Less reliable in dynamic IP environments.       | - More reliable in ensuring session consistency. |
+| **Performance Impact**         | - Minimal performance overhead.                   | - Can introduce overhead due to session tracking and cookie management. |
+| **Scalability**                | - Can struggle with high volumes of dynamic IPs.  | - Scales well but requires load balancing strategies to avoid server overload. |
+| **Example Use Cases**          | - Simple web applications with static user base.  | - E-commerce platforms for maintaining shopping carts.<br>- Online banking for secure sessions.<br>- Web applications with user profiles. |
+| **Configuration**              | - Configure load balancer to use IP hashing or similar method. | - Configure load balancer to use sticky sessions via cookies or URL parameters.<br>- Ensure application layer supports session management. |
+| **Examples of Load Balancers** | - F5 BIG-IP.                                      | - HAProxy (with sticky session configuration).<br>- NGINX (with sticky session configuration).<br>- AWS Elastic Load Balancing (with sticky sessions). |
 
-2. **Session Affinity**
-   - **Description**: Uses session identifiers (cookies, URL parameters) to assign clients to servers.
-   - **Pros**: Consistent server allocation regardless of IP address changes.
-   - **Cons**: Requires additional mechanisms to manage session identifiers.
-
-**Decision Criteria**
-- **Stateless**: Suitable for applications that can handle independent request processing.
-- **Stateful**: Necessary for applications requiring persistent session data.
-
-**Summary**
+### Summary
 - **Stateless Load Balancing**: Efficient, no session state, routes based on request data.
 - **Stateful Load Balancing**: Maintains session state, necessary for session-dependent applications.
-- **Types of Stateful**:
   - **Source IP Affinity**: Uses IP address, simpler but less reliable with changing IPs.
   - **Session Affinity**: Uses session identifiers, reliable for consistent server routing.
 
