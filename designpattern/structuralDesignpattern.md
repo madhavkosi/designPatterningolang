@@ -324,3 +324,153 @@ func main() {
 - **Debugging**: Can be more difficult to debug due to the number of objects involved.
 
 The Decorator Pattern is useful for scenarios where you need to add functionality to objects dynamically and transparently. It provides a flexible alternative to subclassing and adheres to design principles such as Single Responsibility and Open/Closed.
+
+
+
+### Adapter Design Pattern
+
+The Adapter Design Pattern is a structural design pattern that allows objects with incompatible interfaces to work together. It acts as a bridge between two incompatible interfaces by converting the interface of a class into another interface that a client expects.
+
+**Key Components**
+
+1. **Target Interface**: Defines the domain-specific interface that the client uses.
+2. **Adapter**: Implements the Target interface and translates the requests from the Target to the Adaptee.
+3. **Adaptee**: Defines an existing interface that needs adapting.
+4. **Client**: Collaborates with objects conforming to the Target interface.
+
+**When to Use**
+
+- When you want to use an existing class, and its interface does not match the one you need.
+- When you want to create a reusable class that cooperates with unrelated or unforeseen classes that do not necessarily have compatible interfaces.
+
+**Example Scenario**
+
+Consider a scenario where you have a media player application that can play audio files, but you want to extend it to play video files as well. You have an existing VideoPlayer class with a different interface than the MediaPlayer interface.
+
+Sure, let's go through an example of the Adapter Design Pattern in Go (Golang).
+
+**Adapter Design Pattern in Go**
+
+#**Key Components**
+
+1. **Target Interface**: Defines the interface that the client uses.
+2. **Adapter**: Implements the Target interface and translates the requests from the Target to the Adaptee.
+3. **Adaptee**: Defines an existing interface that needs adapting.
+4. **Client**: Collaborates with objects conforming to the Target interface.
+
+#**Example Scenario**
+
+Let's consider a scenario where you have an audio player that can play MP3 files, and you want to extend it to play MP4 and VLC files as well. You have existing structures for MP4Player and VLCPlayer with different interfaces.
+
+**Step-by-Step Implementation**
+
+1. **Define the Target Interface**: This is the interface expected by the client.
+
+    ```go
+    package main
+
+    import "fmt"
+
+    // MediaPlayer defines the interface for playing audio
+    type MediaPlayer interface {
+        Play(audioType string, fileName string)
+    }
+    ```
+
+2. **Create the Adaptee Classes**: These classes have existing interfaces but need adapting.
+
+    ```go
+    // MP4Player is an existing class with a different interface
+    type MP4Player struct{}
+
+    func (mp4 *MP4Player) PlayMP4(fileName string) {
+        fmt.Println("Playing MP4 file. Name:", fileName)
+    }
+
+    // VLCPlayer is another existing class with a different interface
+    type VLCPlayer struct{}
+
+    func (vlc *VLCPlayer) PlayVLC(fileName string) {
+        fmt.Println("Playing VLC file. Name:", fileName)
+    }
+    ```
+
+3. **Implement the Adapter Classes**: These classes implement the Target interface and translate the requests to the Adaptees.
+
+    ```go
+    // MediaAdapter implements MediaPlayer interface and adapts it to play different formats
+    type MediaAdapter struct {
+        advancedMediaPlayer interface{}
+    }
+
+    func (adapter *MediaAdapter) Play(audioType string, fileName string) {
+        if audioType == "mp4" {
+            mp4Player := adapter.advancedMediaPlayer.(*MP4Player)
+            mp4Player.PlayMP4(fileName)
+        } else if audioType == "vlc" {
+            vlcPlayer := adapter.advancedMediaPlayer.(*VLCPlayer)
+            vlcPlayer.PlayVLC(fileName)
+        }
+    }
+
+    func NewMediaAdapter(audioType string) *MediaAdapter {
+        if audioType == "mp4" {
+            return &MediaAdapter{advancedMediaPlayer: &MP4Player{}}
+        } else if audioType == "vlc" {
+            return &MediaAdapter{advancedMediaPlayer: &VLCPlayer{}}
+        }
+        return nil
+    }
+    ```
+
+4. **Implement the Client Class**: This class uses the Target interface.
+
+    ```go
+    // AudioPlayer uses MediaAdapter to play different formats
+    type AudioPlayer struct {
+        mediaAdapter *MediaAdapter
+    }
+
+    func (audioPlayer *AudioPlayer) Play(audioType string, fileName string) {
+        if audioType == "mp3" {
+            fmt.Println("Playing MP3 file. Name:", fileName)
+        } else if audioType == "mp4" || audioType == "vlc" {
+            audioPlayer.mediaAdapter = NewMediaAdapter(audioType)
+            audioPlayer.mediaAdapter.Play(audioType, fileName)
+        } else {
+            fmt.Println("Invalid media. ", audioType, " format not supported")
+        }
+    }
+    ```
+
+5. **Test the Implementation**:
+
+    ```go
+    func main() {
+        audioPlayer := &AudioPlayer{}
+
+        audioPlayer.Play("mp3", "beyond the horizon.mp3")
+        audioPlayer.Play("mp4", "alone.mp4")
+        audioPlayer.Play("vlc", "far far away.vlc")
+        audioPlayer.Play("avi", "mind me.avi")
+    }
+    ```
+
+**Diagram**
+
+Here's a visual representation of the Adapter Design Pattern:
+
+1. **Client (AudioPlayer)**
+    - Uses the Target interface (MediaPlayer) to interact with different media types.
+
+2. **Target Interface (MediaPlayer)**
+    - Defines the Play method.
+
+3. **Adapter (MediaAdapter)**
+    - Implements the Target interface.
+    - Translates requests to the appropriate Adaptee (MP4Player or VLCPlayer).
+
+4. **Adaptees (MP4Player, VLCPlayer)**
+    - Have existing interfaces that need adapting.
+
+By running the provided Go code, you will see how the adapter pattern works to allow the `AudioPlayer` to play different media formats (MP3, MP4, VLC), demonstrating the pattern in action.
