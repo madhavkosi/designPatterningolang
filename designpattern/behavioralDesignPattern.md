@@ -386,22 +386,3 @@ func main() {
 2. **Concrete Handlers**: `LevelOneSupport`, `LevelTwoSupport`, and `LevelThreeSupport` are concrete handlers that process support requests based on the complexity level. They extend `BaseHandler` to handle the chain logic.
 3. **Base Handler**: `BaseHandler` provides common logic for setting the next handler and passing the request to the next handler in the chain.
 4. **Usage**: In the `main` function, the handlers are linked to form a chain. Different support requests are processed by the appropriate handler based on the complexity level.
-
-**When to Use the Chain of Responsibility Pattern**
-
-1. **Multiple Handlers**: When multiple objects can handle a request, and you want to decouple the sender from the receivers.
-2. **Dynamic Handler Chain**: When you want to dynamically specify the chain of handlers at runtime.
-3. **Request Processing**: When you want to process a request with a sequence of handlers.
-
-**Benefits**
-
-- **Decoupling**: Decouples the sender of a request from its receivers.
-- **Flexibility**: Allows adding or removing handlers dynamically.
-- **Responsibility Sharing**: Multiple handlers can process the request without tight coupling.
-
-**Drawbacks**
-
-- **Potential Performance Issues**: Can introduce performance issues if the chain is long or the handlers are slow.
-- **Complexity**: Can make the code more complex due to the setup of the chain.
-
-This example demonstrates how the Chain of Responsibility Pattern can be used to route support requests through different levels of support based on their complexity. The pattern provides flexibility and promotes responsibility sharing by allowing handlers to either process the request or pass it to the next handler in the chain.
