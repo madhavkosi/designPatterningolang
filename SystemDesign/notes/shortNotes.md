@@ -1311,93 +1311,46 @@ NoSQL databases provide flexibility, scalability, and performance for specific w
   - **Best suited for**: Gaming industry and e-commerce with personalized recommendations.
 
 
-**In-Memory Database (IMDB) vs. On-Disk Database**
+###  In-Memory Database (IMDB) vs. On-Disk Database
 
-**In-Memory Database (IMDB)**
-
-**Storage Mechanism**:
-- **Data Storage**: Primarily in RAM.
-- **Persistence**: Some support data persistence on disk.
-
-**Performance**:
-- **Speed**: Extremely fast with low latency.
-- **Efficiency**: Best for read-heavy and real-time operations.
-
-**Use Cases**:
-- **Real-Time Analytics**: Fast data processing for immediate insights.
-- **Caching**: Quick retrieval of frequently accessed data.
-- **Session Storage**: Manages user sessions efficiently in web applications.
-
-**Limitations**:
-- **Cost**: High due to expensive RAM.
-- **Scalability**: Challenging and costly for large data volumes.
-- **Data Volatility**: Risk of data loss on power failure without persistence mechanisms.
-
-**Examples**:
-- **Redis**: Distributed cache, message broker.
-- **Memcached**: Distributed memory caching.
-- **SAP HANA**: Advanced analytics processing.
-- **Apache Ignite**: Memory-centric distributed database.
-- **Hazelcast IMDG**: Scalable caching and in-memory storage.
-
----
-
-**On-Disk Database**
-
-**Storage Mechanism**:
-- **Data Storage**: On persistent disk storage (HDD or SSD).
-- **Persistence**: Data is inherently persistent.
-
-**Performance**:
-- **Speed**: Slower due to disk I/O operations.
-- **Suitability**: Ideal for applications with less critical speed requirements.
-
-**Use Cases**:
-- **Transactional Systems**: Critical for maintaining data integrity.
-- **Large Data Sets**: Cost-effective storage for vast amounts of data.
-- **General-Purpose**: Versatile for a wide range of applications.
-
-**Limitations**:
-- **Speed**: Limited by disk I/O.
-- **I/O Bottlenecks**: Performance can be hindered in high-throughput scenarios.
-
-**Examples**:
-- **MySQL**: Popular for web applications.
-- **PostgreSQL**: Robust and scalable.
-- **MongoDB**: JSON-like document storage.
-- **Oracle Database**: Enterprise-grade capabilities.
-- **Microsoft SQL Server**: Comprehensive data analytics.
-- **SQLite**: Lightweight and embedded database.
-
----
-
-**Key Differences**
-
-**Data Storage Location**:
-- **IMDB**: Stores data in RAM.
-- **On-Disk Database**: Stores data on disk.
-
-**Performance**:
-- **IMDB**: Faster read/write operations.
-- **On-Disk Database**: Slower, dependent on disk I/O.
-
-**Cost and Scalability**:
-- **IMDB**: Higher cost, challenging scalability for large data.
-- **On-Disk Database**: Cost-effective for large volumes.
-
-**Data Persistence**:
-- **IMDB**: Requires additional durability mechanisms.
-- **On-Disk Database**: Naturally persistent.
-
-**Use Cases**:
-- **IMDB**: Optimal for real-time processing, caching, session storage.
-- **On-Disk Database**: Suitable for transactional systems, large data storage, general-purpose use.
+| Feature                     | In-Memory Database (IMDB)                          | On-Disk Database                               |
+|-----------------------------|----------------------------------------------------|------------------------------------------------|
+| **Storage Mechanism**       |                                                    |                                                |
+| Data Storage                | Primarily in RAM                                   | On persistent disk storage (HDD or SSD)        |
+| Persistence                 | Some support data persistence on disk              | Data is inherently persistent                  |
+| **Performance**             |                                                    |                                                |
+| Speed                       | Extremely fast with low latency                    | Slower due to disk I/O operations              |
+| Efficiency                  | Best for read-heavy and real-time operations       | Ideal for applications with less critical speed requirements |
+| **Use Cases**               |                                                    |                                                |
+| Real-Time Analytics         | Fast data processing for immediate insights        |                                                |
+| Caching                     | Quick retrieval of frequently accessed data        |                                                |
+| Session Storage             | Manages user sessions efficiently in web applications |                                                |
+| Transactional Systems       |                                                    | Critical for maintaining data integrity        |
+| Large Data Sets             |                                                    | Cost-effective storage for vast amounts of data|
+| General-Purpose             |                                                    | Versatile for a wide range of applications     |
+| **Limitations**             |                                                    |                                                |
+| Cost                        | High due to expensive RAM                          |                                                |
+| Scalability                 | Challenging and costly for large data volumes      |                                                |
+| Data Volatility             | Risk of data loss on power failure without persistence mechanisms |                                                |
+| Speed                       |                                                    | Limited by disk I/O                            |
+| I/O Bottlenecks             |                                                    | Performance can be hindered in high-throughput scenarios |
+| **Examples**                |                                                    |                                                |
+|                            | Redis: Distributed cache, message broker           | MySQL: Popular for web applications            |
+|                            | Memcached: Distributed memory caching              | PostgreSQL: Robust and scalable                |
+|                            | SAP HANA: Advanced analytics processing            | MongoDB: JSON-like document storage            |
+|                            | Apache Ignite: Memory-centric distributed database | Oracle Database: Enterprise-grade capabilities |
+|                            | Hazelcast IMDG: Scalable caching and in-memory storage | Microsoft SQL Server: Comprehensive data analytics |
+|                            |                                                    | SQLite: Lightweight and embedded database      |
+| **Key Differences**         |                                                    |                                                |
+| Data Storage Location       | Stores data in RAM                                 | Stores data on disk                            |
+| Performance                 | Faster read/write operations                       | Slower, dependent on disk I/O                  |
+| Cost and Scalability        | Higher cost, challenging scalability for large data | Cost-effective for large volumes               |
+| Data Persistence            | Requires additional durability mechanisms          | Naturally persistent                           |
+| Use Cases                   | Optimal for real-time processing, caching, session storage | Suitable for transactional systems, large data storage, general-purpose use |
 
 **Conclusion**
-In-memory databases are ideal for scenarios needing rapid data access and processing, while on-disk databases are better for reliable data persistence and managing large volumes of data. The choice depends on the specific needs of the application, including performance, data size, and persistence requirements.
 
-
-
+**In-memory databases** are ideal for scenarios needing rapid data access and processing, while **on-disk databases** are better for reliable data persistence and managing large volumes of data. The choice depends on the specific needs of the application, including performance, data size, and persistence requirements.
 ### Data Replication vs. Data Mirroring
 
 | Aspect                     | Data Replication                                                                             | Data Mirroring                                                                               |
