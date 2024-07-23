@@ -938,6 +938,7 @@ This table provides a concise overview of each load balancing algorithm, their a
 - **Example**: Web application requiring user login, ensuring requests from the same user go to the same server.
 
  **Types of Stateful Load Balancing**
+ 
 Here's the information in a detailed table format, including additional information for a comprehensive comparison:
 
 | Feature                        | Source IP Affinity                                | Session Affinity                                |
