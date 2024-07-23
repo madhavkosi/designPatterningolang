@@ -351,7 +351,7 @@ Sure, let's go through an example of the Adapter Design Pattern in Go (Golang).
 
 **Adapter Design Pattern in Go**
 
-#**Key Components**
+**Key Components**
 
 1. **Target Interface**: Defines the interface that the client uses.
 2. **Adapter**: Implements the Target interface and translates the requests from the Target to the Adaptee.
