@@ -1975,3 +1975,153 @@ func main() {
 
 - **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is visited once during the traversal.
 - **Space Complexity**: O(h), where h is the height of the tree, due to the recursion stack. In the worst case (a skewed tree), the space complexity is O(n).
+
+### Problem Description
+
+Given two arrays, `preorder` and `inorder`, that represent the preorder and inorder traversal of a binary tree, construct and return the binary tree.
+
+- **Preorder traversal** visits nodes in the order: root -> left subtree -> right subtree.
+- **Inorder traversal** visits nodes in the order: left subtree -> root -> right subtree.
+
+### Example
+
+**Example 1**:
+```
+Preorder: [3, 9, 20, 15, 7]
+Inorder: [9, 3, 15, 20, 7]
+
+Output: 
+        3
+       / \
+      9  20
+         / \
+        15  7
+```
+
+**Example 2**:
+```
+Preorder: [-1]
+Inorder: [-1]
+
+Output: 
+        -1
+```
+
+
+### Optimal Solution Approach
+
+1. **Use a Hash Map**: Create a map to store the value-to-index mappings for the inorder traversal. This allows for quick lookup of the root's index in the inorder list.
+2. **Recursive Construction**:
+   - Start with the entire range of the preorder and inorder lists.
+   - The first element in the preorder list is the root of the tree.
+   - Use the hash map to find the index of this root in the inorder list.
+   - The left subtree will consist of elements before this index in the inorder list, and the right subtree will consist of elements after this index.
+   - Recursively apply the same process to construct the left and right subtrees.
+
+### Implementation in Go
+
+Here's the optimized Go implementation:
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// buildTreeHelper is a helper function for the recursive construction of the binary tree.
+func buildTreeHelper(preorder []int, inorder []int, inorderMap map[int]int, preStart, preEnd, inStart, inEnd int) *TreeNode {
+	if preStart > preEnd || inStart > inEnd {
+		return nil
+	}
+
+	// The first element in the preorder slice is the root
+	rootVal := preorder[preStart]
+	root := &TreeNode{Val: rootVal}
+
+	// Find the index of the root in the inorder map
+	inorderRootIndex := inorderMap[rootVal]
+
+	// Number of nodes in the left subtree
+	leftTreeSize := inorderRootIndex - inStart
+
+	// Recursively build the left and right subtrees
+	root.Left = buildTreeHelper(preorder, inorder, inorderMap, preStart+1, preStart+leftTreeSize, inStart, inorderRootIndex-1)
+	root.Right = buildTreeHelper(preorder, inorder, inorderMap, preStart+leftTreeSize+1, preEnd, inorderRootIndex+1, inEnd)
+
+	return root
+}
+
+// buildTree constructs the binary tree from preorder and inorder traversal.
+func buildTree(preorder []int, inorder []int) *TreeNode {
+	// Create a map for quick lookup of index in inorder traversal
+	inorderMap := make(map[int]int)
+	for i, val := range inorder {
+		inorderMap[val] = i
+	}
+
+	return buildTreeHelper(preorder, inorder, inorderMap, 0, len(preorder)-1, 0, len(inorder)-1)
+}
+
+// printInorder prints the tree in inorder for verification
+func printInorder(node *TreeNode) {
+	if node == nil {
+		return
+	}
+	printInorder(node.Left)
+	fmt.Print(node.Val, " ")
+	printInorder(node.Right)
+}
+
+func main() {
+	// Example 1
+	preorder := []int{3, 9, 20, 15, 7}
+	inorder := []int{9, 3, 15, 20, 7}
+	root := buildTree(preorder, inorder)
+	fmt.Println("Inorder traversal of constructed tree:")
+	printInorder(root) // Output: 9 3 15 20 7
+	fmt.Println()
+
+	// Example 2
+	preorder = []int{-1}
+	inorder = []int{-1}
+	root = buildTree(preorder, inorder)
+	fmt.Println("Inorder traversal of constructed tree:")
+	printInorder(root) // Output: -1
+}
+```
+
+### Explanation:
+
+1. **TreeNode Structure**:
+   - Represents a node in the binary tree with integer value (`Val`) and pointers to the left and right children.
+
+2. **buildTree Function**:
+   - Initializes a map (`inorderMap`) that maps each value in the inorder list to its index. This allows for O(1) time complexity for index lookups.
+   - Calls the `buildTreeHelper` function to construct the tree.
+
+3. **buildTreeHelper Function**:
+   - This function is responsible for recursively constructing the tree.
+   - It takes the current ranges of the preorder and inorder lists, and the map `inorderMap`.
+   - The first element in the current `preorder` range is the root of the tree.
+   - It finds the root's index in the inorder list using the map.
+   - The size of the left subtree is calculated to determine the ranges for the left and right subtrees in both the preorder and inorder lists.
+   - The function then recursively constructs the left and right subtrees and returns the root node.
+
+4. **printInorder Function**:
+   - A helper function to print the inorder traversal of the constructed tree, useful for verification.
+
+5. **main Function**:
+   - Constructs a binary tree from given `preorder` and `inorder` arrays.
+   - Prints the inorder traversal of the constructed tree to verify correctness.
+
+### Complexity:
+
+- **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is processed once, and the index lookups in the inorder list are O(1) due to the map.
+- **Space Complexity**: O(n) for the map and the recursion stack. The recursion stack space can go up to O(h), where h is the height of the tree, in the worst case (skewed tree), which is O(n).
+
