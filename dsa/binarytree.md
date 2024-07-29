@@ -228,7 +228,7 @@ func levelOrderTraversal(root *TreeNode) [][]int {
 
 Certainly! Let's go through the problem of finding the **left view** and **right view** of a binary tree, along with example explanations.
 
-### Problem Description
+### Left view and right view of binary tree
 
 **Left View**: The left view of a binary tree contains the nodes that are visible when the tree is viewed from the left side. For each level of the tree, the first node encountered from the left is part of the left view.
 
@@ -356,7 +356,7 @@ To also include the **Bottom View** of a binary tree, we can use a similar appro
 
 
 
-**Solution:**
+### topview bottom view of binary tree
 
 ```go
 
@@ -510,7 +510,7 @@ func main() {
 
 ```
 
-### Problem Statement
+### Vertical Order Travesal
 
 Vertical Order Traversal of a Binary Tree
 
