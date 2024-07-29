@@ -768,3 +768,137 @@ func main() {
 	}
 }
 ```
+
+
+### Problem Description
+
+Given a binary tree, the task is to find the **maximum width** of the binary tree. The maximum width of a binary tree is defined as the maximum number of nodes present at any level in the tree. The width of a level is determined by the number of nodes between the leftmost and rightmost nodes at that level, including any null nodes in between. 
+
+**Note**: The input binary tree is represented by `TreeNode`, a struct with `Val`, `Left`, and `Right` fields.
+
+### Example
+
+**Example 1**:
+```
+Input: [1, 2, 3, 4, 5, null, 7]
+        1
+       / \
+      2   3
+     / \   \
+    4   5   7
+Output: 3
+Explanation:
+The maximum width is 3, achieved at level 2 with nodes 4, 5, and 7.
+```
+
+**Example 2**:
+```
+Input: [1, 2, 3, null, null, null, 7]
+        1
+       / \
+      2   3
+           \
+            7
+Output: 2
+Explanation:
+The maximum width is 2, achieved at level 1 with nodes 2 and 3.
+```
+
+### Constraints
+
+- The number of nodes in the tree is in the range `[0, 3000]`.
+- `-100 <= Node.val <= 100`
+
+### Solution in Go
+
+To find the maximum width of a binary tree, we will perform a level-order traversal (BFS) while keeping track of the position of each node. This will help us to compute the width of each level by calculating the difference between the positions of the leftmost and rightmost nodes at that level.
+
+Here's the Go implementation:
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/golang-collections/collections/queue"
+)
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// WidthNode contains a tree node and its index in the level order traversal.
+type WidthNode struct {
+	Node  *TreeNode
+	Index int
+}
+
+// maxWidth calculates the maximum width of the binary tree.
+func maxWidth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	maxWidth := 0
+	q := queue.New()
+	q.Enqueue(WidthNode{Node: root, Index: 0})
+
+	for q.Len() > 0 {
+		levelSize := q.Len()
+		first := q.Peek().(WidthNode).Index // Index of the first node at this level
+		last := first                        // Initialize last with the first index
+
+		for i := 0; i < levelSize; i++ {
+			wnode := q.Dequeue().(WidthNode)
+			node, index := wnode.Node, wnode.Index
+			last = index // Update last to the current node's index
+
+			// Enqueue children with their respective indices
+			if node.Left != nil {
+				q.Enqueue(WidthNode{Node: node.Left, Index: 2*index + 1})
+			}
+			if node.Right != nil {
+				q.Enqueue(WidthNode{Node: node.Right, Index: 2*index + 2})
+			}
+		}
+
+		// Width of the current level is last - first + 1
+		levelWidth := last - first + 1
+		if levelWidth > maxWidth {
+			maxWidth = levelWidth
+		}
+	}
+
+	return maxWidth
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	        1
+	       / \
+	      2   3
+	     / \   \
+	    4   5   7
+	           / \
+	          8   9
+	*/
+	root := &TreeNode{Val: 1}
+	root.Left = &TreeNode{Val: 2}
+	root.Right = &TreeNode{Val: 3}
+	root.Left.Left = &TreeNode{Val: 4}
+	root.Left.Right = &TreeNode{Val: 5}
+	root.Right.Right = &TreeNode{Val: 7}
+	root.Right.Right.Left = &TreeNode{Val: 8}
+	root.Right.Right.Right = &TreeNode{Val: 9}
+
+	// Calculate the maximum width of the binary tree
+	result := maxWidth(root)
+
+	// Print the result
+	fmt.Printf("Maximum Width of the Binary Tree: %d\n", result) // Output: 4
+}
+```
