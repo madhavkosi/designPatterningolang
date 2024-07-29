@@ -902,3 +902,433 @@ func main() {
 	fmt.Printf("Maximum Width of the Binary Tree: %d\n", result) // Output: 4
 }
 ```
+
+
+### Maximum Depth of Binary tree
+
+The **maximum depth** of a binary tree is defined as the number of nodes along the longest path from the root node down to the farthest leaf node. In other words, it's the height of the tree.
+
+### Example
+
+**Example 1**:
+```
+Input: [3, 9, 20, null, null, 15, 7]
+        3
+       / \
+      9  20
+         / \
+        15  7
+Output: 3
+```
+
+**Example 2**:
+```
+Input: [1, null, 2]
+        1
+         \
+          2
+Output: 2
+```
+
+### Constraints
+
+- The number of nodes in the tree is in the range `[0, 10^4]`.
+- `-100 <= Node.val <= 100`
+
+### Solution in Go
+
+To find the maximum depth of a binary tree, we can use either a depth-first search (DFS) or breadth-first search (BFS) approach. Here, we'll demonstrate both approaches.
+
+#### Depth-First Search (DFS)
+
+The DFS approach involves recursively calculating the maximum depth of the left and right subtrees and then taking the maximum of the two.
+
+Here's the implementation:
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// maxDepthDFS calculates the maximum depth of a binary tree using DFS.
+func maxDepthDFS(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	// Recursively find the depth of left and right subtrees
+	leftDepth := maxDepthDFS(root.Left)
+	rightDepth := maxDepthDFS(root.Right)
+
+	// The depth of the tree is the maximum of the depths of the subtrees + 1 for the root
+	return 1 + max(leftDepth, rightDepth)
+}
+
+// max returns the maximum of two integers.
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	         3
+	        / \
+	       9  20
+	         /  \
+	        15   7
+	*/
+	root := &TreeNode{Val: 3}
+	root.Left = &TreeNode{Val: 9}
+	root.Right = &TreeNode{Val: 20}
+	root.Right.Left = &TreeNode{Val: 15}
+	root.Right.Right = &TreeNode{Val: 7}
+
+	// Calculate the maximum depth of the binary tree using DFS
+	result := maxDepthDFS(root)
+
+	// Print the result
+	fmt.Printf("Maximum Depth of the Binary Tree (DFS): %d\n", result) // Output: 3
+}
+```
+
+#### Breadth-First Search (BFS)
+
+The BFS approach involves traversing the tree level by level and counting the number of levels.
+
+Here's the implementation using a queue:
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/golang-collections/collections/queue"
+)
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// maxDepthBFS calculates the maximum depth of a binary tree using BFS.
+func maxDepthBFS(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+
+	maxDepth := 0
+	q := queue.New()
+	q.Enqueue(root)
+
+	for q.Len() > 0 {
+		levelSize := q.Len()
+		for i := 0; i < levelSize; i++ {
+			node := q.Dequeue().(*TreeNode)
+
+			// Enqueue children if they exist
+			if node.Left != nil {
+				q.Enqueue(node.Left)
+			}
+			if node.Right != nil {
+				q.Enqueue(node.Right)
+			}
+		}
+		maxDepth++
+	}
+
+	return maxDepth
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	         3
+	        / \
+	       9  20
+	         /  \
+	        15   7
+	*/
+	root := &TreeNode{Val: 3}
+	root.Left = &TreeNode{Val: 9}
+	root.Right = &TreeNode{Val: 20}
+	root.Right.Left = &TreeNode{Val: 15}
+	root.Right.Right = &TreeNode{Val: 7}
+
+	// Calculate the maximum depth of the binary tree using BFS
+	result := maxDepthBFS(root)
+
+	// Print the result
+	fmt.Printf("Maximum Depth of the Binary Tree (BFS): %d\n", result) // Output: 3
+}
+```
+
+
+
+### Maximum Diameter of Binary tree
+
+The **diameter** of a binary tree is defined as the length of the longest path between any two nodes in the tree. This path may or may not pass through the root. The length of a path is measured by the number of edges between the nodes.
+
+### Example
+
+**Example 1**:
+```
+Input: [1, 2, 3, 4, 5]
+       1
+      / \
+     2   3
+    / \     
+   4   5    
+
+Output: 3
+Explanation: The diameter of the tree is the length of path [4,2,1,3] or [5,2,1,3], both paths have 3 edges.
+```
+
+**Example 2**:
+```
+Input: [1, 2]
+       1
+      / 
+     2   
+Output: 1
+```
+
+### Approach
+
+To find the diameter of a binary tree, the main idea is to:
+1. For each node, calculate the depth of the left and right subtrees.
+2. The diameter at that node is the sum of the left and right depths.
+3. The maximum diameter found during this process will be the answer.
+
+We can use a recursive depth-first search (DFS) to find the depth of each subtree and update the maximum diameter found so far.
+
+### Solution in Go
+
+Here’s the implementation:
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// Helper function to calculate the depth of the tree and update the diameter.
+func diameterAndDepth(node *TreeNode, maxDiameter *int) int {
+	if node == nil {
+		return 0
+	}
+
+	// Recursively find the depth of the left and right subtrees
+	leftDepth := diameterAndDepth(node.Left, maxDiameter)
+	rightDepth := diameterAndDepth(node.Right, maxDiameter)
+
+	// Update the diameter: maximum number of edges between two leaf nodes
+	*maxDiameter = max(*maxDiameter, leftDepth+rightDepth)
+
+	// Return the depth of the tree rooted at the current node
+	return 1 + max(leftDepth, rightDepth)
+}
+
+// diameterOfBinaryTree returns the diameter of the binary tree.
+func diameterOfBinaryTree(root *TreeNode) int {
+	maxDiameter := 0
+	diameterAndDepth(root, &maxDiameter)
+	return maxDiameter
+}
+
+// max returns the maximum of two integers.
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	         1
+	        / \
+	       2   3
+	      / \
+	     4   5
+	*/
+	root := &TreeNode{Val: 1}
+	root.Left = &TreeNode{Val: 2}
+	root.Right = &TreeNode{Val: 3}
+	root.Left.Left = &TreeNode{Val: 4}
+	root.Left.Right = &TreeNode{Val: 5}
+
+	// Calculate the diameter of the binary tree
+	result := diameterOfBinaryTree(root)
+
+	// Print the result
+	fmt.Printf("Diameter of the Binary Tree: %d\n", result) // Output: 3
+}
+```
+
+
+### Check if the Binary Tree is Balanced Binary Tree
+
+A **balanced binary tree** (also known as a height-balanced binary tree) is defined as a binary tree in which the depth of the two subtrees of every node never differs by more than 1. The task is to determine whether a given binary tree is balanced.
+
+### Example
+
+**Example 1**:
+```
+Input: [3, 9, 20, null, null, 15, 7]
+        3
+       / \
+      9  20
+         / \
+        15  7
+Output: true
+```
+
+**Example 2**:
+```
+Input: [1, 2, 2, 3, 3, null, null, 4, 4]
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+Output: false
+```
+
+### Approach
+
+To determine if a binary tree is balanced, we can use a recursive approach:
+1. For each node, calculate the height of its left and right subtrees.
+2. If the difference in heights is more than 1 for any node, the tree is not balanced.
+3. Additionally, a tree is not balanced if any of its subtrees is not balanced.
+
+### Solution in Go
+
+Here's the implementation:
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// isBalancedHelper checks if the tree is balanced and returns the height of the tree.
+func isBalancedHelper(root *TreeNode) (bool, int) {
+	if root == nil {
+		return true, 0
+	}
+
+	// Check if left subtree is balanced and its height
+	leftBalanced, leftHeight := isBalancedHelper(root.Left)
+	if !leftBalanced {
+		return false, 0
+	}
+
+	// Check if right subtree is balanced and its height
+	rightBalanced, rightHeight := isBalancedHelper(root.Right)
+	if !rightBalanced {
+		return false, 0
+	}
+
+	// Current node is balanced if the height difference is at most 1
+	balanced := abs(leftHeight-rightHeight) <= 1
+
+	// Height of the current node is max of left and right heights plus 1
+	height := max(leftHeight, rightHeight) + 1
+
+	return balanced, height
+}
+
+// isBalanced checks if the binary tree is balanced.
+func isBalanced(root *TreeNode) bool {
+	balanced, _ := isBalancedHelper(root)
+	return balanced
+}
+
+// abs returns the absolute value of an integer.
+func abs(a int) int {
+	if a < 0 {
+		return -a
+	}
+	return a
+}
+
+// max returns the maximum of two integers.
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func main() {
+	// Creating a sample balanced binary tree
+	/*
+	         3
+	        / \
+	       9  20
+	         /  \
+	        15   7
+	*/
+	root := &TreeNode{Val: 3}
+	root.Left = &TreeNode{Val: 9}
+	root.Right = &TreeNode{Val: 20}
+	root.Right.Left = &TreeNode{Val: 15}
+	root.Right.Right = &TreeNode{Val: 7}
+
+	// Check if the binary tree is balanced
+	fmt.Printf("Is the tree balanced? %v\n", isBalanced(root)) // Output: true
+
+	// Creating an unbalanced binary tree
+	/*
+	        1
+	       / \
+	      2   2
+	     / \
+	    3   3
+	   / \
+	  4   4
+	*/
+	unbalancedRoot := &TreeNode{Val: 1}
+	unbalancedRoot.Left = &TreeNode{Val: 2}
+	unbalancedRoot.Right = &TreeNode{Val: 2}
+	unbalancedRoot.Left.Left = &TreeNode{Val: 3}
+	unbalancedRoot.Left.Right = &TreeNode{Val: 3}
+	unbalancedRoot.Left.Left.Left = &TreeNode{Val: 4}
+	unbalancedRoot.Left.Left.Right = &TreeNode{Val: 4}
+
+	// Check if the binary tree is balanced
+	fmt.Printf("Is the tree balanced? %v\n", isBalanced(unbalancedRoot)) // Output: false
+}
+```
+
+This approach uses a bottom-up recursive method to check if a binary tree is balanced. It has a time complexity of O(n) where n is the number of nodes in the tree, because each node is visited once. The space complexity is O(h) where h is the height of the tree, due to the recursive call stack.
