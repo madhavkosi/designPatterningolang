@@ -350,25 +350,16 @@ func rightView(root *TreeNode) []int {
 	}
 	return result
 }
-
+```
 
 To also include the **Bottom View** of a binary tree, we can use a similar approach as the Top View. The Bottom View consists of the nodes visible when the tree is viewed from the bottom. For each horizontal distance (HD), the last node encountered during a level-order traversal is part of the bottom view.
 
-### Implementation Overview
 
-1. **Data Structures**:
-   - **TreeNode**: Represents a node in the binary tree.
-   - **HDNode**: Stores a node along with its HD.
-   - **Map**: Stores the node value for each HD. In the case of the bottom view, we update the value whenever we encounter a new node at the same HD during traversal.
 
-2. **Steps**:
-   - Use a queue for BFS traversal.
-   - For the top view, store the first node for each HD.
-   - For the bottom view, store the last node encountered for each HD.
-   - After traversal, extract values from the map in the order of HDs to get the views.
-
+**Solution:**
 
 ```go
+
 package main
 
 import (
@@ -516,8 +507,8 @@ func main() {
 	// Print the bottom view of the binary tree
 	bottomView(root) // Output: Bottom View: 4 2 5 8 7
 }
-```
 
+```
 ### Explanation
 
 1. **Top View**:
