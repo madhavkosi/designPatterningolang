@@ -2391,3 +2391,106 @@ func main() {
 
 - **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is visited once to compare values and recursively check subtrees.
 - **Space Complexity**: O(h), where h is the height of the tree, due to the recursion stack. In the worst case (a skewed tree), the space complexity is O(n).
+
+
+### Problem Description
+
+The **Children Sum Property** in a binary tree is a property where the value of each node should be equal to the sum of the values of its left and right children. For leaf nodes, since they don't have children, the property is trivially true.
+
+### Example
+
+**Example 1**:
+```
+      10
+     /  \
+    3    7
+
+Output: true
+Explanation: 3 + 7 = 10 (root value), hence the property holds for this tree.
+```
+
+**Example 2**:
+```
+      10
+     /  \
+    3    6
+
+Output: false
+Explanation: 3 + 6 != 10 (root value), hence the property does not hold for this tree.
+```
+
+### Solution Approach
+
+To check if a binary tree satisfies the children sum property, we can use a recursive approach:
+1. If the node is `nil` or a leaf node, return `true`.
+2. Calculate the sum of the left and right children's values.
+3. Check if the node's value is equal to the sum of its children's values.
+4. Recursively check the left and right subtrees.
+
+### Implementation in Go
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// isChildrenSumProperty checks if the binary tree satisfies the children sum property.
+func isChildrenSumProperty(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+
+	// If it's a leaf node, return true
+	if root.Left == nil && root.Right == nil {
+		return true
+	}
+
+	// Initialize children sum as 0
+	childrenSum := 0
+
+	// Add left child value to children sum if it exists
+	if root.Left != nil {
+		childrenSum += root.Left.Val
+	}
+
+	// Add right child value to children sum if it exists
+	if root.Right != nil {
+		childrenSum += root.Right.Val
+	}
+
+	// Check the current node and its children
+	if root.Val != childrenSum {
+		return false
+	}
+
+	// Recur for left and right subtrees
+	return isChildrenSumProperty(root.Left) && isChildrenSumProperty(root.Right)
+}
+
+func main() {
+	// Example 1: Tree satisfies children sum property
+	root1 := &TreeNode{Val: 10}
+	root1.Left = &TreeNode{Val: 3}
+	root1.Right = &TreeNode{Val: 7}
+	fmt.Printf("Tree 1 satisfies children sum property: %v\n", isChildrenSumProperty(root1)) // Output: true
+
+	// Example 2: Tree does not satisfy children sum property
+	root2 := &TreeNode{Val: 10}
+	root2.Left = &TreeNode{Val: 3}
+	root2.Right = &TreeNode{Val: 6}
+	fmt.Printf("Tree 2 satisfies children sum property: %v\n", isChildrenSumProperty(root2)) // Output: false
+}
+```
+.
+
+### Complexity:
+
+- **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is visited once.
+- **Space Complexity**: O(h), where h is the height of the tree, due to the recursion stack. In the worst case (a skewed tree), the space complexity is O(n).
