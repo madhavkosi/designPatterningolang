@@ -655,3 +655,116 @@ func main() {
 ```
 
 
+
+
+### Root to Leaf Paths
+### Problem Description: Find All Root-to-Leaf Paths in a Binary Tree
+
+Given a binary tree, the task is to find all possible paths from the root node to every leaf node. A leaf node is defined as a node that does not have any children. The paths should be printed in such a way that each path is represented as a sequence of node values separated by a space.
+
+#### Example 1:
+
+**Input:**
+```
+       1
+    /     \
+   2       3
+```
+
+**Output:**
+```
+1 2
+1 3
+```
+
+**Explanation:** The binary tree has two paths from the root to the leaf nodes:
+- Path 1: 1 -> 2
+- Path 2: 1 -> 3
+
+#### Example 2:
+
+**Input:**
+```
+         10
+       /    \
+      20    30
+     /  \
+    40   60
+```
+
+**Output:**
+```
+10 20 40
+10 20 60
+10 30
+```
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// findPaths is a helper function that finds all paths from root to leaf nodes.
+func findPaths(node *TreeNode, path []int, paths *[][]int) {
+	if node == nil {
+		return
+	}
+
+	// Append the current node's value to the path
+	path = append(path, node.Val)
+
+	// If it's a leaf node, add the path to the paths list
+	if node.Left == nil && node.Right == nil {
+		// Make a copy of the path to avoid modification in subsequent operations
+		pathCopy := make([]int, len(path))
+		copy(pathCopy, path)
+		*paths = append(*paths, pathCopy)
+		return
+	}
+
+	// Recur for left and right children
+	findPaths(node.Left, path, paths)
+	findPaths(node.Right, path, paths)
+}
+
+// rootToLeafPaths returns all root-to-leaf paths in the binary tree as [][]int.
+func rootToLeafPaths(root *TreeNode) [][]int {
+	var paths [][]int
+	findPaths(root, []int{}, &paths)
+	return paths
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	         1
+	        / \
+	       2   3
+	      / \
+	     4   5
+	*/
+	root := &TreeNode{Val: 1}
+	root.Left = &TreeNode{Val: 2}
+	root.Right = &TreeNode{Val: 3}
+	root.Left.Left = &TreeNode{Val: 4}
+	root.Left.Right = &TreeNode{Val: 5}
+
+	// Get all root-to-leaf paths
+	paths := rootToLeafPaths(root)
+
+	// Print all paths
+	fmt.Println("Root to Leaf Paths:")
+	for _, path := range paths {
+		fmt.Println(path)
+	}
+}
+```
