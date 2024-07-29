@@ -1566,3 +1566,412 @@ func main() {
 
 - **Time Complexity**: O(n), where n is the number of nodes in the smaller of the two trees. This is because each node is compared once.
 - **Space Complexity**: O(h), where h is the height of the tree, due to the recursive call stack. In the worst case, h can be equal to n (skewed tree), making the space complexity O(n).
+
+
+### Problem Description
+
+**Zigzag (or Spiral) Traversal** of a binary tree involves traversing the nodes level by level, but alternating the direction of traversal for each level. Specifically, the nodes at the first level are traversed from left to right, the nodes at the second level are traversed from right to left, the nodes at the third level are traversed from left to right, and so on.
+
+### Example
+
+**Example 1**:
+```
+Input: [3, 9, 20, null, null, 15, 7]
+        3
+       / \
+      9  20
+         / \
+        15  7
+Output: [[3], [20, 9], [15, 7]]
+```
+
+**Example 2**:
+```
+Input: [1, 2, 3, 4, 5, 6, 7]
+        1
+       / \
+      2   3
+     / \ / \
+    4  5 6  7
+Output: [[1], [3, 2], [4, 5, 6, 7]]
+```
+
+### Solution Approach
+
+To achieve zigzag traversal:
+1. Use a double-ended queue (deque) to facilitate easy addition and removal of nodes from both ends.
+2. Use a boolean variable to track the current traversal direction (`leftToRight`). Start with `leftToRight = true`.
+3. For each level:
+   - If `leftToRight` is `true`, traverse from left to right and add children to the end of the deque.
+   - If `leftToRight` is `false`, traverse from right to left and add children to the front of the deque.
+4. Toggle the `leftToRight` flag after processing each level.
+
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/golang-collections/collections/queue"
+)
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// zigzagLevelOrder returns the zigzag level order traversal of a binary tree.
+func zigzagLevelOrder(root *TreeNode) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+
+	var result [][]int
+	q := queue.New()
+	q.Enqueue(root)
+	leftToRight := true
+
+	for q.Len() > 0 {
+		levelSize := q.Len()
+		level := make([]int, levelSize)
+
+		for i := 0; i < levelSize; i++ {
+			node := q.Dequeue().(*TreeNode)
+
+			// Place the node value based on the current traversal direction
+			if leftToRight {
+				level[i] = node.Val
+			} else {
+				level[levelSize-1-i] = node.Val
+			}
+
+			// Enqueue children nodes for the next level
+			if node.Left != nil {
+				q.Enqueue(node.Left)
+			}
+			if node.Right != nil {
+				q.Enqueue(node.Right)
+			}
+		}
+
+		result = append(result, level)
+		leftToRight = !leftToRight
+	}
+
+	return result
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	        3
+	       / \
+	      9  20
+	         / \
+	        15  7
+	*/
+	root := &TreeNode{Val: 3}
+	root.Left = &TreeNode{Val: 9}
+	root.Right = &TreeNode{Val: 20}
+	root.Right.Left = &TreeNode{Val: 15}
+	root.Right.Right = &TreeNode{Val: 7}
+
+	// Get the zigzag level order traversal
+	result := zigzagLevelOrder(root)
+
+	// Print the result
+	fmt.Println("Zigzag Level Order Traversal:")
+	for _, level := range result {
+		fmt.Println(level)
+	}
+}
+```
+
+### Explanation:
+
+1. **TreeNode Structure**:
+   - Represents a node in the binary tree with integer value `Val` and pointers to the left and right children.
+
+2. **zigzagLevelOrder Function**:
+   - This function performs a zigzag (or spiral) level order traversal of the binary tree.
+   - A queue (`q`) from `github.com/golang-collections/collections/queue` is used to manage the nodes level by level.
+   - A boolean variable `leftToRight` indicates the current direction of traversal:
+     - `true` for left-to-right traversal.
+     - `false` for right-to-left traversal.
+   - For each level:
+     - Nodes are dequeued, and their values are added to the `level` slice in the appropriate order based on `leftToRight`.
+     - Child nodes are enqueued for processing in the next level.
+   - After processing each level, the direction (`leftToRight`) is toggled.
+
+3. **main Function**:
+   - Constructs a sample binary tree.
+   - Calls `zigzagLevelOrder` to get the zigzag level order traversal result.
+   - Prints the result, displaying the nodes at each level in the required order.
+
+### Complexity:
+
+- **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is visited once during the traversal.
+- **Space Complexity**: O(n), where n is the number of nodes in the tree. The maximum number of nodes stored in the queue at any time could be half the number of nodes, plus the space needed for the result list.
+
+
+### Problem Description
+
+The **Boundary Traversal** of a binary tree involves visiting all the boundary nodes of the tree in an anti-clockwise direction, starting from the root. The boundary traversal can be divided into three parts:
+
+1. **Left Boundary**: Nodes on the left boundary of the tree excluding the leaf nodes.
+2. **Leaf Nodes**: All the leaf nodes from left to right.
+3. **Right Boundary**: Nodes on the right boundary of the tree excluding the leaf nodes, visited in bottom-up order.
+
+### Example
+
+**Example 1**:
+```
+Input: [1, 2, 3, 4, 5, 6, 7, null, null, 8, 9]
+        1
+       / \
+      2   3
+     / \ / \
+    4  5 6  7
+      / \
+     8   9
+Output: [1, 2, 4, 8, 9, 6, 7, 3]
+```
+
+**Explanation**:
+- Left Boundary: 1, 2 (excluding 4 as it’s a leaf)
+- Leaf Nodes: 4, 8, 9, 6, 7
+- Right Boundary: 3 (excluding 7 as it’s a leaf), added in reverse order.
+
+### Solution Approach
+
+To implement boundary traversal:
+1. **Left Boundary**: Traverse from the root to the leftmost node, excluding leaf nodes. Stop if a leaf node is encountered.
+2. **Leaf Nodes**: Use any traversal method (such as DFS) to find and collect all leaf nodes.
+3. **Right Boundary**: Traverse from the root to the rightmost node, excluding leaf nodes, and collect these nodes. Finally, reverse the collected right boundary nodes.
+
+### Solution in Go
+
+Here's the Go implementation:
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// addLeftBoundary adds the left boundary nodes to the result, excluding leaf nodes.
+func addLeftBoundary(root *TreeNode, result *[]int) {
+	if root == nil || (root.Left == nil && root.Right == nil) {
+		return
+	}
+
+	*result = append(*result, root.Val)
+	if root.Left != nil {
+		addLeftBoundary(root.Left, result)
+	} else {
+		addLeftBoundary(root.Right, result)
+	}
+}
+
+// addLeafNodes adds all leaf nodes to the result.
+func addLeafNodes(root *TreeNode, result *[]int) {
+	if root == nil {
+		return
+	}
+
+	if root.Left == nil && root.Right == nil {
+		*result = append(*result, root.Val)
+		return
+	}
+
+	addLeafNodes(root.Left, result)
+	addLeafNodes(root.Right, result)
+}
+
+// addRightBoundary adds the right boundary nodes to the result, excluding leaf nodes.
+func addRightBoundary(root *TreeNode, result *[]int) {
+	if root == nil || (root.Left == nil && root.Right == nil) {
+		return
+	}
+
+	if root.Right != nil {
+		addRightBoundary(root.Right, result)
+	} else {
+		addRightBoundary(root.Left, result)
+	}
+
+	*result = append(*result, root.Val)
+}
+
+// boundaryOfBinaryTree returns the boundary traversal of the binary tree.
+func boundaryOfBinaryTree(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+
+	result := []int{}
+	if !(root.Left == nil && root.Right == nil) {
+		result = append(result, root.Val)
+	}
+
+	addLeftBoundary(root.Left, &result)
+	addLeafNodes(root, &result)
+	addRightBoundary(root.Right, &result)
+
+	return result
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	        1
+	       / \
+	      2   3
+	     / \ / \
+	    4  5 6  7
+	      / \
+	     8   9
+	*/
+	root := &TreeNode{Val: 1}
+	root.Left = &TreeNode{Val: 2}
+	root.Right = &TreeNode{Val: 3}
+	root.Left.Left = &TreeNode{Val: 4}
+	root.Left.Right = &TreeNode{Val: 5}
+	root.Right.Left = &TreeNode{Val: 6}
+	root.Right.Right = &TreeNode{Val: 7}
+	root.Left.Right.Left = &TreeNode{Val: 8}
+	root.Left.Right.Right = &TreeNode{Val: 9}
+
+	// Get the boundary traversal
+	result := boundaryOfBinaryTree(root)
+
+	// Print the result
+	fmt.Println("Boundary Traversal:")
+	fmt.Println(result)
+}
+```
+
+### Problem Description
+
+The **Maximum Sum Path** in a binary tree is the path with the highest sum of node values. This path can start and end at any nodes in the tree and doesn't necessarily pass through the root. It can involve only one node if that node has the highest value in the tree.
+
+### Example
+
+**Example 1**:
+```
+Input: [1, 2, 3]
+        1
+       / \
+      2   3
+Output: 6
+Explanation: The maximum path sum is 2 -> 1 -> 3.
+```
+
+**Example 2**:
+```
+Input: [-10, 9, 20, null, null, 15, 7]
+       -10
+       /  \
+      9   20
+         /  \
+        15   7
+Output: 42
+Explanation: The maximum path sum is 15 -> 20 -> 7.
+```
+
+### Solution Approach
+
+To find the maximum sum path in a binary tree:
+1. **Define a recursive function** that computes the maximum path sum that "ends" at the current node and also updates the global maximum path sum found so far.
+2. The maximum path sum for a given node can be obtained by:
+   - Taking the maximum of the sum from the left subtree and the right subtree plus the current node's value.
+   - The path can be split into a left and right subtree, meaning the path can include both children.
+3. During the recursive traversal, keep track of the global maximum path sum.
+
+### Implementation in Go
+
+Here's the Go implementation:
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// maxSumPathDFS is a helper function to find the maximum path sum that goes through the node.
+func maxSumPathDFS(node *TreeNode, maxSum *int) int {
+	if node == nil {
+		return 0
+	}
+
+	// Recursively get the maximum sum paths for the left and right subtrees
+	leftSum := max(0, maxSumPathDFS(node.Left, maxSum))  // If negative, take 0
+	rightSum := max(0, maxSumPathDFS(node.Right, maxSum)) // If negative, take 0
+
+	// Update the maximum sum with the maximum path sum with root at the current node
+	currentMax := leftSum + rightSum + node.Val
+	*maxSum = max(*maxSum, currentMax)
+
+	// Return the maximum path sum "ending" at this node
+	return max(leftSum, rightSum) + node.Val
+}
+
+// maxPathSum returns the maximum path sum in the binary tree.
+func maxPathSum(root *TreeNode) int {
+	maxSum := math.MinInt32
+	maxSumPathDFS(root, &maxSum)
+	return maxSum
+}
+
+// max returns the maximum of two integers.
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	        -10
+	        /  \
+	       9   20
+	          /  \
+	         15   7
+	*/
+	root := &TreeNode{Val: -10}
+	root.Left = &TreeNode{Val: 9}
+	root.Right = &TreeNode{Val: 20}
+	root.Right.Left = &TreeNode{Val: 15}
+	root.Right.Right = &TreeNode{Val: 7}
+
+	// Get the maximum path sum
+	result := maxPathSum(root)
+
+	// Print the result
+	fmt.Printf("Maximum Path Sum: %d\n", result) // Output: 42
+}
+```
+
+### Complexity:
+
+- **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is visited once during the traversal.
+- **Space Complexity**: O(h), where h is the height of the tree, due to the recursion stack. In the worst case (a skewed tree), the space complexity is O(n).
