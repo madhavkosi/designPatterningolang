@@ -1331,4 +1331,111 @@ func main() {
 }
 ```
 
-This approach uses a bottom-up recursive method to check if a binary tree is balanced. It has a time complexity of O(n) where n is the number of nodes in the tree, because each node is visited once. The space complexity is O(h) where h is the height of the tree, due to the recursive call stack.
+### Lowest Common Ancestor for two given Nodes
+
+### Example 1
+
+**Input**: `root = [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]`, `p = 5`, `q = 1`
+
+```
+        3
+       / \
+      5   1
+     / \ / \
+    6  2 0  8
+      / \
+     7   4
+```
+
+**Output**: `3`
+
+**Explanation**: The lowest common ancestor (LCA) of nodes 5 and 1 is 3 because both nodes share 3 as the deepest common ancestor.
+
+### Example 2
+
+**Input**: `root = [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]`, `p = 5`, `q = 4`
+
+```
+        3
+       / \
+      5   1
+     / \ / \
+    6  2 0  8
+      / \
+     7   4
+```
+
+**Output**: `5`
+
+**Explanation**: The LCA of nodes 5 and 4 is 5 because node 5 is an ancestor of node 4. Therefore, the LCA is node 5 itself.
+
+## Go Implementation
+
+Here's the Go implementation that finds the LCA of two given nodes in a binary tree:
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// lowestCommonAncestor returns the lowest common ancestor of nodes p and q.
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	if root == nil || root == p || root == q {
+		return root
+	}
+
+	// Search for LCA in the left and right subtrees
+	left := lowestCommonAncestor(root.Left, p, q)
+	right := lowestCommonAncestor(root.Right, p, q)
+
+	// If both left and right are non-null, current node is the LCA
+	if left != nil && right != nil {
+		return root
+	}
+
+	// Otherwise, return the non-null child
+	if left != nil {
+		return left
+	}
+	return right
+}
+
+func main() {
+	// Creating a sample binary tree
+	/*
+	        3
+	       / \
+	      5   1
+	     / \ / \
+	    6  2 0  8
+	      / \
+	     7   4
+	*/
+	root := &TreeNode{Val: 3}
+	root.Left = &TreeNode{Val: 5}
+	root.Right = &TreeNode{Val: 1}
+	root.Left.Left = &TreeNode{Val: 6}
+	root.Left.Right = &TreeNode{Val: 2}
+	root.Right.Left = &TreeNode{Val: 0}
+	root.Right.Right = &TreeNode{Val: 8}
+	root.Left.Right.Left = &TreeNode{Val: 7}
+	root.Left.Right.Right = &TreeNode{Val: 4}
+
+	p := root.Left       // Node with value 5
+	q := root.Right      // Node with value 1
+	lca := lowestCommonAncestor(root, p, q)
+	fmt.Printf("LCA of nodes %d and %d is node with value %d\n", p.Val, q.Val, lca.Val)
+
+	p = root.Left              // Node with value 5
+	q = root.Left.Right.Right  // Node with value 4
+	lca = lowestCommonAncestor(root, p, q)
+	fmt.Printf("LCA of nodes %d and %d is node with value %d\n", p.Val, q.Val, lca.Val)
+}
+```
