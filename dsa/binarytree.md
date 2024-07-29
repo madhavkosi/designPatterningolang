@@ -2276,3 +2276,118 @@ func main() {
 
 - **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is processed once, and the index lookups in the `inorder` list are O(1) due to the map.
 - **Space Complexity**: O(n) for the map and the recursion stack. The recursion stack space can go up to O(h), where h is the height of the tree, in the worst case (skewed tree), which is O(n).
+
+
+### Problem Description
+
+A **symmetric binary tree** is a binary tree in which the left and right subtrees are mirror images of each other. The tree is symmetric if the left subtree is a mirror reflection of the right subtree.
+
+For example, the following tree is symmetric:
+
+```
+        1
+       / \
+      2   2
+     / \ / \
+    3  4 4  3
+```
+
+But the following tree is not symmetric:
+
+```
+        1
+       / \
+      2   2
+       \   \
+       3    3
+```
+
+### Solution Approach
+
+To determine if a binary tree is symmetric, we can use a recursive approach:
+1. Define a helper function `isMirror` that checks if two trees are mirror images of each other.
+2. The `isMirror` function compares:
+   - The values of the two nodes.
+   - The left subtree of the first node with the right subtree of the second node.
+   - The right subtree of the first node with the left subtree of the second node.
+
+If the tree is empty, it is symmetric by definition.
+
+### Implementation in Go
+
+Here's the Go implementation:
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// isSymmetric checks if the binary tree is symmetric.
+func isSymmetric(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	return isMirror(root.Left, root.Right)
+}
+
+// isMirror checks if two trees are mirror images of each other.
+func isMirror(t1, t2 *TreeNode) bool {
+	if t1 == nil && t2 == nil {
+		return true
+	}
+	if t1 == nil || t2 == nil {
+		return false
+	}
+	return (t1.Val == t2.Val) && isMirror(t1.Left, t2.Right) && isMirror(t1.Right, t2.Left)
+}
+
+func main() {
+	// Creating a sample symmetric binary tree
+	/*
+	        1
+	       / \
+	      2   2
+	     / \ / \
+	    3  4 4  3
+	*/
+	root := &TreeNode{Val: 1}
+	root.Left = &TreeNode{Val: 2}
+	root.Right = &TreeNode{Val: 2}
+	root.Left.Left = &TreeNode{Val: 3}
+	root.Left.Right = &TreeNode{Val: 4}
+	root.Right.Left = &TreeNode{Val: 4}
+	root.Right.Right = &TreeNode{Val: 3}
+
+	// Check if the binary tree is symmetric
+	fmt.Printf("Is the tree symmetric? %v\n", isSymmetric(root)) // Output: true
+
+	// Creating a sample non-symmetric binary tree
+	/*
+	        1
+	       / \
+	      2   2
+	       \   \
+	       3    3
+	*/
+	root2 := &TreeNode{Val: 1}
+	root2.Left = &TreeNode{Val: 2}
+	root2.Right = &TreeNode{Val: 2}
+	root2.Left.Right = &TreeNode{Val: 3}
+	root2.Right.Right = &TreeNode{Val: 3}
+
+	// Check if the binary tree is symmetric
+	fmt.Printf("Is the tree symmetric? %v\n", isSymmetric(root2)) // Output: false
+}
+```
+
+### Complexity:
+
+- **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is visited once to compare values and recursively check subtrees.
+- **Space Complexity**: O(h), where h is the height of the tree, due to the recursion stack. In the worst case (a skewed tree), the space complexity is O(n).
