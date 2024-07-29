@@ -1439,3 +1439,130 @@ func main() {
 	fmt.Printf("LCA of nodes %d and %d is node with value %d\n", p.Val, q.Val, lca.Val)
 }
 ```
+
+
+### Check if two trees are identical
+
+To determine if two binary trees are identical, we need to check if both trees have the same structure and the same node values at each corresponding position.
+
+### Example
+
+**Example 1**:
+```
+Tree 1:          Tree 2:
+    1                1
+   / \              / \
+  2   3            2   3
+```
+Output: `true`
+Explanation: The two trees are identical because they have the same structure and node values.
+
+**Example 2**:
+```
+Tree 1:          Tree 2:
+    1                1
+   / \              / \
+  2   3            3   2
+```
+Output: `false`
+Explanation: The two trees are not identical because the node values at the second level are different.
+
+### Approach
+
+To check if two trees are identical, we can use a recursive approach:
+1. If both nodes are `nil`, they are considered identical at that level.
+2. If one of the nodes is `nil` and the other is not, the trees are not identical.
+3. If the values of the nodes are different, the trees are not identical.
+4. Recursively check the left and right subtrees for both trees.
+
+### Solution in Go
+
+Here's the Go implementation:
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// isIdentical checks if two binary trees are identical.
+func isIdentical(root1, root2 *TreeNode) bool {
+	// If both nodes are nil, they are identical
+	if root1 == nil && root2 == nil {
+		return true
+	}
+
+	// If one of the nodes is nil, they are not identical
+	if root1 == nil || root2 == nil {
+		return false
+	}
+
+	// Check if the values are the same and recursively check left and right subtrees
+	return (root1.Val == root2.Val) &&
+		isIdentical(root1.Left, root2.Left) &&
+		isIdentical(root1.Right, root2.Right)
+}
+
+func main() {
+	// Creating two identical sample binary trees
+	/*
+	        1                1
+	       / \              / \
+	      2   3            2   3
+	*/
+	root1 := &TreeNode{Val: 1}
+	root1.Left = &TreeNode{Val: 2}
+	root1.Right = &TreeNode{Val: 3}
+
+	root2 := &TreeNode{Val: 1}
+	root2.Left = &TreeNode{Val: 2}
+	root2.Right = &TreeNode{Val: 3}
+
+	// Check if the two trees are identical
+	fmt.Printf("Are the two trees identical? %v\n", isIdentical(root1, root2)) // Output: true
+
+	// Creating two different sample binary trees
+	/*
+	        1                1
+	       / \              / \
+	      2   3            3   2
+	*/
+	root3 := &TreeNode{Val: 1}
+	root3.Left = &TreeNode{Val: 2}
+	root3.Right = &TreeNode{Val: 3}
+
+	root4 := &TreeNode{Val: 1}
+	root4.Left = &TreeNode{Val: 3}
+	root4.Right = &TreeNode{Val: 2}
+
+	// Check if the two trees are identical
+	fmt.Printf("Are the two trees identical? %v\n", isIdentical(root3, root4)) // Output: false
+}
+```
+
+### Explanation:
+
+1. **TreeNode Structure**:
+   - Represents each node in the binary tree with an integer value (`Val`) and pointers to the left and right children.
+
+2. **isIdentical Function**:
+   - This function checks if two trees rooted at `root1` and `root2` are identical.
+   - It first checks if both nodes are `nil`. If they are, the trees are considered identical at that point.
+   - If one node is `nil` and the other is not, the trees are not identical.
+   - If the values of `root1` and `root2` are different, the trees are not identical.
+   - The function then recursively checks the left and right subtrees.
+
+3. **main Function**:
+   - Two identical binary trees are created and compared using the `isIdentical` function, which returns `true`.
+   - Two different binary trees are created and compared using the `isIdentical` function, which returns `false`.
+
+### Complexity
+
+- **Time Complexity**: O(n), where n is the number of nodes in the smaller of the two trees. This is because each node is compared once.
+- **Space Complexity**: O(h), where h is the height of the tree, due to the recursive call stack. In the worst case, h can be equal to n (skewed tree), making the space complexity O(n).
