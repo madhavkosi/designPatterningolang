@@ -2,127 +2,125 @@ package main
 
 import (
 	"fmt"
+	"sort"
 
-	"gopkg.in/guregu/null.v4"
+	"github.com/golang-collections/collections/queue"
 )
 
-type Channels struct {
-	ChannelName string `json:"channelName" binding:"required,ne=,min=1"`
-	WebhookURL  string `json:"webhookUrl" binding:"required,ne=,min=1"`
+// TreeNode represents a node in the binary tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
 }
 
-type AlertRule struct {
-	RuleId null.String `json:"alertRuleId,omitempty" db:"alertruleid" swaggertype:"string"`
+// HDNode stores a tree node along with its horizontal distance (HD) and level (Lvl).
+type HDNode struct {
+	Node *TreeNode
+	HD   int
+	Lvl  int
 }
 
-type MSTeamsConfiguration struct {
-	Channels []Channels `json:"channels" validate:"required,dive,required"`
+// Solution provides methods to perform operations on a binary tree.
+type Solution struct{}
+
+// findVertical performs a vertical order traversal of a binary tree.
+func (s *Solution) findVertical(root *TreeNode) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+
+	// Map to store nodes based on vertical and level information
+	nodes := make(map[int]map[int][]int)
+
+	// Queue for BFS traversal, storing node along with its vertical and level
+	q := queue.New()
+	q.Enqueue(HDNode{Node: root, HD: 0, Lvl: 0})
+
+	// BFS traversal
+	for q.Len() > 0 {
+		hdNode := q.Dequeue().(HDNode)
+		node, hd, lvl := hdNode.Node, hdNode.HD, hdNode.Lvl
+
+		// Initialize the map if not already present
+		if _, exists := nodes[hd]; !exists {
+			nodes[hd] = make(map[int][]int)
+		}
+		nodes[hd][lvl] = append(nodes[hd][lvl], node.Val)
+
+		// Add left child with updated HD and level
+		if node.Left != nil {
+			q.Enqueue(HDNode{Node: node.Left, HD: hd - 1, Lvl: lvl + 1})
+		}
+
+		// Add right child with updated HD and level
+		if node.Right != nil {
+			q.Enqueue(HDNode{Node: node.Right, HD: hd + 1, Lvl: lvl + 1})
+		}
+	}
+
+	// Prepare the final result vector by combining values from the map
+	var result [][]int
+	var sortedKeys []int
+	fmt.Printf("%v", nodes)
+	for k := range nodes {
+		sortedKeys = append(sortedKeys, k)
+	}
+	sort.Ints(sortedKeys)
+	for _, hd := range sortedKeys {
+		var col []int
+		var levels []int
+		for lvl := range nodes[hd] {
+			levels = append(levels, lvl)
+		}
+		sort.Ints(levels)
+		for _, lvl := range levels {
+			col = append(col, nodes[hd][lvl]...)
+		}
+		result = append(result, col)
+	}
+	return result
 }
 
-type Email struct {
-	Guest []string `json:"guest"`
-}
-
-type TeamsChannel struct {
-	ChannelName string `json:"channelName"`
-	WebhookURL  string `json:"webhookUrl"`
-}
-
-type Recipient struct {
-	Emails        Email          `json:"emails"`
-	TeamsChannels []TeamsChannel `json:"teamsChannels"`
-}
-
-type SomeAlertRule struct {
-	AlertRule AlertRule
-	Recipient Recipient
+// printResult prints the result of vertical order traversal.
+func printResult(result [][]int) {
+	for _, level := range result {
+		for _, node := range level {
+			fmt.Print(node, " ")
+		}
+		fmt.Println()
+	}
 }
 
 func main() {
-	config := MSTeamsConfiguration{
-		Channels: []Channels{
-			{ChannelName: "General", WebhookURL: "https://example.com/webhook1"},
-			{ChannelName: "Alerts", WebhookURL: "https://example.com/webhook2"},
-		},
-	}
+	// Creating a sample binary tree
+	/*
+	       1
+	      / \
+	     2   3
+	    / \ / \
+	   4  9 10 10
+	    \
+	     5
+	      \
+	       6
+	*/
+	root := &TreeNode{Val: 1}
+	root.Left = &TreeNode{Val: 2}
+	root.Left.Left = &TreeNode{Val: 4}
+	root.Left.Right = &TreeNode{Val: 9}
+	root.Left.Left.Right = &TreeNode{Val: 5}
+	root.Left.Left.Right.Right = &TreeNode{Val: 6}
+	root.Right = &TreeNode{Val: 3}
+	root.Right.Right = &TreeNode{Val: 10}
+	root.Right.Left = &TreeNode{Val: 10}
 
-	channelMap := make(map[string]string)
-	for _, channel := range config.Channels {
-		channelMap[channel.ChannelName] = channel.WebhookURL
-	}
-	channelWebHookUrl := make(map[string]string)
-	for _, channel := range config.Channels {
-		channelMap[channel.ChannelName] = channel.WebhookURL
-	}
+	solution := &Solution{}
 
-	// Printing the map for demonstration
-	for name, url := range channelMap {
-		fmt.Printf("Channel Name: %s, Webhook URL: %s\n", name, url)
-	}
+	// Get the vertical traversal
+	verticalTraversal := solution.findVertical(root)
 
-	// Get and print the rules
-	someAlertRules := getRules()
-	for _, sar := range someAlertRules {
-		fmt.Printf("AlertRule ID: %s, Recipients: %+v\n", sar.AlertRule.RuleId.String, sar.Recipient)
-	}
-	rules := getRules()
-
-}
-
-func checkMissingChannels(rules []SomeAlertRule, channelMap, channelWebHookUrl map[string]string) []SomeAlertRule {
-	var rulesToBeUpdated []SomeAlertRule
-
-	for _, rule := range rules {
-		teamChannel := make([]TeamsChannel, 0)
-		changed := false
-		for _, channel := range rule.Recipient.TeamsChannels {
-			storedWebHookUrl, exists1 := channelMap[channel.ChannelName]
-			storedChannelName, exists2 := channelWebHookUrl[channel.WebhookURL]
-			if !exists1 && !exists2 {
-				changed = true
-				continue
-			} else if exists1 && storedWebHookUrl != channel.WebhookURL {
-				changed = true
-				teamChannel = append(teamChannel, TeamsChannel{ChannelName: channel.ChannelName, WebhookURL: storedWebHookUrl})
-			} else if exists2 && storedChannelName != channel.ChannelName {
-				changed = true
-				teamChannel = append(teamChannel, TeamsChannel{ChannelName: storedChannelName, WebhookURL: storedWebHookUrl})
-			} else {
-				teamChannel = append(teamChannel, channel)
-			}
-		}
-
-		if changed {
-			rulesToBeUpdated = append(rulesToBeUpdated, SomeAlertRule{AlertRule: rule.AlertRule, Recipient: Recipient{Emails: rule.Recipient.Emails, TeamsChannels: rule.Recipient.TeamsChannels}})
-		}
-	}
-	return rulesToBeUpdated
-}
-
-func getRules() []SomeAlertRule {
-	// Sample data for AlertRules
-	alertRule1 := AlertRule{RuleId: null.StringFrom("rule1")}
-	alertRule2 := AlertRule{RuleId: null.StringFrom("rule2")}
-
-	// Sample data for Recipients
-	recipient1 := Recipient{
-		Emails: Email{Guest: []string{"alice@example.com", "bob@example.com"}},
-		TeamsChannels: []TeamsChannel{
-			{ChannelName: "General", WebhookURL: "https://example.com/webhook/general"},
-		},
-	}
-	recipient2 := Recipient{
-		Emails: Email{Guest: []string{"charlie@example.com", "dave@example.com"}},
-		TeamsChannels: []TeamsChannel{
-			{ChannelName: "Alerts", WebhookURL: "https://example.com/webhook/alerts"},
-		},
-	}
-
-	// Create a slice of SomeAlertRule
-	someAlertRules := []SomeAlertRule{
-		{AlertRule: alertRule1, Recipient: recipient1},
-		{AlertRule: alertRule2, Recipient: recipient2},
-	}
-
-	return someAlertRules
+	// Print the result
+	fmt.Println("Vertical Traversal:")
+	printResult(verticalTraversal)
 }
