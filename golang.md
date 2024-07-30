@@ -1019,7 +1019,7 @@ By understanding the differences and appropriate use cases for arrays and slices
    }
    ```
 
-### Summary Table
+**Summary Table**
 
 | Concept                  | Syntax                                                    | Description                                         |
 |--------------------------|-----------------------------------------------------------|-----------------------------------------------------|
@@ -1030,7 +1030,7 @@ By understanding the differences and appropriate use cases for arrays and slices
 | **Use Enum**             | `var value EnumType = EnumVal`                            | Assigns an enum value                               |
 | **Print Enum**           | `fmt.Println(value)`                                      | Prints the enum value (uses `String` method if defined) |
 
-### Benefits and Use Cases
+**Benefits and Use Cases**
 
 - **Type Safety**: Enums ensure that only valid values are used.
 - **Readability**: Custom types and string methods make the code more readable.
