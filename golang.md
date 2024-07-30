@@ -1039,7 +1039,7 @@ By understanding the differences and appropriate use cases for arrays and slices
 By using `iota`, custom types, and methods, you can effectively implement enums in Go, providing both the benefits of type safety and code readability.
 
 
-### String Basic Syntax
+## String Basic Syntax
 ```go
 package main
 
