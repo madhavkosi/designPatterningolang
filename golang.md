@@ -1037,3 +1037,102 @@ By understanding the differences and appropriate use cases for arrays and slices
 - **Extendibility**: Easy to add more methods and functionality specific to the enum type.
 
 By using `iota`, custom types, and methods, you can effectively implement enums in Go, providing both the benefits of type safety and code readability.
+
+
+### String Basic Syntax
+```go
+package main
+
+import (
+    "fmt"
+    "strings"
+    "strconv"
+)
+
+func main() {
+    s := "Hello, GoLang!"
+
+    // Convert to lower case
+    lower := strings.ToLower(s)
+    fmt.Println("Lowercase:", lower) // "hello, golang!"
+
+    // Check if substring exists
+    containsGo := strings.Contains(s, "Go")
+    fmt.Println("Contains 'Go':", containsGo) // true
+
+    // Get the index of a substring
+    indexLang := strings.Index(s, "Lang")
+    fmt.Println("Index of 'Lang':", indexLang) // 7
+
+    // Split the string by a separator
+    splitStr := strings.Split(s, ", ")
+    fmt.Println("Split by ', ':", splitStr) // ["Hello" "GoLang!"]
+
+    // Trim spaces (no effect here since there are no leading or trailing spaces)
+    trimmed := strings.TrimSpace(s)
+    fmt.Println("Trimmed:", trimmed) // "Hello, GoLang!"
+
+    // Replace part of the string
+    replaced := strings.Replace(s, "GoLang", "Gophers", 1)
+    fmt.Println("Replaced:", replaced) // "Hello, Gophers!"
+
+    // Count occurrences of a substring
+    countL := strings.Count(s, "l")
+    fmt.Println("Count 'l':", countL) // 2
+
+    // Convert an integer to a string
+    numStr := strconv.Itoa(123)
+    fmt.Println("Integer to String:", numStr) // "123"
+
+    // Convert a string to an integer
+    num, err := strconv.Atoi(numStr)
+    if err != nil {
+        fmt.Println("Error converting string to integer:", err)
+    } else {
+        fmt.Println("String to Integer:", num) // 123
+    }
+
+    // Convert a string to upper case
+    upper := strings.ToUpper(s)
+    fmt.Println("Uppercase:", upper) // "HELLO, GOLANG!"
+
+    // Check if the string starts with a specific prefix
+    hasPrefix := strings.HasPrefix(s, "Hello")
+    fmt.Println("Has prefix 'Hello':", hasPrefix) // true
+
+    // Check if the string ends with a specific suffix
+    hasSuffix := strings.HasSuffix(s, "!")
+    fmt.Println("Has suffix '!':", hasSuffix) // true
+
+    // Convert the first letter of each word to uppercase
+    titled := strings.Title(s)
+    fmt.Println("Title Case:", titled) // "Hello, Golang!"
+}
+```
+
+**Explanation:**
+
+1. **Case Conversion**: 
+   - `strings.ToLower` and `strings.ToUpper` convert the string to lowercase and uppercase, respectively.
+   - `strings.Title` capitalizes the first letter of each word.
+
+2. **Substring Operations**:
+   - `strings.Contains` checks if a substring exists.
+   - `strings.Index` and `strings.LastIndex` find the position of a substring.
+   - `strings.HasPrefix` and `strings.HasSuffix` check if the string starts or ends with a specific substring.
+
+3. **Splitting and Joining**:
+   - `strings.Split` splits a string by a delimiter into a slice of strings.
+   - `strings.Join` can be used to concatenate elements of a slice into a single string (not shown in the example).
+
+4. **Trimming and Replacing**:
+   - `strings.TrimSpace` removes leading and trailing whitespace.
+   - `strings.Replace` replaces occurrences of a substring.
+
+5. **Counting**:
+   - `strings.Count` counts non-overlapping occurrences of a substring.
+
+6. **Conversion**:
+   - `strconv.Itoa` converts an integer to a string.
+   - `strconv.Atoi` converts a string to an integer and handles potential errors.
+
