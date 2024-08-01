@@ -81,3 +81,48 @@ The Exit class is responsible for validating the parking ticket’s payment stat
 These attributes are central to managing the details of a vehicle's stay in the parking system.
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/parkingTicket.png)
+
+
+- **ParkingLot Class**:
+  - Manages entrance/exits, parking spots, and parking rates.
+
+- **Enums**:
+  - **PaymentStatus**: Paid, Unpaid, Canceled, Refunded.
+  - **AccountStatus**: Active, Canceled, Closed.
+
+- **Address Data Type**:
+  - Stores street, city, state, country, and postal code.
+
+- **Person Class**:
+  - Contains name and address details.
+
+
+
+### **Relationships Between Classes in the Parking Lot System**
+
+#### Association
+- **ParkingSpot ↔ Vehicle**: 
+  - One-way association where a ParkingSpot is assigned to a Vehicle.
+- **Vehicle ↔ ParkingTicket**: 
+  - One-way association where a Vehicle is linked to a ParkingTicket.
+- **Payment ↔ ParkingTicket**: 
+  - Two-way association where a Payment is linked to a ParkingTicket and vice versa.
+
+#### Composition
+- **ParkingLot**:
+  - Composes Entrance, Exit, ParkingRate, DisplayBoard, ParkingTicket, and ParkingSpot objects, meaning these elements are integral to the ParkingLot.
+- **ParkingTicket**:
+  - Composes a Payment object, indicating that the payment details are a part of the ticket.
+
+#### Inheritance
+- **Vehicle Class**:
+  - Inherits Car, Truck, Van, and Motorcycle subclasses, representing different types of vehicles.
+- **ParkingSpot Class**:
+  - Inherits Handicapped, Compact, Large, and Motorcycle subclasses, representing different types of parking spots.
+- **Payment Class**:
+  - Inherits Cash and CreditCard subclasses, representing different payment methods.
+
+
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/association.png)
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/composition.png)
+
