@@ -80,4 +80,4 @@ The Exit class is responsible for validating the parking ticket’s payment stat
 
 These attributes are central to managing the details of a vehicle's stay in the parking system.
 
-a![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/parkingTicket.png)
+![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/parkingTicket.png)
