@@ -69,3 +69,15 @@ The Entrance class is responsible for generating the parking ticket whenever a v
 
 The Exit class is responsible for validating the parking ticket’s payment status before allowing the vehicle to exit the parking lot. It contains the ID attribute, since there are multiple exits to the parking lot. It also has the validateTicket() method.
     ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/entrance.png)
+
+### ParkingTicket Class
+
+- **Attributes:**
+  - **entranceTime**: Records the time when the vehicle enters the parking lot.
+  - **exitTime**: Records the time when the vehicle exits the parking lot.
+  - **amount**: The total amount to be paid for the parking duration.
+  - **paymentStatus**: Indicates whether the payment has been made (paid/unpaid).
+
+These attributes are central to managing the details of a vehicle's stay in the parking system.
+
+    ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/parkingTicket.png)
