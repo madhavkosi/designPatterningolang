@@ -42,3 +42,30 @@
   - `assignVehicle(vehicle)`, `removeVehicle()`, `isAvailable()`
 
   ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/parkingSpot.png)
+
+### Account Abstract Class
+- **Purpose:** Represents a generic user account in the parking system.
+- **Derived Classes:**
+  1. **Admin:**
+     - **Role:** Manages the system, including user and spot management.
+     - **Permissions:** Full access to system features and settings.
+  2. **ParkingAgent:**
+     - **Role:** Manages day-to-day operations, such as assigning spots and handling issues.
+     - **Permissions:** Limited to operational tasks, less access than Admin.
+- **Common Properties:**
+  - `accountID`, `username`, `password`
+- **Common Methods:**
+  - `login()`, `logout()`, `resetPassword()`
+
+    ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/account.png)
+
+
+### DisplayBoard Class
+- **Purpose:** Shows the availability of different types of parking spots and the number of empty slots.
+    ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/displayBoard.png)
+
+### Entrance and exit 
+The Entrance class is responsible for generating the parking ticket whenever a vehicle arrives. It contains the ID attribute, since there are multiple entrances to the parking lot. It also has the getTicket() method.
+
+The Exit class is responsible for validating the parking ticket’s payment status before allowing the vehicle to exit the parking lot. It contains the ID attribute, since there are multiple exits to the parking lot. It also has the validateTicket() method.
+    ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/Screenshot from 2024-08-01 14-40-23.png)

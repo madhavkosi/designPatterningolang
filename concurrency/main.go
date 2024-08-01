@@ -6,6 +6,8 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+type something int
+
 type address struct {
 	Name string `json:"name" validate:"required,min=3,max=30"`
 }
