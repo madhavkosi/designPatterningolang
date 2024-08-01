@@ -24,3 +24,21 @@
    - Adheres to the Open Closed Principle, making it a more flexible and maintainable solution.
 
 ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/vehicle.png)
+
+
+** Here the Factory Method Pattern is a suitable design pattern to use**
+
+
+### ParkingSpot Abstract Class
+- **Purpose:** Generic template for parking spots.
+- **Derived Classes:**
+  1. **HandicappedSpot:** For vehicles with a handicapped permit.
+  2. **CompactSpot:** For small vehicles.
+  3. **LargeSpot:** For large vehicles like SUVs and trucks.
+  4. **MotorcycleSpot:** Specifically for motorcycles.
+- **Common Properties:**
+  - `spotID`, `isOccupied`, `vehicleType`
+- **Common Methods:**
+  - `assignVehicle(vehicle)`, `removeVehicle()`, `isAvailable()`
+
+  ![alt text](https://github.com/madhavkosi/designPatterningolang/blob/main/designpattern/photos/parkingSpot.png)
