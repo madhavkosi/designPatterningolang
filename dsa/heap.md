@@ -400,10 +400,3 @@ func main() {
 	fmt.Println("Top k frequent elements:", topKFrequent(nums, k)) // Output: [1, 2]
 }
 ```
-
-### Explanation:
-1. **Frequency Map**: We create a map to count how many times each number appears in the list.
-2. **Min-Heap**: We use a heap to keep track of the top \( k \) most frequent elements. The least frequent of these \( k \) elements is always at the top of the heap, which allows us to remove it when necessary.
-3. **Result**: After processing all elements, the heap contains the \( k \) most frequent elements, which we then extract to get the final result.
-
-This implementation efficiently finds the top \( k \) most frequent elements from the input array.
