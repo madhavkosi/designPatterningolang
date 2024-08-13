@@ -1,5 +1,17 @@
 
+Sure! Here's the time complexity information in a table format:
 
+| **Operation**                                | **Time Complexity** | **Explanation**                                                                                   |
+|----------------------------------------------|---------------------|---------------------------------------------------------------------------------------------------|
+| **Heap Insertion (Push)**                    | \( O(\log k) \)     | Inserting an element requires up to \( \log k \) comparisons/swaps to maintain the heap property. |
+| **Heap Deletion (Pop)**                      | \( O(\log k) \)     | Removing the root element requires up to \( \log k \) steps to restore the heap property.         |
+| **Heap Construction (Building a Heap)**      | \( O(k) \)          | Constructing a heap from \( k \) elements is done in linear time by heapifying the tree.          |
+| **Building the Frequency Map**               | \( O(n) \)          | Counting the frequency of each element in the array.                                              |
+| **Pushing into the Heap**                    | \( O(n \log k) \)   | Inserting all \( n \) elements into a heap of size \( k \) takes \( O(\log k) \) per insertion.   |
+| **Result Extraction from Heap**              | \( O(k \log k) \)   | Extracting \( k \) elements from the heap takes \( O(\log k) \) per extraction.                   |
+| **Total Time Complexity for Top \( k \) Frequent** | \( O(n \log k) \)   | Combining the frequency map creation and heap operations, the overall complexity is \( O(n \log k) \). |
+
+This table summarizes the time complexities of the various heap-related operations, particularly in the context of finding the top \( k \) frequent elements in an array.
 **Find the Median from a Data Stream**
 
 Design a data structure that supports the following operations efficiently:
