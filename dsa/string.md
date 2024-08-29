@@ -67,96 +67,6 @@ func main() {
 }
 ```
 
-### Length of the longest sequence of consecutive elements
-
-To solve the problem of finding the length of the longest sequence of consecutive elements in an array, we can use an efficient approach involving a set for O(1) average-time complexity lookups.
-
-### Approach:
-
-1. **Use a Set**: 
-   - Store all the elements of the array in a set. This helps in quickly checking the presence of a number in O(1) average time complexity.
-
-2. **Find the Start of a Sequence**:
-   - Iterate through each number in the array.
-   - For each number, check if it is the start of a sequence by checking if `num - 1` is not in the set. If it is not, then `num` is the starting number of a potential sequence.
-
-3. **Count the Consecutive Numbers**:
-   - Starting from the identified starting number, count all the consecutive numbers (`num + 1`, `num + 2`, ...) that are present in the set.
-
-4. **Update the Maximum Length**:
-   - Keep track of the maximum length of consecutive numbers found.
-
-This method ensures that each number is processed at most twice (once during set insertion and once during the sequence finding), leading to an O(n) time complexity solution.
-
-### Implementation in Go
-
-Here is the implementation in Go:
-
-```go
-package main
-
-import "fmt"
-
-// longestConsecutive finds the length of the longest sequence of consecutive integers in the array.
-func longestConsecutive(nums []int) int {
-	if len(nums) == 0 {
-		return 0
-	}
-
-	numSet := make(map[int]bool)
-	for _, num := range nums {
-		numSet[num] = true
-	}
-
-	maxLength := 0
-	for num := range numSet {
-		// Check if 'num' is the start of a sequence
-		if !numSet[num-1] {
-			currentNum := num
-			currentLength := 1
-
-			// Count the length of the consecutive sequence starting from 'num'
-			for numSet[currentNum+1] {
-				currentNum++
-				currentLength++
-			}
-
-			// Update maxLength if current sequence is longer
-			if currentLength > maxLength {
-				maxLength = currentLength
-			}
-		}
-	}
-
-	return maxLength
-}
-
-func main() {
-	// Test cases
-	fmt.Println(longestConsecutive([]int{100, 4, 200, 1, 3, 2})) // Output: 4 (sequence: 1, 2, 3, 4)
-	fmt.Println(longestConsecutive([]int{0, 3, 7, 2, 5, 8, 4, 6, 0, 1})) // Output: 9 (sequence: 0, 1, 2, 3, 4, 5, 6, 7, 8)
-	fmt.Println(longestConsecutive([]int{10, 5, 9, 1, 11, 8, 6, 7, 2, 3, 12})) // Output: 6 (sequence: 7, 8, 9, 10, 11, 12)
-}
-```
-
-### Explanation:
-
-1. **numSet**:
-   - A set (implemented as a map with boolean values) that contains all the numbers in the input array. This helps quickly check if a number is part of the array.
-
-2. **Finding the Start of a Sequence**:
-   - For each number `num` in the set, if `num - 1` is not in the set, then `num` is the start of a sequence. This is because all previous elements are not part of the current sequence.
-
-3. **Counting Consecutive Numbers**:
-   - Start from `num` and count consecutive numbers by incrementing `currentNum` until the next number is not found in the set.
-
-4. **Updating maxLength**:
-   - Keep track of the maximum length of any consecutive sequence found during the iteration.
-
-### Complexity:
-
-- **Time Complexity**: O(n), where n is the number of elements in the array. Each element is processed at most twice.
-- **Space Complexity**: O(n), due to the space needed to store elements in the set.
 
 
 To find the length of the largest subarray with a sum equal to a given value \( K \), we can use the **prefix sum** technique along with a hash map. This approach allows us to find the required subarray in linear time, \( O(N) \), where \( N \) is the number of elements in the array.
@@ -451,7 +361,7 @@ func main() {
 This solution efficiently finds the maximum number of consecutive `1`s in a binary array with a straightforward linear pass through the array.
 
 
-### Problem Statement: Group Anagrams
+### Group Anagrams
 
 Given an array of strings, group the anagrams together. You can return the result in any order.
 
@@ -469,20 +379,6 @@ Given an array of strings, group the anagrams together. You can return the resul
 `strs = ["eat", "tea", "tan", "ate", "nat", "bat"]`  
 **Output:**  
 `[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]`
-
-### Example 2:
-
-**Input:**  
-`strs = [""]`  
-**Output:**  
-`[[""]]`
-
-### Example 3:
-
-**Input:**  
-`strs = ["a"]`  
-**Output:**  
-`[["a"]]`
 
 ---
 
@@ -530,7 +426,7 @@ func main() {
 ```
 
 
-### Problem Statement: Reverse Words in a String
+### Reverse Words in a String
 
 Given an input string `s`, reverse the order of the words. A word is defined as a sequence of non-space characters. The words in `s` are separated by one or more spaces. Return a string of the words in reverse order concatenated by a single space.
 
@@ -682,4 +578,97 @@ func compareVersion(version1 string, version2 string) int {
 	return 0
 }
 
+```
+
+
+### Length of the Longest Sequence of Consecutive Elements
+
+Given an unsorted array of integers, find the length of the longest sequence of consecutive elements.
+
+### Input
+
+- An array of integers `nums`.
+
+### Output
+
+- An integer representing the length of the longest sequence of consecutive elements.
+
+### Example 1:
+
+**Input:**  
+`nums = [100, 4, 200, 1, 3, 2]`  
+**Output:**  
+`4`  
+**Explanation:** The longest consecutive sequence is `[1, 2, 3, 4]`, and its length is `4`.
+
+### Example 2:
+
+**Input:**  
+`nums = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]`  
+**Output:**  
+`9`  
+**Explanation:** The longest consecutive sequence is `[0, 1, 2, 3, 4, 5, 6, 7, 8]`, and its length is `9`.
+
+---
+
+### Solution: Using a Hash Set
+
+The idea is to use a hash set to keep track of the elements in the array. We then iterate through each element, and for each element, we check if it's the start of a sequence by verifying if there's no previous element (`num - 1`). If it's the start of a sequence, we count the length of the sequence by checking for consecutive elements.
+
+Here's how you can implement this in Go:
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func longestConsecutive(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+
+	numSet := make(map[int]bool)
+	for _, num := range nums {
+		numSet[num] = true
+	}
+
+	longestStreak := 0
+
+	for _, num := range nums {
+		// Check if it is the start of a sequence
+		if !numSet[num-1] {
+			currentNum := num
+			currentStreak := 1
+
+			// Count the length of the sequence
+			for numSet[currentNum+1] {
+				currentNum++
+				currentStreak++
+			}
+
+			// Update the longest streak
+			if currentStreak > longestStreak {
+				longestStreak = currentStreak
+			}
+		}
+	}
+
+	return longestStreak
+}
+
+func main() {
+	// Example 1
+	nums1 := []int{100, 4, 200, 1, 3, 2}
+	fmt.Println(longestConsecutive(nums1)) // Output: 4
+
+	// Example 2
+	nums2 := []int{0, 3, 7, 2, 5, 8, 4, 6, 0, 1}
+	fmt.Println(longestConsecutive(nums2)) // Output: 9
+
+	// Example 3
+	nums3 := []int{10, 5, 12, 3, 55, 30, 2, 4, 11, 1}
+	fmt.Println(longestConsecutive(nums3)) // Output: 4
+}
 ```
