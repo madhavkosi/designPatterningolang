@@ -103,13 +103,10 @@ func maxSubArrayLen(nums []int, K int) int {
 	prefixSumMap := make(map[int]int)
 	prefixSum := 0
 	maxLength := 0
+	prefixSumMap[0] = -1
 
 	for i, num := range nums {
 		prefixSum += num
-
-		if prefixSum == K {
-			maxLength = i + 1
-		}
 
 		if val, found := prefixSumMap[prefixSum-K]; found {
 			maxLength = max(maxLength, i-val)
@@ -123,12 +120,6 @@ func maxSubArrayLen(nums []int, K int) int {
 	return maxLength
 }
 
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
 
 func main() {
 	nums := []int{1, -1, 5, -2, 3}
