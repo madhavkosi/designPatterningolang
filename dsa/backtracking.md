@@ -59,14 +59,14 @@ func letterCombinations(digits string) []string {
 	return combinations
 }
 
-func backtrack(digits string, index int, current string, combinations *[]string) {
-	if index == len(digits) {
+func backtrack(digits string, startIndex int, current string, combinations *[]string) {
+	if startIndex == len(digits) {
 		*combinations = append(*combinations, current)
 		return
 	}
-	letters := digitToLetters[digits[index]]
+	letters := digitToLetters[digits[startIndex]]
 	for i := 0; i < len(letters); i++ {
-		backtrack(digits, index+1, current+string(letters[i]), combinations)
+		backtrack(digits, startIndex+1, current+string(letters[i]), combinations)
 	}
 }
 ```
@@ -107,30 +107,34 @@ import (
 	"sort"
 )
 
-func combinationSum2(candidates []int, target int) [][]int {
-	var result [][]int
-	sort.Ints(candidates)
-	backtrack(candidates, target, 0, []int{}, &result)
-	return result
-}
-
-func backtrack(candidates []int, target, start int, current []int, result *[][]int) {
-	if target == 0 {
-		*result = append(*result, combination)
+func backtrackCombinationSum(arr []int, result *[][]int, target int, startIndex int, sample []int) {
+	if target < 0 {
 		return
 	}
-
-	for i := start; i < len(candidates); i++ {
-        if i > start && candidates[i] == candidates[i-1] {
+	if target == 0 {
+		copyArr := make([]int, len(sample))
+		copy(copyArr, sample)
+		*result = append(*result, copyArr)
+	}
+	for i := startIndex; i < len(arr); i++ {
+		if i != startIndex && arr[i] == arr[i-1] {
 			continue
 		}
-		if candidates[i] > target {
-			break
-		}
-		current = append(current, candidates[i])
-		backtrack(candidates, target-candidates[i], i, current, result)
-		current = current[:len(current)-1]
+		sample = append(sample, arr[i])
+		backtrackCombinationSum(arr, result, target-arr[i], i+1, sample)
+		sample = sample[0 : len(sample)-1]
 	}
+}
+
+func combinationSum2(arr []int, target int) [][]int {
+	sort.Slice(arr, func(i, j int) bool {
+		return arr[i] < arr[j]
+	})
+	fmt.Println(arr)
+	result := make([][]int, 0)
+	array := make([]int, 0)
+	backtrackCombinationSum(arr, &result, target, 0, array)
+	return result
 }
 
 func main() {
@@ -146,7 +150,7 @@ func main() {
 }
 ```
 
-## Subsets
+## Subsets - 2
 
 **Problem Description**
 Given an integer array `nums` of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order.
@@ -180,6 +184,9 @@ func backtrack(nums []int, start int, current []int, result *[][]int) {
 	*result = append(*result, combination)
 
 	for i := start; i < len(nums); i++ {
+		if i != start && nums[i] == nums[i-1] {
+			continue
+		}
 		current = append(current, nums[i])
 		backtrack(nums, i+1, current, result)
 		current = current[:len(current)-1]
@@ -226,11 +233,11 @@ import (
 func permute(nums []int) [][]int {
 	var result [][]int
 	visited := make([]bool, len(nums))
-	backtrack(nums, []int{}, &visited, &result)
+	backtrack(nums, []int{}, visited, &result)
 	return result
 }
 
-func backtrack(nums []int, current []int, visited *[]bool, result *[][]int) {
+func backtrack(nums []int, current []int, visited []bool, result *[][]int) {
 	if len(current) == len(nums) {
 		combination := make([]int, len(current))
 		copy(combination, current)
@@ -239,14 +246,14 @@ func backtrack(nums []int, current []int, visited *[]bool, result *[][]int) {
 	}
 
 	for i := 0; i < len(nums); i++ {
-		if (*visited)[i] {
+		if visited[i] {
 			continue
 		}
 		current = append(current, nums[i])
-		(*visited)[i] = true
+		visited[i] = true
 		backtrack(nums, current, visited, result)
 		current = (current)[:len(current)-1]
-		(*visited)[i] = false
+		visited[i] = false
 	}
 }
 
@@ -504,3 +511,322 @@ func main() {
 ```
 
 ---
+
+### Problem Statement: Palindrome Partitioning
+
+Given a string `s`, partition `s` such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of `s`.
+
+### Input
+
+- A string `s` of length `n`.
+
+### Output
+
+- A list of lists containing all possible palindrome partitions of `s`.
+
+### Example 1:
+
+**Input:** `s = "aab"`  
+**Output:** `[["a", "a", "b"], ["aa", "b"]]`
+
+### Example 2:
+
+**Input:** `s = "a"`  
+**Output:** `[["a"]]`
+
+---
+
+### Solution: Palindrome Partitioning
+
+Here's how you can solve the problem using a backtracking approach.
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// Function to check if a string is a palindrome
+func isPalindrome(s string, start, end int) bool {
+	for start < end {
+		if s[start] != s[end] {
+			return false
+		}
+		start++
+		end--
+	}
+	return true
+}
+
+// Function to find all palindrome partitions
+func partition(s string) [][]string {
+	var result [][]string
+	var current []string
+	backtrack(s, 0, current, &result)
+	return result
+}
+
+// Backtracking function to explore all possible partitions
+func backtrack(s string, start int, current []string, result *[][]string) {
+	if start >= len(s) {
+		temp := make([]string, len(current))
+		copy(temp, current)
+		*result = append(*result, temp)
+		return
+	}
+	for end := start; end < len(s); end++ {
+		if isPalindrome(s, start, end) {
+			current = append(current, s[start:end+1])
+			backtrack(s, end+1, current, result)
+			current = current[:len(current)-1]
+		}
+	}
+}
+
+func main() {
+	// Example 1
+	s1 := "aab"
+	fmt.Println(partition(s1))
+	// Output: [["a", "a", "b"], ["aa", "b"]]
+
+	// Example 2
+	s2 := "a"
+	fmt.Println(partition(s2))
+	// Output: [["a"]]
+}
+```
+
+### Problem Statement: Sudoku Solver
+
+Given a 9x9 Sudoku board, write a function to solve the board. The empty cells are filled with digits from 1 to 9, such that each digit appears exactly once in each row, column, and 3x3 sub-box.
+
+### Input
+
+- A 9x9 grid representing the Sudoku board, where empty cells are represented by `'.'`.
+
+### Output
+
+- The same 9x9 grid with the empty cells filled with the correct digits to solve the Sudoku.
+
+### Example:
+
+**Input:**
+```text
+[
+  ['5', '3', '.', '.', '7', '.', '.', '.', '.'],
+  ['6', '.', '.', '1', '9', '5', '.', '.', '.'],
+  ['.', '9', '8', '.', '.', '.', '.', '6', '.'],
+  ['8', '.', '.', '.', '6', '.', '.', '.', '3'],
+  ['4', '.', '.', '8', '.', '3', '.', '.', '1'],
+  ['7', '.', '.', '.', '2', '.', '.', '.', '6'],
+  ['.', '6', '.', '.', '.', '.', '2', '8', '.'],
+  ['.', '.', '.', '4', '1', '9', '.', '.', '5'],
+  ['.', '.', '.', '.', '8', '.', '.', '7', '9']
+]
+```
+
+**Output:**
+```text
+[
+  ['5', '3', '4', '6', '7', '8', '9', '1', '2'],
+  ['6', '7', '2', '1', '9', '5', '3', '4', '8'],
+  ['1', '9', '8', '3', '4', '2', '5', '6', '7'],
+  ['8', '5', '9', '7', '6', '1', '4', '2', '3'],
+  ['4', '2', '6', '8', '5', '3', '7', '9', '1'],
+  ['7', '1', '3', '9', '2', '4', '8', '5', '6'],
+  ['9', '6', '1', '5', '3', '7', '2', '8', '4'],
+  ['2', '8', '7', '4', '1', '9', '6', '3', '5'],
+  ['3', '4', '5', '2', '8', '6', '1', '7', '9']
+]
+```
+
+---
+
+### Solution: Sudoku Solver
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func printBoard(board [][]byte) {
+	for i := 0; i < 9; i++ {
+		for j := 0; j < 9; j++ {
+			fmt.Printf("%c ", board[i][j])
+		}
+		fmt.Println()
+	}
+}
+func validBoard(board [][]byte, r, c int, char byte) bool {
+
+	for i := 0; i < 9; i++ {
+		if board[r][i] == char || board[i][c] == char || board[(r/3)*3+i/3][(c/3)*3+i%3] == char {
+			return false
+		}
+	}
+	return true
+}
+func backtrackSudoku(board [][]byte, r, c int) bool {
+	if r == 9 {
+		return true
+	}
+	if c == 9 {
+		return backtrackSudoku(board, r+1, 0)
+	}
+	if board[r][c] == '.' {
+		for i := byte('1'); i <= byte('9'); i++ {
+			if validBoard(board, r, c, i) {
+				fmt.Println(i)
+				board[r][c] = i
+				if backtrackSudoku(board, r, c+1) {
+					return true
+				}
+				board[r][c] = '.'
+			}
+
+		}
+	} else {
+		return backtrackSudoku(board, r, c+1)
+	}
+	return false
+}
+func solveSudoku(board [][]byte) bool {
+	return backtrackSudoku(board, 0, 0)
+}
+
+
+func main() {
+	board := [][]byte{
+		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+		{'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+		{'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+		{'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+		{'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+		{'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+		{'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+		{'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+		{'.', '.', '.', '.', '8', '.', '.', '7', '9'},
+	}
+
+	solveSudoku(board)
+	printBoard(board)
+}
+```
+
+
+### Problem Statement: All Possible Word Breaks
+
+Given a string `s` and a dictionary of words `wordDict`, return all possible ways to segment `s` into a space-separated sequence of one or more dictionary words.
+
+### Input
+
+- A string `s` of length `n`.
+- A list of words `wordDict` containing valid words.
+
+### Output
+
+- A list of strings, where each string is a valid segmentation of `s`.
+
+### Example 1:
+
+**Input:**  
+`s = "catsanddog"`  
+`wordDict = ["cat", "cats", "and", "sand", "dog"]`
+
+**Output:**  
+`["cats and dog", "cat sand dog"]`
+
+### Example 2:
+
+**Input:**  
+`s = "pineapplepenapple"`  
+`wordDict = ["apple", "pen", "applepen", "pine", "pineapple"]`
+
+**Output:**  
+`["pine apple pen apple", "pineapple pen apple", "pine applepen apple"]`
+
+### Example 3:
+
+**Input:**  
+`s = "catsandog"`  
+`wordDict = ["cats", "dog", "sand", "and", "cat"]`
+
+**Output:**  
+`[]` (No valid segmentation)
+
+---
+
+### Solution: Backtracking with Memoization
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func wordBreak(s string, wordDict []string) []string {
+	wordSet := make(map[string]bool, 0)
+	for _, s := range wordDict {
+		wordSet[s] = true
+	}
+	result := make([][]string, 0)
+	var current []string
+
+	backtrack(s, wordSet, 0, current, &result)
+	ss := make([]string, 0)
+	for _, r := range result {
+		ss = append(ss, strings.Join(r, " "))
+	}
+	return ss
+}
+
+func backtrack(s string, wordSet map[string]bool, start int, current []string, result *[][]string) {
+	if start == len(s) {
+		copyArr := make([]string, len(current))
+		copy(copyArr, current)
+		*result = append(*result, copyArr)
+		return
+	}
+	for i := start; i < len(s); i++ {
+		st := s[start : i+1]
+		if wordSet[st] {
+			current = append(current, st)
+			backtrack(s, wordSet, i+1, current, result)
+			current = (current)[:len(current)-1]
+		}
+	}
+
+}
+
+func main() {
+	s := "catsanddog"
+	wordDict := []string{"cat", "cats", "and", "sand", "dog"}
+	result := wordBreak(s, wordDict)
+	for _, r := range result {
+		fmt.Println(r)
+	}
+}
+
+func main() {
+	// Example 1
+	s1 := "catsanddog"
+	wordDict1 := []string{"cat", "cats", "and", "sand", "dog"}
+	fmt.Println(wordBreak(s1, wordDict1)) // Output: ["cats and dog", "cat sand dog"]
+
+	// Example 2
+	s2 := "pineapplepenapple"
+	wordDict2 := []string{"apple", "pen", "applepen", "pine", "pineapple"}
+	fmt.Println(wordBreak(s2, wordDict2)) // Output: ["pine apple pen apple", "pineapple pen apple", "pine applepen apple"]
+
+	// Example 3
+	s3 := "catsandog"
+	wordDict3 := []string{"cats", "dog", "sand", "and", "cat"}
+	fmt.Println(wordBreak(s3, wordDict3)) // Output: []
+}
+```
+
