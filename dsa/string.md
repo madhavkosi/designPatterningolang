@@ -26,21 +26,7 @@ Explanation: The answer is "wke", with the length of 3.
              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 ```
 
-### Solution Approach
 
-The problem can be efficiently solved using the **sliding window** technique. The idea is to use two pointers (or indices) to represent the current window of characters being considered, and a set or map to keep track of the characters in the current window.
-
-1. **Initialize two pointers** `start` and `end` both to the start of the string.
-2. Use a map to store the last occurrence of each character.
-3. As we iterate through the string with the `end` pointer:
-   - If the character at `end` is already in the map and the last occurrence is greater than or equal to `start`, it means we have a repeating character within the current window. In this case, update `start` to `last occurrence + 1`.
-   - Update the last occurrence of the character.
-   - Calculate the length of the current window and update the maximum length found so far.
-4. Continue until the `end` pointer reaches the end of the string.
-
-### Implementation in Go
-
-Here is the implementation of the above approach in Go:
 
 ```go
 package main
@@ -49,36 +35,21 @@ import "fmt"
 
 // lengthOfLongestSubstring finds the length of the longest substring without repeating characters.
 func lengthOfLongestSubstring(s string) int {
-	n := len(s)
-	if n == 0 {
-		return 0
-	}
-
-	// Map to store the last index of each character
-	lastIndex := make(map[byte]int)
-	maxLength := 0
-	start := 0
-
-	for end := 0; end < n; end++ {
-		char := s[end]
-
-		// If the character is found in the map and its index is greater than or equal to start
-		if idx, found := lastIndex[char]; found && idx >= start {
-			// Update the start of the window
-			start = idx + 1
-		}
-
-		// Update the last index of the character
-		lastIndex[char] = end
-
-		// Calculate the length of the current window and update maxLength
-		currentLength := end - start + 1
-		if currentLength > maxLength {
-			maxLength = currentLength
+	i := 0
+	j := 0
+	charSet := make(map[byte]bool)
+	maxLen := 0
+	for i <= j && j < len(s) {
+		if !charSet[s[j]] {
+			charSet[s[j]] = true
+			j++
+			maxLen = max(maxLen, j-i)
+		} else {
+			delete(charSet, s[i])
+			i++
 		}
 	}
-
-	return maxLength
+	return maxLen
 }
 
 func main() {
@@ -95,24 +66,6 @@ func main() {
 	fmt.Printf("The length of the longest substring without repeating characters is: %d\n", lengthOfLongestSubstring(s))
 }
 ```
-
-### Explanation:
-
-1. **Function `lengthOfLongestSubstring`**:
-   - Takes a string `s` as input and returns the length of the longest substring without repeating characters.
-   - Uses a map `lastIndex` to keep track of the last seen index of each character.
-   - The `start` pointer keeps track of the starting index of the current window without repeating characters.
-   - The `end` pointer iterates through the string, expanding the window.
-   - When a repeating character is encountered (i.e., `char` is found in `lastIndex` and `lastIndex[char]` is greater than or equal to `start`), the `start` pointer is moved to `lastIndex[char] + 1`.
-   - The `maxLength` is updated with the maximum length of the substring found so far.
-
-2. **Main Function**:
-   - Tests the `lengthOfLongestSubstring` function with different inputs and prints the results.
-
-### Complexity:
-
-- **Time Complexity**: O(n), where n is the length of the string. Each character is processed at most twice (once by the `end` pointer and once by the `start` pointer).
-- **Space Complexity**: O(min(m, n)), where m is the size of the character set and n is the length of the string. This space is used by the map to store the last indices of the characters.
 
 ### Length of the longest sequence of consecutive elements
 
@@ -496,3 +449,265 @@ func main() {
 - **Space Complexity**: O(1). The solution uses a constant amount of extra space regardless of the size of the input.
 
 This solution efficiently finds the maximum number of consecutive `1`s in a binary array with a straightforward linear pass through the array.
+
+
+### Problem Statement: Group Anagrams
+
+Given an array of strings, group the anagrams together. You can return the result in any order.
+
+### Input
+
+- An array of strings `strs`.
+
+### Output
+
+- A list of lists, where each list contains anagrams grouped together.
+
+### Example 1:
+
+**Input:**  
+`strs = ["eat", "tea", "tan", "ate", "nat", "bat"]`  
+**Output:**  
+`[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]`
+
+### Example 2:
+
+**Input:**  
+`strs = [""]`  
+**Output:**  
+`[[""]]`
+
+### Example 3:
+
+**Input:**  
+`strs = ["a"]`  
+**Output:**  
+`[["a"]]`
+
+---
+
+### Solution: Using a Hash Map
+
+```go
+package main
+
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
+
+func groupAnagrams(strs []string) [][]string {
+	anagramlist := make(map[string][]string)
+	for _, str := range strs {
+		k := strings.Split(str, "")
+		sort.Slice(k, func(i, j int) bool {
+			return k[i] < k[j]
+		})
+		updated := strings.Join(k, "")
+		anagramlist[updated] = append(anagramlist[updated], str)
+	}
+	groupAnagram := make([][]string, 0)
+	for _, value := range anagramlist {
+		groupAnagram = append(groupAnagram, value)
+
+	}
+	return groupAnagram
+}
+func main() {
+	// Example 1
+	strs1 := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
+	fmt.Println(groupAnagrams(strs1)) // Output: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+
+	// Example 2
+	strs2 := []string{""}
+	fmt.Println(groupAnagrams(strs2)) // Output: [[""]]
+
+	// Example 3
+	strs3 := []string{"a"}
+	fmt.Println(groupAnagrams(strs3)) // Output: [["a"]]
+}
+```
+
+
+### Problem Statement: Reverse Words in a String
+
+Given an input string `s`, reverse the order of the words. A word is defined as a sequence of non-space characters. The words in `s` are separated by one or more spaces. Return a string of the words in reverse order concatenated by a single space.
+
+### Input
+
+- A string `s` containing words separated by spaces.
+
+### Output
+
+- A string with the words in reverse order, with a single space separating each word.
+
+### Example 1:
+
+**Input:**  
+`s = "the sky is blue"`  
+**Output:**  
+`"blue is sky the"`
+
+### Example 2:
+
+**Input:**  
+`s = "  hello world  "`  
+**Output:**  
+`"world hello"`
+
+### Example 3:
+
+**Input:**  
+`s = "a good   example"`  
+**Output:**  
+`"example good a"`
+
+
+
+Here's the implementation in Go:
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func reverseWords(s string) string {
+	// Step 1: Trim the input string to remove leading and trailing spaces
+	s = strings.TrimSpace(s)
+	
+	// Step 2: Split the string into a slice of words
+	words := strings.Fields(s)
+	
+	// Step 3: Reverse the order of words
+	for i, j := 0, len(words)-1; i < j; i, j = i+1, j-1 {
+		words[i], words[j] = words[j], words[i]
+	}
+	
+	// Step 4: Join the words with a single space
+	return strings.Join(words, " ")
+}
+
+func main() {
+	// Example 1
+	s1 := "the sky is blue"
+	fmt.Println(reverseWords(s1)) // Output: "blue is sky the"
+
+	// Example 2
+	s2 := "  hello world  "
+	fmt.Println(reverseWords(s2)) // Output: "world hello"
+
+	// Example 3
+	s3 := "a good   example"
+	fmt.Println(reverseWords(s3)) // Output: "example good a"
+}
+```
+
+### Problem Statement: Compare Version Numbers
+
+Given two version numbers, `version1` and `version2`, compare them.
+
+- If `version1 > version2`, return `1`.
+- If `version1 < version2`, return `-1`.
+- If `version1 == version2`, return `0`.
+
+A version number consists of one or more numbers separated by dots. Each number can have multiple digits, and leading zeros are ignored. Version strings are non-empty and contain only digits and dots.
+
+### Input
+
+- Two strings `version1` and `version2` representing version numbers.
+
+### Output
+
+- An integer representing the comparison result: `1`, `-1`, or `0`.
+
+### Example 1:
+
+**Input:**  
+`version1 = "1.01"`, `version2 = "1.001"`  
+**Output:**  
+`0`  
+**Explanation:** Both versions are considered equal because leading zeros are ignored.
+
+### Example 2:
+
+**Input:**  
+`version1 = "1.0"`, `version2 = "1.0.0"`  
+**Output:**  
+`0`  
+**Explanation:** Trailing zeros in version strings are ignored.
+
+### Example 3:
+
+**Input:**  
+`version1 = "0.1"`, `version2 = "1.1"`  
+**Output:**  
+`-1`  
+**Explanation:** `version1` is less than `version2`.
+
+---
+
+### Compare Version Numbers
+
+The idea is to split both version numbers by the dot (`.`), compare each corresponding segment (converted to an integer), and determine which version is greater.
+
+Here’s the implementation in Go:
+
+```go
+package main
+
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+
+func compareVersion(version1 string, version2 string) int {
+
+	v1Part1 := strings.Split(version1, ".")
+	v2Part2 := strings.Split(version2, ".")
+	maxIter := max(len(v1Part1), len(v2Part2))
+	for i := 0; i < maxIter; i++ {
+		num1 := 0
+		num2 := 0
+		if i < len(v1Part1) {
+			num1, _ := strconv.Atoi(v1Part1[i])
+		}
+		if i < len(v2Part2) {
+			num2, _ := strconv.Atoi(v2Part2[i])
+		}
+		if num1 > num2 {
+			return 1
+		} else if num1 < num2 {
+			return -1
+		}
+	}
+	return 0
+}
+
+func main() {
+	// Example 1
+	version1a, version2a := "1.01", "1.001"
+	fmt.Println(compareVersion(version1a, version2a)) // Output: 0
+
+	// Example 2
+	version1b, version2b := "1.0", "1.0.0"
+	fmt.Println(compareVersion(version1b, version2b)) // Output: 0
+
+	// Example 3
+	version1c, version2c := "0.1", "1.1"
+	fmt.Println(compareVersion(version1c, version2c)) // Output: -1
+
+	// Example 4
+	version1d, version2d := "1.2", "1.10"
+	fmt.Println(compareVersion(version1d, version2d)) // Output: -1
+
+	// Example 5
+	version1e, version2e := "1.0.1", "1"
+	fmt.Println(compareVersion(version1e, version2e)) // Output: 1
+}
+```

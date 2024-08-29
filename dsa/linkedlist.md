@@ -253,7 +253,6 @@ type ListNode struct {
     Val  int
     Next *ListNode
 }
-
 func reverseListRecursive(head *ListNode) *ListNode {
     if head == nil || head.Next == nil {
         return head
@@ -807,7 +806,6 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
         }
         curr = curr.Next
     }
-
     if l1 != nil {
         curr.Next = l1
     } else {

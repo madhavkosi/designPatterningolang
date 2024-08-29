@@ -59,18 +59,13 @@ package main
 import "math"
 
 func maxSubArray(nums []int) int {
+	maxSofar := math.MinInt
 	sum := 0
-	maxSum := math.MinInt32
 	for _, num := range nums {
-		sum += num
-		if sum > maxSum {
-			maxSum = sum
-		}
-		if sum < 0 {
-			sum = 0
-		}
+		maxSofar = max(maxSofar, sum+num)
+		sum = max(0, num+sum)
 	}
-	return maxSum
+	return maxSofar
 }
 ```
 
@@ -146,25 +141,25 @@ package main
 
 import "sort"
 
-func merge(intervals [][]int) [][]int {
-	if len(intervals) <= 1 {
-		return intervals
+func mergeIntervals(intervals []Interval) []Interval {
+	if len(intervals) == 0 {
+		return []Interval{}
 	}
 	sort.Slice(intervals, func(i, j int) bool {
-		return intervals[i][0] < intervals[j][0]
+		return intervals[i].Start < intervals[j].Start
 	})
-	output := [][]int{intervals[0]}
-	for _, interval := range intervals[1:] {
-		last := output[len(output)-1]
-		if interval[0] <= last[1] {
-			if interval[1] > last[1] {
-				last[1] = interval[1]
-			}
+	lastInterval := intervals[0]
+	mergedInterval := make([]Interval, 0)
+	for i := 1; i < len(intervals); i++ {
+		if intervals[i].Start <= lastInterval.End {
+			lastInterval.End = max(intervals[i].End, lastInterval.End)
 		} else {
-			output = append(output, interval)
+			mergedInterval = append(mergedInterval, lastInterval)
+			lastInterval = intervals[i]
 		}
 	}
-	return output
+	mergedInterval = append(mergedInterval, lastInterval)
+	return mergedInterval
 }
 ```
 
@@ -493,14 +488,11 @@ Explanation: In this case, no transactions are done and the max profit = 0.
 package main
 
 func maxProfit(prices []int) int {
-	minPrice := int(^uint(0) >> 1) // Max int
 	maxProfit := 0
-	for _, price := range prices {
-		if price < minPrice {
-			minPrice = price
-		} else if price - minPrice > maxProfit {
-			maxProfit = price - minPrice
-		}
+	minBuyPrice := math.MaxInt32
+	for i := 0; i < len(prices); i++ {
+		maxProfit = max(maxProfit, prices[i]-minBuyPrice)
+		minBuyPrice = min(minBuyPrice, prices[i])
 	}
 	return maxProfit
 }
@@ -910,43 +902,6 @@ func intToRoman(num int) string {
 
 ---
 
-## Reverse Words in a String
-
-**Problem Description**
-Given an input string `s`, reverse the order of the words. A word is defined as a sequence of non-space characters. The words in `s` will be separated by at least one space. Return a string of the words in reverse order concatenated by a single space.
-
-**Examples**
-**Example 1**
-Input: `s = "the sky is blue"`
-Output: `"blue is sky the"`
-
-**Example 2**
-Input: `s = "  hello world  "`
-Output: `"world hello"`
-
-**Example 3**
-Input: `s = "a good   example"`
-Output: `"example good a"`
-
-
-```go
-package main
-
-import (
-	"strings"
-)
-
-func reverseWords(s string) string {
-	words := strings.Fields(s)
-	for i, j := 0, len(words)-1; i < j; i, j = i+1, j-1 {
-		words[i], words[j] = words[j], words[i]
-	}
-	return strings.Join(words, " ")
-}
-```
-
----
-
 ## Find the Index of the First Occurrence in a String
 
 **Problem Description**
@@ -1181,18 +1136,19 @@ Output: `[0,1,2]`
 package main
 
 func sortColors(nums []int) {
-	low, mid, high := 0, 0, len(nums) - 1
+	low := 0
+	mid := 0
+	high := len(nums) - 1
 	for mid <= high {
-		switch nums[mid] {
-		case 0:
+		if nums[mid] == 0 {
 			nums[low], nums[mid] = nums[mid], nums[low]
 			low++
 			mid++
-		case 1:
-			mid++
-		case 2:
+		} else if nums[mid] == 2 {
 			nums[mid], nums[high] = nums[high], nums[mid]
 			high--
+		} else {
+			mid++
 		}
 	}
 }
