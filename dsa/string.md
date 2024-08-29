@@ -1,4 +1,4 @@
-### Longest substring without repeating characters.
+### Longest Substring Without Repeating Characters
 
 Given a string, find the length of the longest substring without repeating characters.
 
@@ -26,14 +26,13 @@ Explanation: The answer is "wke", with the length of 3.
              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 ```
 
-
+### Solution
 
 ```go
 package main
 
 import "fmt"
 
-// lengthOfLongestSubstring finds the length of the longest substring without repeating characters.
 func lengthOfLongestSubstring(s string) int {
 	i := 0
 	j := 0
@@ -52,6 +51,13 @@ func lengthOfLongestSubstring(s string) int {
 	return maxLen
 }
 
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 func main() {
 	s := "abcabcbb"
 	fmt.Printf("The length of the longest substring without repeating characters is: %d\n", lengthOfLongestSubstring(s))
@@ -61,41 +67,38 @@ func main() {
 
 	s = "pwwkew"
 	fmt.Printf("The length of the longest substring without repeating characters is: %d\n", lengthOfLongestSubstring(s))
-
-	s = ""
-	fmt.Printf("The length of the longest substring without repeating characters is: %d\n", lengthOfLongestSubstring(s))
 }
 ```
 
+---
 
+### Length of the Largest Subarray with Sum K
 
-To find the length of the largest subarray with a sum equal to a given value \( K \), we can use the **prefix sum** technique along with a hash map. This approach allows us to find the required subarray in linear time, \( O(N) \), where \( N \) is the number of elements in the array.
+Given an array of integers and a target sum \( K \), find the length of the largest subarray with a sum equal to \( K \).
 
-### Approach:
+### Example
 
-1. **Prefix Sum**:
-   - The prefix sum is the sum of elements from the beginning of the array up to a certain index. For an element at index \( i \), the prefix sum can be represented as `prefixSum[i]`.
+**Example 1**:
+```
+Input: nums = [1, -1, 5, -2, 3], K = 3
+Output: 4
+Explanation: The subarray [1, -1, 5, -2] sums to 3.
+```
 
-2. **Using Hash Map**:
-   - Use a hash map to store the first occurrence of each prefix sum. The key will be the prefix sum, and the value will be the index at which this sum first occurs.
+**Example 2**:
+```
+Input: nums = [-2, -1, 2, 1], K = 1
+Output: 2
+Explanation: The subarray [-1, 2] sums to 1.
+```
 
-3. **Finding the Largest Subarray**:
-   - Iterate through the array and maintain a running sum (prefix sum).
-   - For each element, calculate the prefix sum and check if `prefixSum - K` exists in the hash map:
-     - If it exists, it means there is a subarray that sums to \( K \) between the previous occurrence of `prefixSum - K` and the current index.
-     - Update the maximum length of such subarray if the current one is longer.
-   - Store the current prefix sum in the hash map if it is not already present, to ensure the longest subarray is considered.
-
-### Implementation in Go
-
-Here is the implementation of the above approach in Go:
+### Solution
 
 ```go
 package main
 
 import "fmt"
 
-// maxSubArrayLen finds the length of the largest subarray with a sum equal to K.
 func maxSubArrayLen(nums []int, K int) int {
 	prefixSumMap := make(map[int]int)
 	prefixSum := 0
@@ -104,17 +107,14 @@ func maxSubArrayLen(nums []int, K int) int {
 	for i, num := range nums {
 		prefixSum += num
 
-		// If the prefix sum equals K, the subarray from the start to current index has sum K
 		if prefixSum == K {
 			maxLength = i + 1
 		}
 
-		// If (prefixSum - K) is found in the map, it means there is a subarray that sums to K
 		if val, found := prefixSumMap[prefixSum-K]; found {
 			maxLength = max(maxLength, i-val)
 		}
 
-		// Store the prefix sum in the map if not already present
 		if _, found := prefixSumMap[prefixSum]; !found {
 			prefixSumMap[prefixSum] = i
 		}
@@ -123,7 +123,6 @@ func maxSubArrayLen(nums []int, K int) int {
 	return maxLength
 }
 
-// max returns the maximum of two integers
 func max(a, b int) int {
 	if a > b {
 		return a
@@ -139,62 +138,30 @@ func main() {
 	nums = []int{-2, -1, 2, 1}
 	K = 1
 	fmt.Printf("The length of the largest subarray with sum %d is: %d\n", K, maxSubArrayLen(nums, K))
-
-	nums = []int{1, 2, 3, 4, 5}
-	K = 11
-	fmt.Printf("The length of the largest subarray with sum %d is: %d\n", K, maxSubArrayLen(nums, K))
 }
 ```
 
-### Explanation:
+---
 
-1. **prefixSumMap**:
-   - A map that stores the prefix sum as the key and the earliest index at which this sum occurs as the value.
+### 4-Sum Problem
 
-2. **prefixSum**:
-   - A running total of the sum of elements from the start up to the current index.
+Given an array of integers `nums` and an integer `target`, return all unique quadruplets \([a, b, c, d]\) such that \(a + b + c + d = \text{target}\).
 
-3. **Checking for Subarrays**:
-   - For each element, we compute the current prefix sum.
-   - If `prefixSum - K` exists in `prefixSumMap`, it means there is a subarray that sums to \( K \) ending at the current index.
-   - We update the `maxLength` if the current subarray length (i.e., `i - val`) is greater than the previously recorded `maxLength`.
+### Example
 
-4. **Storing Prefix Sums**:
-   - The prefix sum and its corresponding index are stored in `prefixSumMap` only if the prefix sum is not already present. This ensures that the first occurrence of a prefix sum is stored, which is crucial for finding the longest subarray.
+**Example 1**:
+```
+Input: nums = [1, 0, -1, 0, -2, 2], target = 0
+Output: [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]]
+```
 
-### Complexity:
+**Example 2**:
+```
+Input: nums = [2, 2, 2, 2, 2], target = 8
+Output: [[2, 2, 2, 2]]
+```
 
-- **Time Complexity**: O(N), where \( N \) is the number of elements in the array. The array is traversed once.
-- **Space Complexity**: O(N), as the hash map `prefixSumMap` may store up to \( N \) different prefix sums.
-
-
- involves finding all unique quadruplets \((a, b, c, d)\) in an array such that \(a + b + c + d = \text{target}\). This is an extension of the more commonly known 2-Sum and 3-Sum problems.
-
-### The 4-Sum problem
-Given an array `nums` of `n` integers and an integer `target`, return all unique quadruplets \([a, b, c, d]\) such that:
-1. \(a + b + c + d = \text{target}\)
-2. The quadruplets should not contain duplicate sets of numbers.
-
-### Approach
-
-The 4-Sum problem can be solved efficiently using a sorted array and two pointers technique, along with a nested loop. Here’s a step-by-step breakdown:
-
-1. **Sort the Array**: Sorting helps in avoiding duplicates and simplifying the two-pointer approach.
-
-2. **Iterate with Nested Loops**: 
-   - The first two loops will fix the first two numbers of the quadruplet.
-   - For the remaining two numbers, use a two-pointer technique to find pairs that sum up to the required value.
-
-3. **Two Pointers Technique**:
-   - After fixing the first two numbers (`nums[i]` and `nums[j]`), use two pointers (`left` and `right`) to find the other two numbers (`nums[left]` and `nums[right]`) such that the sum equals the target.
-   - Move the pointers `left` and `right` towards each other based on the current sum.
-
-4. **Avoid Duplicates**: 
-   - Skip duplicate numbers for all four indices to ensure the quadruplets are unique.
-
-### Implementation in Go
-
-Here's the implementation of the 4-Sum problem in Go:
+### Solution
 
 ```go
 package main
@@ -247,70 +214,40 @@ func fourSum(nums []int, target int) [][]int {
 }
 
 func main() {
-	// Test cases
 	fmt.Println(fourSum([]int{1, 0, -1, 0, -2, 2}, 0)) // Output: [[-2 -1 1 2] [-2 0 0 2] [-1 0 0 1]]
 	fmt.Println(fourSum([]int{2, 2, 2, 2, 2}, 8))      // Output: [[2 2 2 2]]
-	fmt.Println(fourSum([]int{-3, -2, -1, 0, 0, 1, 2, 3}, 0)) // Output: [[-3 -2 2 3] [-3 -1 1 3] [-3 0 0 3] [-3 0 1 2] [-2 -1 0 3] [-2 -1 1 2] [-1 0 0 1]]
 }
 ```
 
-### Explanation:
+---
 
-1. **Sorting**:
-   - The array is first sorted to facilitate the two-pointer approach and to help in avoiding duplicates.
+### Maximum Number of Consecutive 1's
 
-2. **Nested Loops**:
-   - The outermost loop (`i`) fixes the first number.
-   - The second loop (`j`) fixes the second number.
-   - The two-pointer technique is used to find the remaining two numbers such that the sum of the four numbers equals the target.
+Given a binary array, find the maximum number of consecutive `1`s in the array.
 
-3. **Two Pointers**:
-   - `left` starts just after `j` and `right` starts from the end of the array.
-   - If the sum of the four numbers equals the target, the quadruplet is added to the result.
-   - If the sum is less than the target, `left` is incremented to increase the sum.
-   - If the sum is more than the target, `right` is decremented to decrease the sum.
+### Example
 
-4. **Avoiding Duplicates**:
-   - After finding a valid quadruplet, `left` and `right` are moved to skip over duplicate values.
+**Example 1**:
+```
+Input: nums = [1, 1, 0, 1, 1, 1]
+Output: 3
+Explanation: The maximum number of consecutive 1's is 3.
+```
 
-### Complexity:
+**Example 2**:
+```
+Input: nums = [1, 0, 1, 1, 0, 1]
+Output: 2
+Explanation: The maximum number of consecutive 1's is 2.
+```
 
-- **Time Complexity**: O(N^3), where N is the number of elements in the array. This is because we have two nested loops and a two-pointer scan within the innermost loop.
-- **Space Complexity**: O(1) for extra space, not including the space used for storing the result.
-
-This implementation ensures that all unique quadruplets are found and that duplicates are avoided.
-
-
-To find the maximum number of consecutive `1`s in a binary array, we can use a simple linear scan. This problem involves iterating through the array and counting consecutive `1`s, while keeping track of the maximum count encountered.
-
-### Problem Statement
-Given a binary array (an array containing only `0`s and `1`s), find the maximum number of consecutive `1`s in the array.
-
-### Approach
-
-1. **Initialize Counters**:
-   - Use a counter `currentCount` to count the current streak of consecutive `1`s.
-   - Use `maxCount` to store the maximum streak found so far.
-
-2. **Iterate Through the Array**:
-   - For each element in the array:
-     - If the element is `1`, increment `currentCount`.
-     - If the element is `0`, update `maxCount` if `currentCount` is greater, and reset `currentCount` to 0.
-   - After the loop, update `maxCount` one last time in case the array ends with a streak of `1`s.
-
-3. **Return Result**:
-   - The value of `maxCount` will be the maximum number of consecutive `1`s in the array.
-
-### Implementation in Go
-
-Here is the implementation:
+### Solution
 
 ```go
 package main
 
 import "fmt"
 
-// findMaxConsecutiveOnes finds the maximum number of consecutive 1's in the binary array.
 func findMaxConsecutiveOnes(nums []int) int {
 	maxCount := 0
 	currentCount := 0
@@ -330,59 +267,26 @@ func findMaxConsecutiveOnes(nums []int) int {
 }
 
 func main() {
-	// Test cases
 	fmt.Println(findMaxConsecutiveOnes([]int{1, 1, 0, 1, 1, 1})) // Output: 3
 	fmt.Println(findMaxConsecutiveOnes([]int{1, 0, 1, 1, 0, 1})) // Output: 2
-	fmt.Println(findMaxConsecutiveOnes([]int{0, 0, 0, 0, 0, 0})) // Output: 0
-	fmt.Println(findMaxConsecutiveOnes([]int{1, 1, 1, 1, 1, 1})) // Output: 6
-	fmt.Println(findMaxConsecutiveOnes([]int{}))                 // Output: 0
 }
 ```
 
-### Explanation:
-
-1. **Initialization**:
-   - `maxCount` keeps track of the maximum number of consecutive `1`s found so far.
-   - `currentCount` counts the current streak of `1`s.
-
-2. **Iterating Through the Array**:
-   - For each element:
-     - If it is `1`, `currentCount` is incremented. If `currentCount` exceeds `maxCount`, update `maxCount`.
-     - If it is `0`, reset `currentCount` to 0 as the streak of consecutive `1`s is broken.
-
-3. **Final Update**:
-   - After the loop, `maxCount` is returned, containing the maximum number of consecutive `1`s found.
-
-### Complexity:
-
-- **Time Complexity**: O(N), where N is the number of elements in the array. The array is traversed once.
-- **Space Complexity**: O(1). The solution uses a constant amount of extra space regardless of the size of the input.
-
-This solution efficiently finds the maximum number of consecutive `1`s in a binary array with a straightforward linear pass through the array.
-
+---
 
 ### Group Anagrams
 
-Given an array of strings, group the anagrams together. You can return the result in any order.
+Given an array of strings, group the anagrams together.
 
-### Input
+### Example
 
-- An array of strings `strs`.
+**Example 1**:
+```
+Input: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+Output: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
+```
 
-### Output
-
-- A list of lists, where each list contains anagrams grouped together.
-
-### Example 1:
-
-**Input:**  
-`strs = ["eat", "tea", "tan", "ate", "nat", "bat"]`  
-**Output:**  
-`[["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]`
-
----
-
-### Solution: Using a Hash Map
+### Solution
 
 ```go
 package main
@@ -406,62 +310,45 @@ func groupAnagrams(strs []string) [][]string {
 	groupAnagram := make([][]string, 0)
 	for _, value := range anagramlist {
 		groupAnagram = append(groupAnagram, value)
-
 	}
 	return groupAnagram
 }
+
 func main() {
-	// Example 1
 	strs1 := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
 	fmt.Println(groupAnagrams(strs1)) // Output: [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]]
-
-	// Example 2
-	strs2 := []string{""}
-	fmt.Println(groupAnagrams(strs2)) // Output: [[""]]
-
-	// Example 3
-	strs3 := []string{"a"}
-	fmt.Println(groupAnagrams(strs3)) // Output: [["a"]]
 }
 ```
 
+---
 
 ### Reverse Words in a String
 
-Given an input string `s`, reverse the order of the words. A word is defined as a sequence of non-space characters. The words in `s` are separated by one or more spaces. Return a string of the words in reverse order concatenated by a single space.
-
-### Input
-
-- A string `s` containing words separated by spaces.
-
-### Output
-
-- A string with the words in reverse order, with a single space separating each word.
-
-### Example 1:
-
-**Input:**  
-`s = "the sky is blue"`  
-**Output:**  
-`"blue is sky the"`
-
-### Example 2:
-
-**Input:**  
-`s = "  hello world  "`  
-**Output:**  
-`"world hello"`
-
-### Example 3:
-
-**Input:**  
-`s = "a good   example"`  
-**Output:**  
-`"example good a"`
+Given an input string `s`, reverse the order of the words.
 
 
 
-Here's the implementation in Go:
+### Example
+
+**Example 1**:
+```
+Input: "the sky is blue"
+Output: "blue is sky the"
+```
+
+**Example 2**:
+```
+Input: "  hello world  "
+Output: "world hello"
+```
+
+**Example 3**:
+```
+Input: "a good   example"
+Output: "example good a"
+```
+
+### Solution
 
 ```go
 package main
@@ -481,69 +368,44 @@ func reverseWords(s string) string {
 }
 
 func main() {
-	// Example 1
 	s1 := "the sky is blue"
 	fmt.Println(reverseWords(s1)) // Output: "blue is sky the"
 
-	// Example 2
 	s2 := "  hello world  "
 	fmt.Println(reverseWords(s2)) // Output: "world hello"
 
-	// Example 3
 	s3 := "a good   example"
 	fmt.Println(reverseWords(s3)) // Output: "example good a"
 }
 ```
 
-### Problem Statement: Compare Version Numbers
-
-Given two version numbers, `version1` and `version2`, compare them.
-
-- If `version1 > version2`, return `1`.
-- If `version1 < version2`, return `-1`.
-- If `version1 == version2`, return `0`.
-
-A version number consists of one or more numbers separated by dots. Each number can have multiple digits, and leading zeros are ignored. Version strings are non-empty and contain only digits and dots.
-
-### Input
-
-- Two strings `version1` and `version2` representing version numbers.
-
-### Output
-
-- An integer representing the comparison result: `1`, `-1`, or `0`.
-
-### Example 1:
-
-**Input:**  
-`version1 = "1.01"`, `version2 = "1.001"`  
-**Output:**  
-`0`  
-**Explanation:** Both versions are considered equal because leading zeros are ignored.
-
-### Example 2:
-
-**Input:**  
-`version1 = "1.0"`, `version2 = "1.0.0"`  
-**Output:**  
-`0`  
-**Explanation:** Trailing zeros in version strings are ignored.
-
-### Example 3:
-
-**Input:**  
-`version1 = "0.1"`, `version2 = "1.1"`  
-**Output:**  
-`-1`  
-**Explanation:** `version1` is less than `version2`.
-
 ---
 
 ### Compare Version Numbers
 
-The idea is to split both version numbers by the dot (`.`), compare each corresponding segment (converted to an integer), and determine which version is greater.
+Given two version numbers `version1` and `version2`, compare them.
 
-Here’s the implementation in Go:
+### Example
+
+**Example 1**:
+```
+Input: version1 = "1.01", version2 = "1.001"
+Output: 0
+```
+
+**Example 2**:
+```
+Input: version1 = "1.0", version2 = "1.0.0"
+Output: 0
+```
+
+**Example 3**:
+```
+Input: version1 = "0.1", version2 = "1.1"
+Output: -1
+```
+
+### Solution
 
 ```go
 package main
@@ -554,9 +416,7 @@ import (
 	"strings"
 )
 
-
 func compareVersion(version1 string, version2 string) int {
-
 	v1Part1 := strings.Split(version1, ".")
 	v2Part2 := strings.Split(version2, ".")
 	maxIter := max(len(v1Part1), len(v2Part2))
@@ -564,10 +424,10 @@ func compareVersion(version1 string, version2 string) int {
 		num1 := 0
 		num2 := 0
 		if i < len(v1Part1) {
-			num1, _ := strconv.Atoi(v1Part1[i])
+			num1, _ = strconv.Atoi(v1Part1[i])
 		}
 		if i < len(v2Part2) {
-			num2, _ := strconv.Atoi(v2Part2[i])
+			num2, _ = strconv.Atoi(v2Part2[i])
 		}
 		if num1 > num2 {
 			return 1
@@ -578,44 +438,35 @@ func compareVersion(version1 string, version2 string) int {
 	return 0
 }
 
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
 ```
 
+---
 
 ### Length of the Longest Sequence of Consecutive Elements
 
 Given an unsorted array of integers, find the length of the longest sequence of consecutive elements.
 
-### Input
+### Example
 
-- An array of integers `nums`.
+**Example 1**:
+```
+Input: nums = [100, 4, 200, 1, 3, 2]
+Output: 4
+```
 
-### Output
+**Example 2**:
+```
+Input: nums = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]
+Output: 9
+```
 
-- An integer representing the length of the longest sequence of consecutive elements.
-
-### Example 1:
-
-**Input:**  
-`nums = [100, 4, 200, 1, 3, 2]`  
-**Output:**  
-`4`  
-**Explanation:** The longest consecutive sequence is `[1, 2, 3, 4]`, and its length is `4`.
-
-### Example 2:
-
-**Input:**  
-`nums = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]`  
-**Output:**  
-`9`  
-**Explanation:** The longest consecutive sequence is `[0, 1, 2, 3, 4, 5, 6, 7, 8]`, and its length is `9`.
-
----
-
-### Solution: Using a Hash Set
-
-The idea is to use a hash set to keep track of the elements in the array. We then iterate through each element, and for each element, we check if it's the start of a sequence by verifying if there's no previous element (`num - 1`). If it's the start of a sequence, we count the length of the sequence by checking for consecutive elements.
-
-Here's how you can implement this in Go:
+### Solution
 
 ```go
 package main
@@ -637,18 +488,15 @@ func longestConsecutive(nums []int) int {
 	longestStreak := 0
 
 	for _, num := range nums {
-		// Check if it is the start of a sequence
 		if !numSet[num-1] {
 			currentNum := num
 			currentStreak := 1
 
-			// Count the length of the sequence
 			for numSet[currentNum+1] {
 				currentNum++
 				currentStreak++
 			}
 
-			// Update the longest streak
 			if currentStreak > longestStreak {
 				longestStreak = currentStreak
 			}
@@ -659,16 +507,10 @@ func longestConsecutive(nums []int) int {
 }
 
 func main() {
-	// Example 1
 	nums1 := []int{100, 4, 200, 1, 3, 2}
 	fmt.Println(longestConsecutive(nums1)) // Output: 4
 
-	// Example 2
 	nums2 := []int{0, 3, 7, 2, 5, 8, 4, 6, 0, 1}
 	fmt.Println(longestConsecutive(nums2)) // Output: 9
-
-	// Example 3
-	nums3 := []int{10, 5, 12, 3, 55, 30, 2, 4, 11, 1}
-	fmt.Println(longestConsecutive(nums3)) // Output: 4
 }
 ```
