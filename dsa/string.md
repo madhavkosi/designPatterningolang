@@ -576,18 +576,11 @@ import (
 )
 
 func reverseWords(s string) string {
-	// Step 1: Trim the input string to remove leading and trailing spaces
 	s = strings.TrimSpace(s)
-	
-	// Step 2: Split the string into a slice of words
 	words := strings.Fields(s)
-	
-	// Step 3: Reverse the order of words
 	for i, j := 0, len(words)-1; i < j; i, j = i+1, j-1 {
 		words[i], words[j] = words[j], words[i]
 	}
-	
-	// Step 4: Join the words with a single space
 	return strings.Join(words, " ")
 }
 
@@ -689,25 +682,4 @@ func compareVersion(version1 string, version2 string) int {
 	return 0
 }
 
-func main() {
-	// Example 1
-	version1a, version2a := "1.01", "1.001"
-	fmt.Println(compareVersion(version1a, version2a)) // Output: 0
-
-	// Example 2
-	version1b, version2b := "1.0", "1.0.0"
-	fmt.Println(compareVersion(version1b, version2b)) // Output: 0
-
-	// Example 3
-	version1c, version2c := "0.1", "1.1"
-	fmt.Println(compareVersion(version1c, version2c)) // Output: -1
-
-	// Example 4
-	version1d, version2d := "1.2", "1.10"
-	fmt.Println(compareVersion(version1d, version2d)) // Output: -1
-
-	// Example 5
-	version1e, version2e := "1.0.1", "1"
-	fmt.Println(compareVersion(version1e, version2e)) // Output: 1
-}
 ```

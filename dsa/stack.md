@@ -207,36 +207,32 @@ import (
 )
 
 func decodeString(s string) string {
-	charStack := stack.New()
-	countStack := stack.New()
+	stk := stack.New()
+	val := ""
+	stk.Push("")
+	for _, c := range s {
+		if unicode.IsDigit(c) {
+			val = val + string(c)
+		} else if c == '[' {
+			stk.Push(val)
+			stk.Push("")
+			val = ""
+		} else if c == ']' {
+			word := stk.Pop().(string)
+			count := stk.Pop().(string)
+			firstString := stk.Pop().(string)
+			countInt, _ := strconv.Atoi(count)
+			strGet := strings.Repeat(word, countInt)
+			firstString = firstString + strGet
+			stk.Push(firstString)
 
-	var num string
-	for i := 0; i < len(s); i++ {
-		if s[i] >= '0' && s[i] <= '9' {
-			num += string(s[i])
-		} else if s[i] == '[' {
-			count, _ := strconv.Atoi(num)
-			countStack.Push(count)
-			charStack.Push("")
-			num = ""
-		} else if s[i] == ']' {
-			count := countStack.Pop().(int)
-			str := strings.Repeat(charStack.Pop().(string), count)
-			if charStack.Len() > 0 {
-				charStack.Push(charStack.Pop().(string) + str)
-			} else {
-				charStack.Push(str)
-			}
 		} else {
-			if charStack.Len() > 0 {
-				charStack.Push(charStack.Pop().(string) + string(s[i]))
-			} else {
-				charStack.Push(string(s[i]))
-			}
+			data := stk.Pop().(string)
+			updatedData := string(data) + string(c)
+			stk.Push(updatedData)
 		}
 	}
-
-	return charStack.Pop().(string)
+	return stk.Pop().(string)
 }
 ```
 
