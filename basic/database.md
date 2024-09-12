@@ -222,3 +222,118 @@ By following these normalization steps, databases can be designed to reduce redu
 | **One-to-Many (1:N)** | Each row in Table A can be linked to multiple rows in Table B, but each row in Table B is linked to one and only one row in Table A. | Customer and Order tables where each customer can place multiple orders, but each order is placed by one customer. |
 | **Many-to-One (N:1)** | Each row in Table B can be linked to multiple rows in Table A. | Book and Library tables where each library can have multiple books, but each book is located in one library. |
 | **Many-to-Many (N:N)** | Each row in Table A can be linked to multiple rows in Table B, and each row in Table B can be linked to multiple rows in Table A. | Student and Course tables where each student can enroll in multiple courses, and each course can have multiple students. |
+
+
+
+### Optimistic vs. Pessimistic Locking
+
+In a system where multiple users might try to access and modify the same data simultaneously (such as a seat booking system in a movie theater), you need strategies to ensure **data consistency** and avoid conflicts. Optimistic and Pessimistic Locking are two common strategies used in concurrency control to handle these scenarios.
+
+### 1. **Pessimistic Locking**
+
+Pessimistic locking assumes that **conflicts are likely** to happen and takes steps to prevent them before any changes are made to the data.
+
+#### How Pessimistic Locking Works:
+- When a user (or process) accesses a piece of data (e.g., a seat in a movie theater), the system **locks** the data.
+- This lock ensures that **no other user can access or modify the data** until the current user has finished the transaction (e.g., booking the seat).
+- Once the user finishes the transaction (booking the seat), the lock is released, and other users can then access or modify the data.
+
+#### Example in a Movie Booking System:
+- **User A** selects seat A1 to book.
+- The system places a **lock** on seat A1, ensuring that **User B** (or any other user) cannot book seat A1 while **User A** is in the process of completing the booking.
+- If **User B** tries to book seat A1 during this time, they will either be blocked or receive a message saying the seat is already being processed by another user.
+- Once **User A** completes the booking (or cancels), the system **releases the lock** on seat A1, allowing other users to book it.
+
+#### Benefits:
+- **Data integrity** is guaranteed because only one user can access the data at a time.
+- Suitable for systems where there are high chances of conflict (e.g., a seat might be in high demand during peak hours).
+
+#### Drawbacks:
+- **Reduced performance**: Pessimistic locking can lead to bottlenecks, especially in a high-concurrency system, because users might be blocked waiting for a lock to be released.
+- **Deadlocks**: If multiple users hold locks on different resources and wait for each other to release their locks, it can cause deadlocks.
+
+### 2. **Optimistic Locking**
+
+Optimistic locking, on the other hand, assumes that **conflicts are rare** and does not lock the data when it's read. Instead, it detects conflicts only when the data is updated.
+
+#### How Optimistic Locking Works:
+- When a user reads a piece of data (e.g., seat A1), no lock is placed.
+- The system keeps track of the **version** of the data (or a timestamp) when it is read.
+- When the user attempts to update the data (e.g., book the seat), the system checks whether the **data version has changed** since it was read.
+    - If the version is the same, the update proceeds.
+    - If the version has changed (indicating another user has modified the data), the update is **rejected**, and the user is prompted to retry the transaction.
+
+#### Example in a Movie Booking System:
+- **User A** selects seat A1, and the system provides them with the current version of the seat (say, version 1).
+- **User B** selects seat A1 shortly afterward, also receiving version 1.
+- **User A** completes the booking and updates the seat status to "Booked." The system then increments the version of seat A1 to version 2.
+- **User B** now attempts to book seat A1. However, since the version has changed from 1 to 2 (due to **User A's** booking), the system **rejects the update** from **User B** and informs them that the seat is no longer available.
+- **User B** must refresh their view and choose a different seat.
+
+#### Benefits:
+- **Better performance**: Since no locks are used when reading the data, multiple users can access the data simultaneously without blocking each other.
+- **Scalability**: Optimistic locking is well-suited for systems with many concurrent users because conflicts are assumed to be rare, and users are not blocked from accessing data.
+
+#### Drawbacks:
+- **Conflict handling**: Users might occasionally encounter errors if another user has updated the data before them, requiring them to retry the transaction.
+- **Increased complexity**: The system needs to manage data versions or timestamps to detect conflicts.
+
+### 3. **When to Use Each Locking Mechanism**
+
+#### Use **Pessimistic Locking** When:
+- **High contention**: When there is a high likelihood that multiple users will try to modify the same data at the same time. For example, during a flash sale for movie tickets when many users are attempting to book seats simultaneously.
+- **Critical data**: If losing or corrupting data due to concurrent modifications is unacceptable, such as in financial systems or when booking highly valuable resources (e.g., VIP tickets).
+- **Short transactions**: Pessimistic locking is more suitable when transactions are short, minimizing the time that data is locked.
+
+#### Use **Optimistic Locking** When:
+- **Low contention**: If it's rare for multiple users to modify the same data at the same time, optimistic locking allows for better performance.
+- **Scalability**: In systems with many concurrent users but low conflict rates, such as in distributed applications or large-scale web services.
+- **Read-heavy systems**: If the system is primarily read-heavy and conflicts during data writes are rare, optimistic locking allows many users to read data without delays caused by locks.
+
+### 4. **How to Implement Each Locking Mechanism**
+
+#### Implementing **Pessimistic Locking**:
+Most relational databases support pessimistic locking natively. You can use database transactions to lock rows when they are read:
+
+- **For SQL databases**: Use a `SELECT FOR UPDATE` statement to lock the rows being accessed. For example:
+
+    ```sql
+    SELECT * FROM seats WHERE seat_id = 'A1' FOR UPDATE;
+    ```
+
+    This locks the row corresponding to seat A1, preventing other users from modifying it until the transaction is complete.
+
+- **In NoSQL databases**: Some NoSQL databases (like MongoDB) offer locking mechanisms at the document level, though implementation might vary.
+
+#### Implementing **Optimistic Locking**:
+Optimistic locking can be implemented by adding a **version number** or **timestamp** to each row or record in the database. Every time a record is updated, the version number is incremented or the timestamp is updated.
+
+- When a user reads a record, the version number or timestamp is also fetched.
+- When the user updates the record, the system checks if the version number or timestamp has changed since the record was last read.
+
+For example:
+
+1. **Select seat with version number**:
+
+    ```sql
+    SELECT seat_id, status, version FROM seats WHERE seat_id = 'A1';
+    ```
+
+2. **Update seat status with version check**:
+
+    ```sql
+    UPDATE seats
+    SET status = 'Booked', version = version + 1
+    WHERE seat_id = 'A1' AND version = 1;
+    ```
+
+   If the `version` is still 1 (meaning no other user has updated it), the update proceeds. If another user has already updated the record (changing the version to 2), this query will fail, and the user will be prompted to try again.
+
+### 5. **Conclusion**
+
+Both **optimistic** and **pessimistic locking** provide ways to handle concurrent access to data, but they are suited for different scenarios:
+
+- **Pessimistic locking** is better for situations where conflicts are likely and data consistency is critical, but it comes with the cost of reduced system throughput and the potential for deadlocks.
+- **Optimistic locking** works well when conflicts are rare, providing better performance and scalability but requiring some extra handling for retrying transactions.
+
+In a movie booking system, **optimistic locking** is often preferred, as conflicts (multiple users booking the same seat) are rare in most cases, and it allows the system to scale and perform better under heavy load. However, for highly contested events, such as the opening of bookings for a blockbuster movie, **pessimistic locking** might be considered to ensure absolute data integrity.
