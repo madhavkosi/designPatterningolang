@@ -337,3 +337,58 @@ Both **optimistic** and **pessimistic locking** provide ways to handle concurren
 - **Optimistic locking** works well when conflicts are rare, providing better performance and scalability but requiring some extra handling for retrying transactions.
 
 In a movie booking system, **optimistic locking** is often preferred, as conflicts (multiple users booking the same seat) are rare in most cases, and it allows the system to scale and perform better under heavy load. However, for highly contested events, such as the opening of bookings for a blockbuster movie, **pessimistic locking** might be considered to ensure absolute data integrity.
+
+
+### Serializable Lock vs. Optimistic and Pessimistic Locking - Short Notes
+
+**1. Definitions**  
+- **Serializable Lock:**  
+  - Highest isolation level, ensures transactions appear sequential.  
+  - Uses strict locks or MVCC.  
+  - Goal: Perfect consistency.
+  
+- **Optimistic Locking:**  
+  - No locks during read, checks for conflicts during write.  
+  - Goal: High concurrency, detects conflicts at write time.
+
+- **Pessimistic Locking:**  
+  - Locks data as soon as it's read to prevent conflicts.  
+  - Goal: Prevent conflicts by blocking access during a transaction.
+
+**2. How They Work**  
+- **Serializable:** Locks rows/tables or uses MVCC to ensure no conflicts and full isolation.
+- **Optimistic:** No locks during reads, uses versioning/timestamps to detect changes at write time.
+- **Pessimistic:** Locks data immediately upon read and holds until transaction ends.
+
+**3. When to Use**  
+- **Serializable:** Critical systems like financial apps, where consistency > performance.
+- **Optimistic:** High concurrency, low conflict systems (e.g., web apps).
+- **Pessimistic:** High conflict systems like booking and reservation systems.
+
+**4. Performance and Trade-offs**  
+- **Serializable:**  
+  - **Performance:** Low due to high locking overhead, but highest consistency.  
+  - **Trade-off:** Perfect consistency, low scalability.
+  
+- **Optimistic:**  
+  - **Performance:** High concurrency, low read overhead.  
+  - **Trade-off:** Possible transaction retries, adds complexity.
+  
+- **Pessimistic:**  
+  - **Performance:** Lower concurrency due to locks, potential for deadlocks.  
+  - **Trade-off:** Ensures data integrity but reduces throughput.
+
+**5. Examples**  
+- **Serializable:** Financial transactions (bank account transfers).  
+- **Optimistic:** E-commerce systems (product purchases).  
+- **Pessimistic:** Movie ticket booking systems (seat reservations).
+
+**Comparison Summary:**
+| Characteristic      | Serializable       | Optimistic          | Pessimistic       |
+|---------------------|--------------------|---------------------|-------------------|
+| Conflict Handling    | Serializes all     | Conflicts checked on write | Conflicts blocked at read |
+| Performance Impact   | High (low concurrency) | Low (high concurrency) | Medium to High (due to blocking) |
+| Concurrency          | Low                | High                | Low to Medium     |
+| Data Integrity       | Highest            | High, with retries   | High              |
+| Use Case             | Financial systems  | Web apps, distributed systems | Reservations, auctions |
+
