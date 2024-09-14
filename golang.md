@@ -16,262 +16,22 @@ func main() {
     for i := 0; i < 5; i++ {
         fmt.Println(i)
     }
-}
-```
-
-- `i := 0`: Initialization statement, sets up the loop variable.
-- `i < 5`: Condition, the loop runs as long as this condition is true.
-- `i++`: Post statement, executed at the end of every iteration.
-
-#### Loop with Only Condition
-If you omit the initialization and post statements, you get a while-like loop.
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-    i := 0
-    for i < 5 {
+    //
+     for i < 5 {
         fmt.Println(i)
         i++
     }
-}
-```
-
-#### Infinite Loop
-A loop without any condition will run indefinitely.
-
-```go
-package main
-
-func main() {
+    //
     for {
         // infinite loop
     }
 }
 ```
 
-### Loop with `range`
 
-The `range` keyword is used to iterate over elements in various data structures.
-
-#### Slice
-```go
-package main
-
-import "fmt"
-
-func main() {
-    nums := []int{1, 2, 3, 4, 5}
-    for i, num := range nums {
-        fmt.Printf("Index: %d, Value: %d\n", i, num)
-    }
-}
-```
-
-- `i`: Index of the element.
-- `num`: Value of the element.
-
-#### Map
-```go
-package main
-
-import "fmt"
-
-func main() {
-    m := map[string]int{"a": 1, "b": 2, "c": 3}
-    for key, value := range m {
-        fmt.Printf("Key: %s, Value: %d\n", key, value)
-    }
-}
-```
-
-### Advanced `for` Loop
-
-#### Breaking and Continuing
-You can control the loop using `break` and `continue`.
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-    for i := 0; i < 10; i++ {
-        if i == 5 {
-            break // exits the loop
-        }
-        if i%2 == 0 {
-            continue // skips the current iteration
-        }
-        fmt.Println(i)
-    }
-}
-```
-
-#### Nested Loops
-Loops can be nested to handle more complex iterations.
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-    for i := 1; i <= 3; i++ {
-        for j := 1; j <= 3; j++ {
-            fmt.Printf("i: %d, j: %d\n", i, j)
-        }
-    }
-}
-```
-
-#### Labels with Break and Continue
-Labels can be used with `break` and `continue` to control outer loops.
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-outer:
-    for i := 1; i <= 3; i++ {
-        for j := 1; j <= 3; j++ {
-            if i*j > 4 {
-                break outer // breaks out of the outer loop
-            }
-            fmt.Printf("i: %d, j: %d\n", i, j)
-        }
-    }
-}
-```
-
-### Summary
-
-- Basic form: `for init; condition; post { }`
-- Condition-only: `for condition { }`
-- Infinite loop: `for { }`
-- Iterating with `range` over slices, maps, and other collections.
-- Controlling loops with `break`, `continue`, and labels for more advanced flow control.
-
-These constructs allow you to implement a wide variety of loop-based logic in Go.
-
-
-Sure! Here are very short notes on `if` and `else` statements in Go:
-
-### Basic `if` Statement
-- Executes a block of code if the condition is true.
-  ```go
-  if condition {
-      // code to execute if condition is true
-  }
-  ```
-
-### `if-else` Statement
-- Provides an alternative block of code if the condition is false.
-  ```go
-  if condition {
-      // code to execute if condition is true
-  } else {
-      // code to execute if condition is false
-  }
-  ```
-
-### `if-else if-else` Statement
-- Allows multiple conditions to be checked sequentially.
-  ```go
-  if condition1 {
-      // code to execute if condition1 is true
-  } else if condition2 {
-      // code to execute if condition2 is true
-  } else {
-      // code to execute if both conditions are false
-  }
-  ```
-
-### `if` with Short Statement
-- Includes an initialization statement that can be used within the condition.
-  ```go
-  if err := someFunction(); err != nil {
-      // handle error
-  }
-  ```
-
-### Summary Table
-
-| Type                    | Syntax                                                                 | Description                              |
-|-------------------------|------------------------------------------------------------------------|------------------------------------------|
-| **Basic `if`**          | ```if condition { /*...*/ }```                                         | Executes code block if condition is true.|
-| **`if-else`**           | ```if condition { /*...*/ } else { /*...*/ }```                        | Executes alternative code block if condition is false. |
-| **`if-else if-else`**   | ```if condition1 { /*...*/ } else if condition2 { /*...*/ } else { /*...*/ }``` | Checks multiple conditions sequentially. |
-| **`if` with Short Statement** | ```if initStmt; condition { /*...*/ }```                          | Includes an init statement within the condition. |
-
-These notes cover the basic and slightly advanced usage of `if` and `else` statements in Go.
-
-Sure! Here are concise notes on maps in Go:
 
 ### Basic Concepts
 
-- **Definition**: A map is a collection of key-value pairs, where each key is unique.
-- **Syntax**:
-  ```go
-  var m map[keyType]valueType
-  ```
-
-### Creating and Initializing Maps
-
-- **Using `make`**:
-  ```go
-  m := make(map[string]int)
-  ```
-  
-- **Using a map literal**:
-  ```go
-  m := map[string]int{"one": 1, "two": 2}
-  ```
-
-### Adding and Updating Elements
-
-- **Add or update**:
-  ```go
-  m["key"] = value
-  ```
-
-### Accessing Elements
-
-- **Get value**:
-  ```go
-  value := m["key"]
-  ```
-
-- **Check if key exists**:
-  ```go
-  value, ok := m["key"]
-  if ok {
-      // key exists
-  } else {
-      // key does not exist
-  }
-  ```
-
-### Deleting Elements
-
-- **Delete a key**:
-  ```go
-  delete(m, "key")
-  ```
-
-### Iterating Over Maps
-
-- **Using `range`**:
-  ```go
-  for key, value := range m {
-      fmt.Println(key, value)
-  }
-  ```
 
 ### Summary Table
 
@@ -1083,7 +843,6 @@ func main() {
     // Convert an integer to a string
     numStr := strconv.Itoa(123)
     fmt.Println("Integer to String:", numStr) // "123"
-
     // Convert a string to an integer
     num, err := strconv.Atoi(numStr)
     if err != nil {
