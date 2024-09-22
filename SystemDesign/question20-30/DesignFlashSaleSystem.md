@@ -584,9 +584,7 @@ Using **Redis** in a flash sale system can significantly improve performance, sc
 ### Conclusion
 
 Using **Redis** in a flash sale system provides significant advantages:
-1. **
-
-Real-time performance**: Redis’s in-memory operations allow for fast inventory management, session handling, and caching.
+1. **Real-time performance**: Redis’s in-memory operations allow for fast inventory management, session handling, and caching.
 2. **Atomic operations**: Redis guarantees atomicity for inventory updates, preventing overselling and race conditions.
 3. **Scalability**: With Redis Cluster, you can handle massive traffic spikes by distributing data across multiple nodes.
 4. **Resilience**: Redis can handle distributed locking and session management, ensuring consistent user experiences even in a highly concurrent environment.
