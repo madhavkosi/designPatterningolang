@@ -19,30 +19,11 @@ The tree should be transformed to:
  / \   \
 4-> 5 -> 7 -> nil
 ```
-
-### Solution Approach
-
-To populate the `nextRight` pointers:
-1. **Level Order Traversal**: Use a level order traversal approach where you process each level of the tree before moving to the next. This can be done using a queue.
-2. **Linking Nodes**: While processing each level, link each node to the next node in the queue.
-3. **Use a Sentinel Node**: To mark the end of each level, a sentinel node (`nil`) can be used to identify when to move to the next level.
-
 ### Implementation in Go
 
 Here's the Go implementation:
 
 ```go
-package main
-
-import "fmt"
-
-// TreeNode represents a node in the binary tree with an additional next pointer.
-type TreeNode struct {
-	Val       int
-	Left      *TreeNode
-	Right     *TreeNode
-	NextRight *TreeNode
-}
 
 // connect populates the nextRight pointers to point to the next right node in the same level.
 func connect(root *TreeNode) {
@@ -83,80 +64,12 @@ func connect(root *TreeNode) {
 		}
 	}
 }
-
-// printLevels prints the nodes of the tree level by level using the nextRight pointers.
-func printLevels(root *TreeNode) {
-	start := root
-	for start != nil {
-		curr := start
-		start = nil
-		for curr != nil {
-			fmt.Print(curr.Val, " ")
-			if start == nil {
-				if curr.Left != nil {
-					start = curr.Left
-				} else if curr.Right != nil {
-					start = curr.Right
-				}
-			}
-			curr = curr.NextRight
-		}
-		fmt.Println()
-	}
-}
-
-func main() {
-	// Creating a sample binary tree
-	/*
-	        1
-	       / \
-	      2   3
-	     / \   \
-	    4   5   7
-	*/
-	root := &TreeNode{Val: 1}
-	root.Left = &TreeNode{Val: 2}
-	root.Right = &TreeNode{Val: 3}
-	root.Left.Left = &TreeNode{Val: 4}
-	root.Left.Right = &TreeNode{Val: 5}
-	root.Right.Right = &TreeNode{Val: 7}
-
-	// Connect the nextRight pointers
-	connect(root)
-
-	// Print the levels using nextRight pointers
-	fmt.Println("Levels of the tree using nextRight pointers:")
-	printLevels(root)
-}
 ```
 
-### Explanation:
-
-1. **TreeNode Structure**:
-   - Represents a node in the binary tree with an integer value (`Val`), pointers to the left and right children (`Left` and `Right`), and an additional pointer (`NextRight`) that points to the next node on the same level.
-
-2. **connect Function**:
-   - This function populates the `nextRight` pointers for each node in the tree.
-   - A queue is used for a level-order traversal (BFS).
-   - For each node at a given level, the `NextRight` pointer is set to point to the next node in the queue.
-   - The last node in each level has its `NextRight` pointer set to `nil`.
-
-3. **printLevels Function**:
-   - This function prints the nodes of the tree level by level, using the `NextRight` pointers for traversal.
-
-4. **main Function**:
-   - Constructs a sample binary tree.
-   - Calls `connect` to populate the `NextRight` pointers.
-   - Prints the levels of the tree using `NextRight` pointers to verify the result.
-
-### Complexity:
-
-- **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is visited once.
-- **Space Complexity**: O(n) in the worst case, where the queue might hold all the nodes in the last level.
 
 
 
-### Problem Description
+### Key in BST
 
 In a Binary Search Tree (BST), each node contains a key, and the keys in the left subtree are less than the node's key, while the keys in the right subtree are greater than the node's key. Given a key, the task is to find the node with the given key in the BST. If the key exists, return the node; otherwise, return `nil`.
 
@@ -190,14 +103,6 @@ Output: nil (Key not found)
 
 ### Solution Approach
 
-To search for a given key in a BST:
-1. **Start at the root**: If the tree is empty, return `nil`.
-2. **Compare the key** with the current node's key:
-   - If the key is equal to the current node's key, the search is successful, and the node is returned.
-   - If the key is less than the current node's key, search in the left subtree.
-   - If the key is greater than the current node's key, search in the right subtree.
-
-This approach leverages the BST property and allows for efficient searching with a time complexity of O(h), where h is the height of the tree. In a balanced BST, this complexity is O(log n), where n is the number of nodes.
 
 ### Implementation in Go
 
@@ -235,59 +140,9 @@ func searchBST(root *TreeNode, key int) *TreeNode {
 	return searchBST(root.Right, key)
 }
 
-func main() {
-	// Creating a sample binary search tree
-	/*
-	        4
-	       / \
-	      2   6
-	     / \ / \
-	    1  3 5  7
-	*/
-	root := &TreeNode{Val: 4}
-	root.Left = &TreeNode{Val: 2}
-	root.Right = &TreeNode{Val: 6}
-	root.Left.Left = &TreeNode{Val: 1}
-	root.Left.Right = &TreeNode{Val: 3}
-	root.Right.Left = &TreeNode{Val: 5}
-	root.Right.Right = &TreeNode{Val: 7}
-
-	// Search for the key in the BST
-	key := 5
-	node := searchBST(root, key)
-	if node != nil {
-		fmt.Printf("Node with key %d found.\n", node.Val)
-	} else {
-		fmt.Printf("Node with key %d not found.\n", key)
-	}
-
-	// Search for a key not in the BST
-	key = 10
-	node = searchBST(root, key)
-	if node != nil {
-		fmt.Printf("Node with key %d found.\n", node.Val)
-	} else {
-		fmt.Printf("Node with key %d not found.\n", key)
-	}
-}
 ```
 
-### Explanation:
 
-1. **TreeNode Structure**:
-   - Represents a node in the binary search tree with an integer value (`Val`) and pointers to the left and right children.
-
-2. **searchBST Function**:
-   - This function searches for the given `key` in the BST.
-   - It starts from the `root` and compares the `key` with the current node's value.
-   - If the `key` is found (i.e., `root.Val == key`), the node is returned.
-   - If the `key` is less than the current node's value, the function recursively searches in the left subtree.
-   - If the `key` is greater than the current node's value, the function recursively searches in the right subtree.
-   - If the `root` is `nil`, it means the `key` is not present in the BST, and the function returns `nil`.
-
-3. **main Function**:
-   - Constructs a sample binary search tree.
-   - Calls `searchBST` to search for a given key in the BST and prints whether the key is found or not.
 
 ### Complexity:
 
@@ -295,7 +150,7 @@ func main() {
 - **Space Complexity**: O(h), due to the recursion stack. In the worst case (skewed tree), the space complexity is O(n).
 
 
-### Problem Description
+### Check BST
 
 A Binary Search Tree (BST) is a binary tree where each node has the following properties:
 1. The left subtree of a node contains only nodes with keys less than the node's key.
@@ -303,17 +158,6 @@ A Binary Search Tree (BST) is a binary tree where each node has the following pr
 3. Both the left and right subtrees must also be binary search trees.
 
 Given a binary tree, the task is to determine whether it is a BST or not.
-
-### Solution Approach
-
-To check if a binary tree is a BST, we can use a recursive approach:
-1. For each node, we need to ensure that all nodes in the left subtree have values less than the node's value and all nodes in the right subtree have values greater than the node's value.
-2. We can maintain a range `[min, max]` for each node, where:
-   - Initially, `min` is negative infinity, and `max` is positive infinity.
-   - For the left child of a node, the new `max` becomes the node's value.
-   - For the right child of a node, the new `min` becomes the node's value.
-
-This approach ensures that every node adheres to the BST properties throughout the tree.
 
 ### Implementation in Go
 
@@ -354,48 +198,6 @@ func isBST(root *TreeNode) bool {
 	return isBSTUtil(root, math.MinInt64, math.MaxInt64)
 }
 
-func main() {
-	// Creating a sample binary tree that is a BST
-	/*
-	        4
-	       / \
-	      2   6
-	     / \ / \
-	    1  3 5  7
-	*/
-	root1 := &TreeNode{Val: 4}
-	root1.Left = &TreeNode{Val: 2}
-	root1.Right = &TreeNode{Val: 6}
-	root1.Left.Left = &TreeNode{Val: 1}
-	root1.Left.Right = &TreeNode{Val: 3}
-	root1.Right.Left = &TreeNode{Val: 5}
-	root1.Right.Right = &TreeNode{Val: 7}
-
-	// Check if the tree is a BST
-	fmt.Printf("Tree 1 is a BST: %v\n", isBST(root1)) // Output: true
-
-	// Creating a sample binary tree that is not a BST
-	/*
-	        4
-	       / \
-	      2   6
-	     / \ / \
-	    1  3 5  8
-	              /
-	             7
-	*/
-	root2 := &TreeNode{Val: 4}
-	root2.Left = &TreeNode{Val: 2}
-	root2.Right = &TreeNode{Val: 6}
-	root2.Left.Left = &TreeNode{Val: 1}
-	root2.Left.Right = &TreeNode{Val: 3}
-	root2.Right.Left = &TreeNode{Val: 5}
-	root2.Right.Right = &TreeNode{Val: 8}
-	root2.Right.Right.Left = &TreeNode{Val: 7}
-
-	// Check if the tree is a BST
-	fmt.Printf("Tree 2 is a BST: %v\n", isBST(root2)) // Output: false
-}
 ```
 
 ### Complexity:
@@ -403,19 +205,7 @@ func main() {
 - **Time Complexity**: O(n), where n is the number of nodes in the tree. Each node is visited once.
 - **Space Complexity**: O(h), where h is the height of the tree, due to the recursion stack. In the worst case (a skewed tree), the space complexity is O(n).
 
-
-To find the **Lowest Common Ancestor (LCA)** of two nodes in a Binary Search Tree (BST) using a depth-first search (DFS) approach, we can take advantage of the BST properties:
-
-1. **BST Property**: In a BST, for any given node:
-   - The left subtree contains only nodes with values less than the node's key.
-   - The right subtree contains only nodes with values greater than the node's key.
-
-Using these properties, we can optimize the LCA search:
-
-- Start at the root and compare the values of the nodes `p` and `q` with the current node's value.
-- If both `p` and `q` are less than the current node's value, the LCA must be in the left subtree.
-- If both `p` and `q` are greater than the current node's value, the LCA must be in the right subtree.
-- If `p` and `q` are on opposite sides of the current node, or one of them is the current node, then the current node is the LCA.
+### Lowest Common Ancestor (LCA) BST
 
 ### Implementation in Go
 
@@ -425,13 +215,6 @@ Here’s the Go implementation using a DFS approach for a BST:
 package main
 
 import "fmt"
-
-// TreeNode represents a node in the binary search tree.
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
 
 // lowestCommonAncestor finds the LCA of two given nodes in a BST.
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
@@ -455,70 +238,7 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 	return root
 }
 
-func main() {
-	// Creating a sample binary search tree
-	/*
-	        6
-	       / \
-	      2   8
-	     / \ / \
-	    0  4 7  9
-	      / \
-	     3   5
-	*/
-	root := &TreeNode{Val: 6}
-	root.Left = &TreeNode{Val: 2}
-	root.Right = &TreeNode{Val: 8}
-	root.Left.Left = &TreeNode{Val: 0}
-	root.Left.Right = &TreeNode{Val: 4}
-	root.Left.Right.Left = &TreeNode{Val: 3}
-	root.Left.Right.Right = &TreeNode{Val: 5}
-	root.Right.Left = &TreeNode{Val: 7}
-	root.Right.Right = &TreeNode{Val: 9}
-
-	// Finding LCA of nodes with values 2 and 8
-	p := &TreeNode{Val: 2}
-	q := &TreeNode{Val: 8}
-	lca := lowestCommonAncestor(root, p, q)
-	if lca != nil {
-		fmt.Printf("LCA of nodes %d and %d is node with value %d\n", p.Val, q.Val, lca.Val)
-	} else {
-		fmt.Printf("LCA of nodes %d and %d not found\n", p.Val, q.Val)
-	}
-
-	// Finding LCA of nodes with values 2 and 4
-	p = &TreeNode{Val: 2}
-	q = &TreeNode{Val: 4}
-	lca = lowestCommonAncestor(root, p, q)
-	if lca != nil {
-		fmt.Printf("LCA of nodes %d and %d is node with value %d\n", p.Val, q.Val, lca.Val)
-	} else {
-		fmt.Printf("LCA of nodes %d and %d not found\n", p.Val, q.Val)
-	}
-}
 ```
-
-### Explanation:
-
-1. **TreeNode Structure**:
-   - Represents a node in the binary search tree with an integer value (`Val`) and pointers to the left and right children.
-
-2. **lowestCommonAncestor Function**:
-   - This function determines the LCA of two nodes `p` and `q` in a BST.
-   - **Base Case**: If the `root` is `nil`, the function returns `nil`.
-   - If both `p` and `q` are less than the `root`'s value, the LCA must be in the left subtree, so the function recursively calls itself with the left child.
-   - If both `p` and `q` are greater than the `root`'s value, the LCA must be in the right subtree, so the function recursively calls itself with the right child.
-   - If one node is on the left and the other on the right, or one of the nodes is the `root`, then the current `root` is the LCA.
-
-3. **main Function**:
-   - Constructs a sample BST and finds the LCA for different pairs of nodes. It prints the result to verify the correctness.
-
-### Complexity:
-
-- **Time Complexity**: O(h), where h is the height of the tree. This is O(log n) for a balanced BST, where n is the number of nodes.
-- **Space Complexity**: O(h), due to the recursion stack. In the worst case (a skewed tree), the space complexity could be O(n).
-
-
 ### Construct BST from given keys
 
 
@@ -589,17 +309,6 @@ func inorderTraversal(root *TreeNode) {
 	}
 }
 
-func main() {
-	// Example keys to construct the BST
-	keys := []int{6, 2, 8, 0, 4, 7, 9, 3, 5}
-
-	// Construct the BST
-	root := constructBST(keys)
-
-	// Print the inorder traversal of the BST
-	fmt.Println("Inorder traversal of the constructed BST:")
-	inorderTraversal(root) // Output: 0 2 3 4 5 6 7 8 9
-}
 ```
 
 ### Explanation:
@@ -637,34 +346,12 @@ func main() {
 
 Given an array representing the preorder traversal of a binary search tree (BST), the task is to construct the BST. In a preorder traversal, the nodes are visited in the following order: root, left subtree, and then right subtree.
 
-### Solution Approach
-
-To construct a BST from a preorder traversal, we can utilize the properties of BSTs and the sequence of preorder traversal:
-1. **Root Identification**: The first element in the preorder array is the root of the BST.
-2. **Subtree Construction**:
-   - All elements following the root in the preorder array that are less than the root will form the left subtree.
-   - All elements greater than the root will form the right subtree.
-3. **Recursive Construction**:
-   - Recursively apply the above logic to construct the left and right subtrees.
 
 ### Implementation in Go
 
 Here's the Go implementation:
 
 ```go
-package main
-
-import (
-	"fmt"
-	"math"
-)
-
-// TreeNode represents a node in the binary search tree.
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
 
 // constructBSTFromPreorderHelper is a helper function to construct a BST from preorder traversal.
 func constructBSTFromPreorderHelper(preorder []int, idx *int, min, max int) *TreeNode {
@@ -706,42 +393,7 @@ func inorderTraversal(root *TreeNode) {
 	}
 }
 
-func main() {
-	// Example preorder traversal to construct the BST
-	preorder := []int{8, 5, 1, 7, 10, 12}
-
-	// Construct the BST
-	root := constructBSTFromPreorder(preorder)
-
-	// Print the inorder traversal of the constructed BST
-	fmt.Println("Inorder traversal of the constructed BST:")
-	inorderTraversal(root) // Output: 1 5 7 8 10 12
-}
 ```
-
-### Explanation:
-
-1. **TreeNode Structure**:
-   - Represents a node in the binary search tree with an integer value (`Val`) and pointers to the left and right children (`Left` and `Right`).
-
-2. **constructBSTFromPreorderHelper Function**:
-   - A recursive helper function that constructs a BST from the preorder traversal array.
-   - The function maintains a pointer (`idx`) to the current index in the preorder array.
-   - It checks whether the current value falls within the permissible range (`min` and `max`) for the node. This range ensures that the BST properties are maintained.
-   - If the value is within the range, a new `TreeNode` is created with this value, and the index is incremented.
-   - The function then recursively constructs the left and right subtrees by updating the permissible range:
-     - The left subtree can only contain values less than the current node's value.
-     - The right subtree can only contain values greater than the current node's value.
-
-3. **constructBSTFromPreorder Function**:
-   - This function initializes the index (`idx`) and calls the helper function with the entire permissible range of values (`math.MinInt64` to `math.MaxInt64`).
-
-4. **inorderTraversal Function**:
-   - A utility function to print the inorder traversal of the BST. Inorder traversal of a BST should result in a sorted sequence of the node values, which can be used to verify the correctness of the constructed tree.
-
-5. **main Function**:
-   - Demonstrates the construction of a BST from a given preorder traversal and prints the inorder traversal of the resulting BST.
-
 ### Complexity:
 
 - **Time Complexity**: O(n), where n is the number of nodes in the tree. Each element of the preorder array is processed exactly once.
@@ -811,61 +463,7 @@ func findCeil(root *TreeNode, key int) *TreeNode {
 
 	return ceil
 }
-
-func main() {
-	// Creating a sample binary search tree
-	/*
-	        20
-	       /  \
-	      8    22
-	     / \
-	    4   12
-	       /  \
-	      10   14
-	*/
-	root := &TreeNode{Val: 20}
-	root.Left = &TreeNode{Val: 8}
-	root.Right = &TreeNode{Val: 22}
-	root.Left.Left = &TreeNode{Val: 4}
-	root.Left.Right = &TreeNode{Val: 12}
-	root.Left.Right.Left = &TreeNode{Val: 10}
-	root.Left.Right.Right = &TreeNode{Val: 14}
-
-	key := 13
-
-	// Finding floor
-	floorNode := findFloor(root, key)
-	if floorNode != nil {
-		fmt.Printf("Floor of %d is %d\n", key, floorNode.Val)
-	} else {
-		fmt.Printf("Floor of %d does not exist\n", key)
-	}
-
-	// Finding ceil
-	ceilNode := findCeil(root, key)
-	if ceilNode != nil {
-		fmt.Printf("Ceil of %d is %d\n", key, ceilNode.Val)
-	} else {
-		fmt.Printf("Ceil of %d does not exist\n", key)
-	}
-}
 ```
-
-### Explanation:
-
-1. **TreeNode Structure**:
-   - Represents a node in the binary search tree with an integer value (`Val`) and pointers to the left and right children (`Left` and `Right`).
-
-2. **findFloor Function**:
-   - This function finds the floor of a given `key` in the BST.
-   - It iteratively traverses the tree, updating the `floor` variable whenever it encounters a node with a value less than or equal to the `key` and continues the search for a potentially closer floor value in the right subtree.
-
-3. **findCeil Function**:
-   - This function finds the ceil of a given `key` in the BST.
-   - It iteratively traverses the tree, updating the `ceil` variable whenever it encounters a node with a value greater than or equal to the `key` and continues the search for a potentially closer ceil value in the left subtree.
-
-4. **main Function**:
-   - Constructs a sample BST and finds both the floor and ceil for a given `key`, printing the results.
 
 ### Complexity:
 
