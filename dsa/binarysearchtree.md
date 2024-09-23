@@ -405,12 +405,6 @@ func inorderTraversal(root *TreeNode) {
 
 To complement the floor function, we can also implement a function to find the **ceil** of a given key in a Binary Search Tree (BST). The **ceil** of a key is the smallest key in the BST that is greater than or equal to the given key. If no such key exists, the ceil is considered to be `nil`.
 
-### Solution Approach for Ceil
-
-To find the ceil of a key in a BST, the approach is similar to finding the floor:
-1. If the current node's key is equal to the given key, then the ceil is the current node.
-2. If the current node's key is less than the given key, then we search in the right subtree because all keys in the left subtree are smaller.
-3. If the current node's key is greater than the given key, then the current node could be the ceil, but there might be a closer value in the left subtree.
 
 ### Implementation in Go
 
@@ -469,3 +463,244 @@ func findCeil(root *TreeNode, key int) *TreeNode {
 
 - **Time Complexity**: O(h), where h is the height of the tree. In the best case (balanced BST), this is O(log n), where n is the number of nodes. This is because we might traverse from the root to a leaf node.
 - **Space Complexity**: O(1). The functions use a constant amount of extra space for storing pointers (`floor`, `ceil`, and the traversal pointer). The iterative approach ensures that there is no additional space needed for recursion stacks.
+
+
+Here is the solution for finding a pair with a given sum in a Binary Search Tree (BST):
+
+---
+
+**Find a Pair with Given Sum in BST**
+
+Problem Description  
+Given a binary search tree (BST) and a target sum, the task is to find two nodes in the BST whose sum is equal to the given target. If such a pair exists, return `true`; otherwise, return `false`.
+
+**Examples**
+
+Example 1  
+Input: A BST with inorder traversal [1, 2, 3, 4, 5, 6, 7], target = 9  
+Output: `true` (since 2 + 7 = 9)
+
+Example 2  
+Input: A BST with inorder traversal [1, 2, 3, 4, 5], target = 10  
+Output: `false` (no such pair exists)
+
+**Approach**
+
+1. Perform an in-order traversal of the BST to get a sorted array of elements.
+2. Use the two-pointer technique to find if there is a pair whose sum equals the target.
+
+**Implementation in Go**
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary search tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// inorderTraversal is a helper function to perform an in-order traversal
+// and store the elements in a slice.
+func inorderTraversal(root *TreeNode, elems *[]int) {
+	if root == nil {
+		return
+	}
+
+	// Traverse the left subtree
+	inorderTraversal(root.Left, elems)
+
+	// Append the root's value to the slice
+	*elems = append(*elems, root.Val)
+
+	// Traverse the right subtree
+	inorderTraversal(root.Right, elems)
+}
+
+// findPairWithSum uses two-pointer technique on the sorted array to find a pair
+// that sums up to the target.
+func findPairWithSum(root *TreeNode, target int) bool {
+	// Perform in-order traversal to get elements in sorted order
+	var elems []int
+	inorderTraversal(root, &elems)
+
+	// Use two-pointer technique to find a pair with the given sum
+	left, right := 0, len(elems)-1
+	for left < right {
+		sum := elems[left] + elems[right]
+		if sum == target {
+			return true
+		} else if sum < target {
+			left++
+		} else {
+			right--
+		}
+	}
+	return false
+}
+
+```
+
+
+Here’s the updated solution with the addition of a function to find the kth largest element in a Binary Search Tree (BST), along with the existing functionality to find the kth smallest element:
+
+---
+
+**Find kth Smallest and kth Largest Element in BST**
+
+Problem Description  
+Given a binary search tree (BST), write functions to find:
+- The kth smallest element.
+- The kth largest element.
+
+The kth smallest element can be found by performing an in-order traversal (left-root-right), while the kth largest element can be found by performing a reverse in-order traversal (right-root-left).
+
+**Examples**
+
+Example 1 (kth Smallest)  
+Input: A BST with inorder traversal [1, 2, 3, 4, 5, 6, 7], k = 3  
+Output: 3
+
+Example 2 (kth Largest)  
+Input: A BST with inorder traversal [1, 2, 3, 4, 5, 6, 7], k = 2  
+Output: 6
+
+**Implementation in Go**
+
+```go
+package main
+
+import "fmt"
+
+// TreeNode represents a node in the binary search tree.
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+
+func inorderTraversal(root *TreeNode, k *int, result *int) {
+	if root == nil {
+		return
+	}
+
+	inorderTraversal(root.Left, k, result)
+
+	*k--
+	if *k == 0 {
+		*result = root.Val
+		return
+	}
+
+	inorderTraversal(root.Right, k, result)
+}
+
+func reverseInorderTraversal(root *TreeNode, k *int, result *int) {
+	if root == nil {
+		return
+	}
+
+	reverseInorderTraversal(root.Right, k, result)
+
+	*k--
+	if *k == 0 {
+		*result = root.Val
+		return
+	}
+
+	reverseInorderTraversal(root.Left, k, result)
+}
+
+func kthSmallest(root *TreeNode, k int) int {
+	var result int
+	inorderTraversal(root, &k, &result)
+	return result
+}
+
+func kthLargest(root *TreeNode, k int) int {
+	var result int
+	reverseInorderTraversal(root, &k, &result)
+	return result
+}
+
+```
+
+**Explanation**:
+- **`kthSmallest` function**: Uses in-order traversal (left-root-right) to find the kth smallest element.
+- **`kthLargest` function**: Uses reverse in-order traversal (right-root-left) to find the kth largest element.
+- The traversal continues until the kth element is found by decrementing `k` with each visited node. When `k` reaches 0, the current node's value is stored as the result.
+
+This solution efficiently finds both the kth smallest and largest elements in O(h + k) time, where `h` is the height of the tree and `k` is the number of elements processed.
+
+
+Here is a solution to **serialize** and **deserialize** a Binary Search Tree (BST) in Go. Serialization converts the BST into a string representation, and deserialization reconstructs the BST from this string.
+
+---
+
+**Serialize and Deserialize BST**
+
+Problem Description  
+Serialization is the process of converting a data structure or object into a format that can be easily stored or transmitted. Deserialization is the reverse process, converting the serialized format back into the original data structure. Given a binary search tree (BST), write functions to serialize the tree into a string and deserialize it back into the BST.
+
+**Examples**
+
+Example 1  
+Input: A BST with nodes [5, 3, 7, 2, 4, 6, 8]  
+Output: Serialized string and the reconstructed BST
+
+**Approach**
+
+1. **Serialization**:  
+   Perform a pre-order traversal (root-left-right) and convert the nodes into a string.
+   
+2. **Deserialization**:  
+   Reconstruct the BST from the pre-order traversal string.
+
+**Implementation in Go**
+
+```go
+func Serialize(root *TreeNode) string {
+	if root == nil {
+		return "#"
+	}
+	return fmt.Sprintf("%d,%s,%s", root.Val, Serialize(root.Left), Serialize(root.Right))
+}
+
+// Deserialize converts a string back to a tree
+func Deserialize(data string) *TreeNode {
+	str := strings.Split(data, ",")
+	index := -1
+	return DeserializeDfs(&index, str)
+}
+func DeserializeDfs(index *int, str []string) *TreeNode {
+	*index = *index + 1
+	if str[*index] == "#" {
+		return nil
+	}
+	val, _ := strconv.Atoi(str[*index])
+	root := &TreeNode{Val: val}
+	root.Left = DeserializeDfs(index, str)
+	root.Right = DeserializeDfs(index, str)
+	return root
+}
+
+// // Example usage
+func main() {
+	root := &TreeNode{Val: 1}
+	root.Left = &TreeNode{Val: 2}
+	root.Right = &TreeNode{Val: 3}
+	root.Right.Left = &TreeNode{Val: 4}
+	root.Right.Right = &TreeNode{Val: 5}
+
+	serialized := Serialize(root)
+	fmt.Println("Serialized:", serialized) //"1,2,#,#,3,4,#,#,5,#,#"
+
+}
+```
+
+**Space Complexity**:
+- O(n) for storing the serialized string and the tree nodes during deserialization.
