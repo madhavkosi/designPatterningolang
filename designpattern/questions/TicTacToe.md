@@ -154,3 +154,197 @@ func main() {
 }
 
 ```
+
+
+
+For a Tic-Tac-Toe game like this, we can utilize design patterns to structure the code in a more scalable and maintainable way. Here are a few design patterns that can be applied:
+
+### 1. **Strategy Pattern**:
+   The `Strategy Pattern` can be used to separate the logic of how a player takes their turn. This is useful if we want to extend the game in the future by adding different types of players (e.g., human players, AI players with different difficulty levels).
+
+   - **When to Use**: When we expect to have different strategies for how a player makes a move.
+   - **How**: Create an interface `MoveStrategy` that defines how to get the next move, and different implementations for human players, AI players, etc.
+
+   ```go
+   type MoveStrategy interface {
+       GetMove(board [][]Symbols) (int, int)
+   }
+
+   type HumanMove struct{}
+
+   func (hm *HumanMove) GetMove(board [][]Symbols) (int, int) {
+       var i, j int
+       fmt.Println("Enter position i (row):")
+       fmt.Scanf("%d", &i)
+       fmt.Println("Enter position j (col):")
+       fmt.Scanf("%d", &j)
+       return i, j
+   }
+
+   type AIMove struct{}
+
+   func (am *AIMove) GetMove(board [][]Symbols) (int, int) {
+       // AI logic here for picking the move
+       return 1, 1
+   }
+   ```
+
+   - **Integration**: Each `Player` can have a `MoveStrategy`, and the player's `PlayTurn()` can delegate the logic to that strategy.
+
+   ```go
+   type Player struct {
+       PlayerId      int
+       Name          string
+       MoveStrategy  MoveStrategy
+   }
+
+   func (p *Player) PlayTurn(board [][]Symbols) (int, int) {
+       return p.MoveStrategy.GetMove(board)
+   }
+   ```
+
+   This allows easy switching between different types of players, whether they are human or AI.
+
+### 2. **Observer Pattern**:
+   The `Observer Pattern` can be used to notify observers about the game's state. For example, if we want to add logging, score tracking, or display updates when a move is made, these can be done using observers.
+
+   - **When to Use**: When we want to notify multiple components (UI, logging, etc.) about changes in the game state.
+   - **How**: Define a `GameObserver` interface with a method `Update`, and have concrete observers like `GameUI`, `GameLogger` that implement the interface.
+
+   ```go
+   type GameObserver interface {
+       Update(board [][]Symbols)
+   }
+
+   type GameUI struct{}
+
+   func (ui *GameUI) Update(board [][]Symbols) {
+       // Code to update UI
+   }
+
+   type GameLogger struct{}
+
+   func (logger *GameLogger) Update(board [][]Symbols) {
+       // Code to log the game state
+   }
+   ```
+
+   - **Integration**: In the `Game` class, maintain a list of observers, and call their `Update` method whenever the game state changes.
+
+   ```go
+   type Game struct {
+       Board      [][]Symbols
+       Observers  []GameObserver
+   }
+
+   func (g *Game) AddObserver(o GameObserver) {
+       g.Observers = append(g.Observers, o)
+   }
+
+   func (g *Game) NotifyObservers() {
+       for _, o := range g.Observers {
+           o.Update(g.Board)
+       }
+   }
+
+   func (g *Game) MakeMove(i, j int, symbol Symbols) {
+       g.Board[i][j] = symbol
+       g.NotifyObservers()
+   }
+   ```
+
+   This allows for decoupling the game logic from the UI and other concerns like logging.
+
+### 3. **Factory Pattern**:
+   The `Factory Pattern` can be used to create different types of players depending on user input or game mode.
+
+   - **When to Use**: When you want to dynamically create players based on input (e.g., whether a player is a human or an AI).
+   - **How**: Create a `PlayerFactory` that returns a player object based on some criteria (such as player type).
+
+   ```go
+   type PlayerType int
+
+   const (
+       Human PlayerType = iota
+       AI
+   )
+
+   type PlayerFactory struct{}
+
+   func (pf *PlayerFactory) CreatePlayer(id int, name string, playerType PlayerType) Player {
+       switch playerType {
+       case Human:
+           return Player{PlayerId: id, Name: name, MoveStrategy: &HumanMove{}}
+       case AI:
+           return Player{PlayerId: id, Name: name, MoveStrategy: &AIMove{}}
+       }
+       return Player{}
+   }
+   ```
+
+   - **Integration**: Use the factory to create players when setting up the game.
+
+   ```go
+   playerFactory := PlayerFactory{}
+   player1 := playerFactory.CreatePlayer(1, "Madhav", Human)
+   player2 := playerFactory.CreatePlayer(2, "AI Bot", AI)
+   ```
+
+   This makes adding new player types (such as different AI difficulties) easy without modifying existing code.
+
+### 4. **State Pattern**:
+   The `State Pattern` can be used to represent different game states (e.g., "Playing", "GameOver", "Draw"). Each state can encapsulate its behavior and what transitions are allowed.
+
+   - **When to Use**: When you want to manage different game states cleanly, especially in larger games where each state may have specific behavior.
+   - **How**: Define a `GameState` interface with methods like `HandleInput`, `Update`, etc., and create concrete states for "Playing", "GameOver", and "Draw".
+
+   ```go
+   type GameState interface {
+       HandleInput(g *Game)
+       Update(g *Game)
+   }
+
+   type PlayingState struct{}
+
+   func (ps *PlayingState) HandleInput(g *Game) {
+       // handle input
+   }
+
+   func (ps *PlayingState) Update(g *Game) {
+       // check for game over
+   }
+
+   type GameOverState struct{}
+
+   func (gs *GameOverState) HandleInput(g *Game) {
+       fmt.Println("Game is over!")
+   }
+
+   func (gs *GameOverState) Update(g *Game) {
+       // no updates allowed in game over
+   }
+   ```
+
+   - **Integration**: The game holds a reference to the current state and delegates behavior to it.
+
+   ```go
+   type Game struct {
+       State GameState
+   }
+
+   func (g *Game) SetState(state GameState) {
+       g.State = state
+   }
+
+   func (g *Game) HandleInput() {
+       g.State.HandleInput(g)
+   }
+   ```
+
+### Summary of Design Patterns:
+1. **Strategy Pattern**: To handle different strategies for player moves (human, AI).
+2. **Observer Pattern**: To decouple game logic from display/logging/other external concerns.
+3. **Factory Pattern**: To dynamically create players based on input (human or AI).
+4. **State Pattern**: To manage different game states (playing, game over, draw).
+
+Depending on how complex you want the Tic-Tac-Toe game to become, one or more of these patterns can be applied to make the code more scalable, maintainable, and extensible.
