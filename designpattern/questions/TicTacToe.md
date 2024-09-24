@@ -1,3 +1,6 @@
+**Solution:**
+```go
+
 package main
 
 import "fmt"
@@ -149,3 +152,5 @@ func main() {
 	result := game.PlayGame()
 	fmt.Println(result)
 }
+
+```
