@@ -297,7 +297,6 @@ For a Tic-Tac-Toe game like this, we can utilize design patterns to structure th
 
    - **When to Use**: When you want to manage different game states cleanly, especially in larger games where each state may have specific behavior.
    - **How**: Define a `GameState` interface with methods like `HandleInput`, `Update`, etc., and create concrete states for "Playing", "GameOver", and "Draw".
-
    ```go
    type GameState interface {
        HandleInput(g *Game)

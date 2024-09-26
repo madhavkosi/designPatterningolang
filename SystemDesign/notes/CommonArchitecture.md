@@ -54,6 +54,32 @@ Redis supports various data structures that are stored in memory and manipulated
 #### 10. **Pub/Sub Messaging**
 - **Publish/Subscribe**: Redis supports a publish/subscribe messaging paradigm where clients can subscribe to channels and receive messages in real-time.
 
+### 1. Redis as a Single Point of Failure:
+To handle Redis failures, implementing a **Redis cluster** is essential. In this setup:
+- Redis can be horizontally scaled by adding more nodes, with **read replicas** distributed across nodes to balance the load.
+- **Redis Sentinel** monitors the cluster for node failures. If the master node fails, Sentinel promotes one of the replicas to become the new master.
+- The cluster ensures **high availability** and **partition tolerance**, as Redis can continue to serve requests from other nodes even if one node fails.
+- **Write-ahead logs (WAL)** can be enabled to ensure data is persisted even if the system crashes.
+- Synchronization happens when the primary node recovers, ensuring data consistency across the cluster.
+
+Fallback in case of cache failure:
+- If Redis is unavailable in certain scenarios, the system can query the **NoSQL database** directly, but this could introduce latency.
+- To mitigate the performance bottleneck, **graceful degradation** can be implemented, where non-critical data can skip cache lookups and continue functioning without impacting the user experience.
+
+### 2. Handling Hot Keys in Redis:
+To prevent **hot key** overload on a single Redis node:
+- **Sharding**: Distribute hot keys across multiple Redis nodes by using consistent hashing or sharding keys at the application level.
+- **Replication**: Use Redis replicas to offload read traffic for hot keys. Implement intelligent routing to send read requests to replicas.
+- **Caching strategies**: Use **local cache** (e.g., in-memory cache on application nodes) for frequently accessed hot keys to minimize Redis load.
+- **Key splitting**: For large data objects that become hot, split the key into smaller subkeys, distributing the load more evenly across nodes.
+
+
+### Redis Consistency and Network Partitioning:
+In Redis, network partitioning can cause a **split-brain** scenario, where both the original master and a newly promoted replica accept writes. To prevent this:
+- **Quorum-based voting**: Use Sentinel with quorum voting, where a majority of nodes must agree on promoting a new master. If not enough nodes are reachable to form a quorum, no promotion happens, preventing split-brain.
+- **Automatic failover timeout**: Configure a longer timeout for Sentinel to avoid premature promotion during transient partitions.
+- **Strong consistency**: In critical situations, Redis can operate in **append-only mode** (AOF) with fsync to disk after every write. This ensures data durability across nodes during recovery.
+- **Recovery strategy**: When the original master re-joins, it gets demoted to a replica, and data is synchronized from the current master, ensuring consistency.
 ### Redis Internals
 
 #### 1. **Event Loop**
