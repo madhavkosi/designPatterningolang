@@ -132,7 +132,49 @@ In a **Saga pattern**, if one part of a transaction fails:
 - **Stateless compensation**: Ensure that compensating transactions are idempotent and stateless so that they can be retried without side effects.
 - **Partial failure handling**: In case of partial failures, design the system to handle them gracefully. For example, notify the user that part of their action (e.g., the comment) succeeded while the reaction failed, and allow them to retry the failed operation.
 
+### 1. **Data Sharding Strategy**
+   - **How would you shard your database to handle the large volume of data efficiently, and what would be your sharding key?**
+     - I would shard based on the short URL key or its hash (e.g., MD5, SHA256), ensuring even distribution of data across shards. Using the short URL as the sharding key will help balance traffic across different nodes as URLs will be distributed fairly. To prevent hotspots, I could combine the timestamp or user ID with the short URL to create more randomness and distribute the data further.
+   - **What happens if one shard becomes overloaded?**
+     - Dynamic shard balancing strategies, such as consistent hashing, could be employed to reassign some keys to less-loaded shards. Another option could be adding more shards dynamically and migrating part of the data. If I notice frequent overloads, I could introduce hotspot detection that monitors the request patterns and helps in proactively scaling those specific shards.
+
+### 2. **Handling Read-Heavy Traffic with Cache Misses**
+   - **How would you optimize the redirection service for a large number of cache misses?**
+     - I would use an async caching mechanism. When there's a cache miss, I would immediately serve the request from the database but asynchronously pre-populate the cache with the corresponding URL. This ensures minimal disruption to the request flow. Additionally, I could batch queries for cache misses to avoid overloading the database and optimize the read latency.
+   - **What caching eviction policies would you choose (e.g., LRU, LFU)?**
+     - I would use **Least Recently Used (LRU)** eviction because URLs accessed more frequently should remain in cache, whereas less popular URLs should be evicted. Additionally, I would configure TTLs (Time to Live) to expire cache entries based on the URL's lifetime (if expiration exists).
+
+### 3. **Consistency vs. Availability Trade-offs**
+   - **What kind of consistency model would you adopt for the URL redirection service, and why?**
+     - I would prioritize **availability** over **strong consistency** due to the nature of the service. In a URL redirection system, users expect rapid responses, and eventual consistency is often acceptable because slight delays in replication across distributed nodes won’t harm the user experience. Eventual consistency allows the system to remain available even if certain nodes fail or updates are delayed.
+   - **How would you handle a scenario where some data nodes are unavailable?**
+     - I would implement **read-replicas** for each shard. If a data node becomes unavailable, the system could serve the latest consistent data from a replica node. Additionally, I would have a fallback mechanism to redirect traffic to the next available node in the same region or even a different region to ensure continuous operation.
+
+### 4. **Concurrency and Locking**
+   - **What strategies can you employ to ensure only one client succeeds when creating the same custom alias?**
+     - I would use **optimistic locking** to allow multiple clients to try creating an alias simultaneously. The service would check if the alias already exists before committing the transaction. In case of a conflict, the user will be prompted to pick another alias or the system will auto-suggest a slightly modified alias. Optimistic locking is preferable because URL creation requests are quick and retries can be handled easily without long transaction locks.
+   - **Would you prefer optimistic or pessimistic locking?**
+     - **Optimistic locking** is more suitable because it reduces the risk of locking resources for too long in a high-throughput system. It minimizes performance bottlenecks compared to pessimistic locking, which can lead to deadlocks in cases of contention.
 
 
+### 6. **Rate Limiting & Abuse Protection**
+   - **How would you implement rate limiting to prevent abuse?**
+     - I would implement rate limiting at the **API Gateway** using a **token bucket** algorithm. Each user or IP would be allowed a certain number of requests per second, and additional requests would be rejected or delayed. The rate limits could be dynamically adjusted based on user behavior.
+   - **How would you prevent abuse from users distributing requests across multiple IP addresses?**
+     - I would use **user-based rate limiting** rather than purely IP-based. Users would need to be authenticated (via API keys or OAuth), and their rate would be limited. For anonymous users, I would also monitor their usage patterns, such as a sudden spike in activity across different IPs, and flag or block suspicious activities using **geo-distributed request analysis**.
+
+### 7. **Handling Failures and Fault Tolerance**
+   - **How would you ensure the overall system continues to operate without downtime if one service goes down?**
+     - I would build services in a **stateless** manner to enable **horizontal scaling** and ensure that traffic can be routed to available instances of a service if one fails. For databases, I’d use **replication** across regions, and for queues, I’d employ **persistent queues** like Kafka to ensure messages are not lost. 
+     - A **circuit breaker pattern** could be used to fail fast when a service is down, avoiding retries that would further overload the system.
+   - **How would you make sure retry mechanisms do not overwhelm your system?**
+     - I would use **exponential backoff** to gradually increase the wait time between retries. If the retry count exceeds a certain limit, the request would go to a **dead-letter queue** where it can be investigated manually, preventing overwhelming retries.
+
+
+### 10. **Global Distribution and Latency Optimization**
+   - **How would you minimize the latency of URL redirections for users in different geographic locations?**
+     - I would use **geo-replication** of the database so that each region has a local copy of the short URLs, minimizing read latencies. I’d leverage **edge caching** using a CDN layer to store frequently requested short URLs and redirection mappings close to the user.
+   - **How would you design the system to ensure users in regions with high traffic don't experience delays due to lower-traffic regions?**
+     - I would implement **regional partitioning** for URL storage and retrieval, ensuring that high-traffic regions have their dedicated resources. Load balancing could direct traffic to the nearest region, and **write requests** could be routed to a master node with **read replicas** in different regions for optimized retrieval.
 
 
